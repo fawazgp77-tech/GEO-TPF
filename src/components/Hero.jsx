@@ -49,7 +49,7 @@ const SYNTHESIZER_PRESETS = [
   }
 ];
 
-export default function Hero({ onOpenAudit }) {
+export default function Hero({ onOpenLogin }) {
   const [activeTabIdx, setActiveTabIdx] = useState(0);
   const [brandName] = useState('YOUR BRAND [ACME]');
   const [isSynthesizing, setIsSynthesizing] = useState(false);
@@ -91,7 +91,7 @@ export default function Hero({ onOpenAudit }) {
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-4">
                 <button
-                  onClick={onOpenAudit}
+                  onClick={onOpenLogin}
                   className="px-6 py-2.5 rounded text-xs font-tech-mono font-semibold text-emerald-950 bg-emerald-400 hover:bg-emerald-300 transition-all duration-200 shadow-[0_0_25px_-3px_rgba(16,185,129,0.5)] hover:shadow-[0_0_30px_0_rgba(16,185,129,0.7)] hover:-translate-y-0.5 active:translate-y-0 text-center cursor-pointer"
                 >
                   Get Started

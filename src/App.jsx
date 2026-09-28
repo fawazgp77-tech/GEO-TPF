@@ -103,7 +103,12 @@ function App() {
       {/* Main Sections */}
       <main className="flex-1">
         {/* Hero Section: Your Brand Through AI's Eyes + Live Prompt Vector Synthesizer */}
-        <Hero onOpenAudit={() => setAuditModalOpen(true)} />
+        <Hero
+          onOpenLogin={() => {
+            setAuthMode('login');
+            setLoginModalOpen(true);
+          }}
+        />
 
         {/* 01 // FORENSIC EXTRACTION ENGINE */}
         <ForensicExtraction onOpenAudit={() => setAuditModalOpen(true)} />
@@ -133,6 +138,7 @@ function App() {
       />
 
       <LoginModal
+        key={loginModalOpen ? `open_${authMode}` : 'closed'}
         isOpen={loginModalOpen}
         initialMode={authMode}
         onClose={() => setLoginModalOpen(false)}
