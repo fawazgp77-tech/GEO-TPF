@@ -41,7 +41,7 @@ export default function TechnicalFaq({ onOpenBriefing }) {
         
         {/* Section Identifier */}
         <div className="text-xs font-tech-mono text-emerald-400 tracking-wider mb-4 uppercase">
-          05 // TECHNICAL FAQ
+          04 // TECHNICAL FAQ
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">

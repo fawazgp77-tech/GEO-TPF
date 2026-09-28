@@ -47,7 +47,7 @@ slides_data = [
     },
     {
         "id": "04_landing_research",
-        "tag": "MARKETING SUITE // DIMENSION 04",
+        "tag": "MARKETING SUITE // SECTION 03",
         "title": "Institutional Research & Peer-Reviewed Telemetry",
         "subtitle": "Academic benchmarks on generative engine optimization, citations, and neural RAG",
         "action": lambda page: (
@@ -59,7 +59,7 @@ slides_data = [
     },
     {
         "id": "05_landing_faq",
-        "tag": "MARKETING SUITE // DIMENSION 05",
+        "tag": "MARKETING SUITE // SECTION 04",
         "title": "Technical Architecture FAQ & Telemetry Ingestion",
         "subtitle": "Technical FAQs on OpenAI ChatGPT answer synthesis and citation telemetry",
         "action": lambda page: (
@@ -311,10 +311,10 @@ c.setFillColor(colors.HexColor("#cbd5e1"))
 
 col1 = [
     "01. Landing Hero & Vector Synthesizer",
-    "02. Dimension 01: Forensic Extraction",
-    "03. Dimension 02: Framework Architecture",
-    "04. Dimension 04: Institutional Research",
-    "05. Dimension 05: Technical FAQ",
+    "02. Section 01: Forensic Extraction",
+    "03. Section 02: Framework Architecture",
+    "04. Section 03: Institutional Research",
+    "05. Section 04: Technical FAQ",
     "06. Executive Audit Request Modal"
 ]
 

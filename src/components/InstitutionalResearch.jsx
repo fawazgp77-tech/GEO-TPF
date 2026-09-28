@@ -8,7 +8,7 @@ export default function InstitutionalResearch() {
         
         {/* Section Identifier */}
         <div className="text-xs font-tech-mono text-emerald-400 tracking-wider mb-4 uppercase">
-          04 // INSTITUTIONAL RESEARCH
+          03 // INSTITUTIONAL RESEARCH
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">

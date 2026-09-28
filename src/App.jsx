@@ -151,10 +151,10 @@ function App() {
         {/* 02 // FRAMEWORK ARCHITECTURE: The Five Dimensions of Brand Generative Equity */}
         <FrameworkArchitecture />
 
-        {/* 04 // INSTITUTIONAL RESEARCH: Natural Language & Retrieval Systems */}
+        {/* 03 // INSTITUTIONAL RESEARCH: Natural Language & Retrieval Systems */}
         <InstitutionalResearch />
 
-        {/* 05 // TECHNICAL FAQ: Frequently Asked Questions */}
+        {/* 04 // TECHNICAL FAQ: Frequently Asked Questions */}
         <TechnicalFaq onOpenBriefing={() => setBriefingModalOpen(true)} />
       </main>
 
