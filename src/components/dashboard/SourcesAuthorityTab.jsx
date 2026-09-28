@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
 import { 
   Layers, 
-  Link2, 
   Globe, 
-  FileText, 
   AlertCircle, 
   ArrowUpRight, 
   ExternalLink, 
   Clock, 
-  Search, 
   Sparkles
 } from 'lucide-react';
 
 export default function SourcesAuthorityTab() {
-  const [selectedType, setSelectedType] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
   const [gapOutreachModal, setGapOutreachModal] = useState(null);
 
   // 04 SOURCES & AUTHORITY - CORE METRICS
@@ -139,61 +134,6 @@ export default function SourcesAuthorityTab() {
       recommendedAction: 'Synchronize pricing tier and feature matrix schema',
     },
   ];
-
-  // Active Citations Inventory
-  const activeCitations = [
-    {
-      id: 1,
-      url: 'acme.com/docs/api/realtime-telemetry',
-      channel: 'Official Docs',
-      citations: 284,
-      pipeline: 'Live Web Search & RAG',
-      freshness: '4 days ago',
-      health: '200 OK (Clean)',
-    },
-    {
-      id: 2,
-      url: 'acme.com/pricing',
-      channel: 'Official Domain',
-      citations: 210,
-      pipeline: 'Web Index Cache (Crawl)',
-      freshness: '12 days ago',
-      health: '200 OK (Schema Synced)',
-    },
-    {
-      id: 3,
-      url: 'g2.com/products/geo-engine/reviews',
-      channel: 'Review Platform',
-      citations: 165,
-      pipeline: 'Knowledge Graph Ingestion',
-      freshness: '18 days ago',
-      health: 'Active (4.8 / 5)',
-    },
-    {
-      id: 4,
-      url: 'venturebeat.com/ai/synthetic-vector-benchmarking-georanking',
-      channel: 'Press Article',
-      citations: 92,
-      pipeline: 'Live Web Search Ingestion',
-      freshness: '32 days ago',
-      health: '200 OK',
-    },
-    {
-      id: 5,
-      url: 'acme.com/blog/llm-hallucination-elimination-guide',
-      channel: 'Official Blog',
-      citations: 78,
-      pipeline: 'Citation Graph Ingestion',
-      freshness: '45 days ago',
-      health: '200 OK',
-    },
-  ];
-
-  const filteredCitations = activeCitations.filter((c) => {
-    const matchesType = selectedType === 'all' || c.channel.toLowerCase().includes(selectedType.toLowerCase());
-    const matchesSearch = c.url.toLowerCase().includes(searchQuery.toLowerCase()) || c.pipeline.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesType && matchesSearch;
-  });
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
@@ -403,83 +343,6 @@ export default function SourcesAuthorityTab() {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Active Citations URL Explorer Table */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-[#080c14] border border-white/[0.08] space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-white/[0.06]">
-          <div>
-            <h3 className="text-base font-bold text-white font-tech-mono flex items-center gap-2">
-              <FileText className="w-4 h-4 text-purple-400" />
-              <span>ACTIVE CITATIONS & INDEXED ASSETS</span>
-            </h3>
-            <p className="text-xs text-slate-400 font-mono mt-0.5">
-              Live URLs providing the factual backbone for AI answer synthesis
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <div className="relative">
-              <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                placeholder="Search URL or channel..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1.5 bg-[#05070c] border border-white/[0.1] rounded-lg text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/80 w-44 sm:w-56"
-              />
-            </div>
-
-            <select
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-              className="px-3 py-1.5 bg-[#05070c] border border-white/[0.1] rounded-lg text-xs font-tech-mono text-slate-300 focus:outline-none focus:border-purple-500/80 cursor-pointer"
-            >
-              <option value="all">All Channels</option>
-              <option value="official">Official Docs</option>
-              <option value="review">Reviews</option>
-              <option value="press">Press</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs font-mono">
-            <thead>
-              <tr className="border-b border-white/[0.08] text-[11px] font-tech-mono uppercase text-slate-400 bg-white/[0.01]">
-                <th className="py-2.5 px-3">Indexed Source URL</th>
-                <th className="py-2.5 px-3">Channel Type</th>
-                <th className="py-2.5 px-3">Citations Logged</th>
-                <th className="py-2.5 px-3">Retrieval Pipeline</th>
-                <th className="py-2.5 px-3">Freshness</th>
-                <th className="py-2.5 px-3 text-right">HTTP / Content Health</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/[0.04]">
-              {filteredCitations.map((row) => (
-                <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 px-3 max-w-xs font-medium text-white">
-                    <div className="truncate text-purple-300 hover:underline cursor-pointer flex items-center gap-1.5">
-                      <Link2 className="w-3.5 h-3.5 text-slate-500" />
-                      <span>{row.url}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 px-3 text-slate-300 font-tech-mono">{row.channel}</td>
-                  <td className="py-3 px-3 font-tech-mono font-bold text-white">
-                    {row.citations}
-                  </td>
-                  <td className="py-3 px-3 text-slate-400 text-[11px] font-mono">{row.pipeline}</td>
-                  <td className="py-3 px-3 text-slate-400 text-[11px]">{row.freshness}</td>
-                  <td className="py-3 px-3 text-right">
-                    <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-tech-mono font-bold">
-                      {row.health}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </div>
 

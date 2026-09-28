@@ -167,7 +167,7 @@ slides_data = [
         "id": "14_dash_sources",
         "tag": "DASHBOARD // TAB 04",
         "title": "Sources & Authority Explorer",
-        "subtitle": "Source diversity breakdown, freshness decay, competitor authority gap, and indexed URLs",
+        "subtitle": "Source diversity breakdown, freshness decay, and competitor citation blindspots",
         "action": lambda page: (
             page.goto("http://localhost:5173/?view=dashboard&tab=sources"),
             page.wait_for_timeout(1000)
