@@ -100,6 +100,28 @@ slides_data = [
         )
     },
     {
+        "id": "08a_onboarding_user",
+        "tag": "ONBOARDING // STEP 01",
+        "title": "Workspace Onboarding: About The User",
+        "subtitle": "User role, primary AI search objectives, and target prompt intent templates",
+        "action": lambda page: (
+            page.goto("http://localhost:5173/?view=onboarding"),
+            page.wait_for_timeout(1000)
+        )
+    },
+    {
+        "id": "08b_onboarding_business",
+        "tag": "ONBOARDING // STEP 02",
+        "title": "Workspace Onboarding: About The Business",
+        "subtitle": "Core offering structure, customer problems solved, and primary target customer segments",
+        "action": lambda page: (
+            page.goto("http://localhost:5173/?view=onboarding"),
+            page.wait_for_timeout(800),
+            page.get_by_role("button", name="About The Business").click(),
+            page.wait_for_timeout(800)
+        )
+    },
+    {
         "id": "09_dash_visibility",
         "tag": "DASHBOARD // TAB 01",
         "title": "AI Visibility & 90-Day Trend Velocity",

@@ -11,6 +11,7 @@ import AuditModal from './components/AuditModal';
 import BriefingModal from './components/BriefingModal';
 import LoginModal from './components/LoginModal';
 import Dashboard from './components/dashboard/Dashboard';
+import Onboarding from './components/Onboarding';
 
 function App() {
   const [currentView, setCurrentView] = useState(() => {
@@ -61,8 +62,19 @@ function App() {
     } catch (e) {
       console.error(e);
     }
-    // Lead user directly into the dashboard upon Proceed / Account creation!
+    // Lead user directly into the dashboard upon login
     setCurrentView('dashboard');
+  };
+
+  const handleSignupSuccess = (user) => {
+    setCurrentUser(user);
+    try {
+      localStorage.setItem('geo_user_session', JSON.stringify(user));
+    } catch (e) {
+      console.error(e);
+    }
+    // When user signs up, display the onboarding questionnaire page!
+    setCurrentView('onboarding');
   };
 
   const handleLogout = () => {
@@ -74,6 +86,29 @@ function App() {
     }
     setCurrentView('landing');
   };
+
+  // If in onboarding view, render the post-signup questionnaire page
+  if (currentView === 'onboarding') {
+    return (
+      <Onboarding
+        currentUser={currentUser}
+        onComplete={(answers) => {
+          const updatedUser = {
+            ...(currentUser || {}),
+            onboarding: answers
+          };
+          setCurrentUser(updatedUser);
+          try {
+            localStorage.setItem('geo_user_session', JSON.stringify(updatedUser));
+          } catch (e) {
+            console.error(e);
+          }
+          setCurrentView('dashboard');
+        }}
+        onSkip={() => setCurrentView('dashboard')}
+      />
+    );
+  }
 
   // If in dashboard view, render the complete GEO ENGINE dashboard
   if (currentView === 'dashboard') {
@@ -143,6 +178,7 @@ function App() {
         initialMode={authMode}
         onClose={() => setLoginModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}
+        onSignupSuccess={handleSignupSuccess}
       />
     </div>
   );

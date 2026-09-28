@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, Eye, EyeOff, CheckCircle, Mail } from 'lucide-react';
 
-export default function LoginModal({ isOpen, onClose, initialMode = 'login', onLoginSuccess }) {
+export default function LoginModal({ isOpen, onClose, initialMode = 'login', onLoginSuccess, onSignupSuccess }) {
   const [mode, setMode] = useState(initialMode); // 'login' | 'signup' | 'forgot'
   
   // Login form state
@@ -63,12 +63,16 @@ export default function LoginModal({ isOpen, onClose, initialMode = 'login', onL
         company: companyName || 'Enterprise',
         website: website || 'company.com'
       };
-      if (onLoginSuccess) onLoginSuccess(user);
+      if (onSignupSuccess) {
+        onSignupSuccess(user);
+      } else if (onLoginSuccess) {
+        onLoginSuccess(user);
+      }
       setTimeout(() => {
         setSuccessMessage('');
         onClose();
-      }, 1200);
-    }, 700);
+      }, 700);
+    }, 600);
   };
 
   const handleSocialAuth = (provider) => {
@@ -81,11 +85,15 @@ export default function LoginModal({ isOpen, onClose, initialMode = 'login', onL
         email: `analyst@${provider.toLowerCase()}.internal`,
         company: 'enterprise.com'
       };
-      if (onLoginSuccess) onLoginSuccess(user);
+      if (mode === 'signup' && onSignupSuccess) {
+        onSignupSuccess(user);
+      } else if (onLoginSuccess) {
+        onLoginSuccess(user);
+      }
       setTimeout(() => {
         setSuccessMessage('');
         onClose();
-      }, 1200);
+      }, 700);
     }, 600);
   };
 
@@ -342,7 +350,6 @@ export default function LoginModal({ isOpen, onClose, initialMode = 'login', onL
                   </label>
                   <input
                     type="text"
-                    required
                     placeholder="https://company.com"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
