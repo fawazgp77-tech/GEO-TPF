@@ -10,8 +10,7 @@ import {
   CheckCircle2,
   Menu,
   X,
-  Settings,
-  CreditCard
+  Settings
 } from 'lucide-react';
 
 import AiVisibilityTab from './AiVisibilityTab';
@@ -41,7 +40,6 @@ export default function Dashboard({ currentUser, onLogout, onUpdateUser }) {
       return false;
     }
   });
-  const [accountModalTab, setAccountModalTab] = useState('general');
   const [localUser, setLocalUser] = useState(null);
   const userData = localUser || currentUser || { name: 'Sarah Chen', email: 'sarah.chen@acme.com', company: 'acme.com' };
 
@@ -204,25 +202,12 @@ export default function Dashboard({ currentUser, onLogout, onUpdateUser }) {
                   <button
                     onClick={() => {
                       setProfileMenuOpen(false);
-                      setAccountModalTab('general');
                       setAccountModalOpen(true);
                     }}
                     className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded hover:bg-white/5 text-slate-300 hover:text-white text-left transition-colors cursor-pointer"
                   >
                     <Settings className="w-3.5 h-3.5 text-slate-400" />
                     <span>Account Settings</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setProfileMenuOpen(false);
-                      setAccountModalTab('billing');
-                      setAccountModalOpen(true);
-                    }}
-                    className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded hover:bg-white/5 text-slate-300 hover:text-white text-left transition-colors cursor-pointer"
-                  >
-                    <CreditCard className="w-3.5 h-3.5 text-slate-400" />
-                    <span>Billing ($499/mo)</span>
                   </button>
                 </div>
 
@@ -331,12 +316,11 @@ export default function Dashboard({ currentUser, onLogout, onUpdateUser }) {
         </div>
       )}
 
-      {/* Account & Workspace Settings Modal */}
+      {/* Account Settings Modal */}
       {accountModalOpen && (
         <AccountSettingsModal
-          key={`${accountModalTab}-${userData?.email || 'default'}`}
+          key={userData?.email || 'default'}
           isOpen={accountModalOpen}
-          initialTab={accountModalTab}
           onClose={() => setAccountModalOpen(false)}
           currentUser={userData}
           onUpdateUser={(updated) => {

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { X, User, CreditCard, CheckCircle2 } from 'lucide-react';
+import { X, CheckCircle2 } from 'lucide-react';
 
-export default function AccountSettingsModal({ isOpen, onClose, currentUser, onUpdateUser, onLogout, initialTab = 'general' }) {
-  const [activeTab, setActiveTab] = useState(initialTab === 'billing' ? 'billing' : 'general');
+export default function AccountSettingsModal({ isOpen, onClose, currentUser, onUpdateUser, onLogout }) {
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Form states initialized directly from currentUser
@@ -44,7 +43,7 @@ export default function AccountSettingsModal({ isOpen, onClose, currentUser, onU
                 Account Settings
               </h3>
               <p className="text-xs text-slate-400 font-mono">
-                {company} • Pro Plan Active
+                {company} • Profile Settings
               </p>
             </div>
           </div>
@@ -57,36 +56,8 @@ export default function AccountSettingsModal({ isOpen, onClose, currentUser, onU
           </button>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex items-center gap-2 pt-4 pb-2 border-b border-white/[0.06] text-xs font-tech-mono flex-shrink-0 overflow-x-auto">
-          {[
-            { id: 'general', label: 'General Profile', icon: User },
-            { id: 'billing', label: 'Billing & Plan', icon: CreditCard },
-          ].map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
-                  isActive
-                    ? 'bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 font-medium'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-emerald-400' : 'text-slate-500'}`} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto py-5 space-y-6">
-          
-          {/* GENERAL TAB */}
-          {activeTab === 'general' && (
             <form onSubmit={handleSave} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -173,57 +144,6 @@ export default function AccountSettingsModal({ isOpen, onClose, currentUser, onU
                 </button>
               </div>
             </form>
-          )}
-
-          {/* BILLING TAB */}
-          {activeTab === 'billing' && (
-            <div className="space-y-4">
-              <div className="p-5 rounded-xl bg-gradient-to-br from-emerald-950/40 to-[#070a10] border border-emerald-500/40 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-tech-mono uppercase tracking-widest text-emerald-400 font-bold block mb-1">
-                      CURRENT SUBSCRIPTION
-                    </span>
-                    <h4 className="text-xl font-bold text-white">Pro Plan ($499 / month)</h4>
-                  </div>
-                  <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-tech-mono font-bold">
-                    Active
-                  </span>
-                </div>
-
-                <div className="space-y-1.5 pt-2 border-t border-white/[0.08] text-xs font-tech-mono">
-                  <div className="flex justify-between text-slate-300">
-                    <span>Monthly Query Allowance</span>
-                    <span className="text-emerald-400 font-bold">847 / 1,000 Prompts Used (84%)</span>
-                  </div>
-                  <div className="h-2 w-full bg-[#06080e] rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-400 rounded-full" style={{ width: '84%' }} />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between pt-2 text-[11px] font-tech-mono text-slate-400">
-                  <span>Renews automatically on Oct 26, 2026</span>
-                  <span className="text-slate-200">Payment: Mastercard •••• 8842</span>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3 pt-2">
-                <button
-                  onClick={() => alert('Invoice receipt dispatched to email.')}
-                  className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-tech-mono text-slate-300 transition-colors cursor-pointer"
-                >
-                  Download Invoices
-                </button>
-                <button
-                  onClick={() => alert('Enterprise upgrade inquiry queued.')}
-                  className="px-4 py-2 rounded-lg bg-emerald-400 hover:bg-emerald-300 text-emerald-950 text-xs font-tech-mono font-bold transition-colors cursor-pointer"
-                >
-                  Upgrade to Enterprise
-                </button>
-              </div>
-            </div>
-          )}
-
         </div>
 
         {/* Modal Footer */}
