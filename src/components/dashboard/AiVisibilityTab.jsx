@@ -5,8 +5,7 @@ import {
   CheckCircle2, 
   Sparkles, 
   Search, 
-  ArrowUpRight, 
-  Cpu
+  ArrowUpRight
 } from 'lucide-react';
 
 export default function AiVisibilityTab() {
@@ -278,7 +277,6 @@ export default function AiVisibilityTab() {
 
   const activeData = timeRangeData[timeRange] || timeRangeData['90d'];
   const metrics = activeData.metrics;
-  const engineBreakdown = activeData.engineBreakdown;
 
   // Prompt universe sample table
   const samplePrompts = [
@@ -427,11 +425,8 @@ export default function AiVisibilityTab() {
         ))}
       </div>
 
-      {/* Main Grid: Visibility Trend Chart + Engine Coverage Matrix */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* └─ Visibility Trend (2 Cols) */}
-        <div className="lg:col-span-2 p-5 sm:p-6 rounded-2xl bg-[#080c14] border border-white/[0.08] flex flex-col justify-between">
+      {/* Visibility Trend Chart */}
+      <div className="p-5 sm:p-6 rounded-2xl bg-[#080c14] border border-white/[0.08] flex flex-col justify-between">
           <div>
             <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/[0.06]">
               <div>
@@ -589,59 +584,6 @@ export default function AiVisibilityTab() {
               Confidence: {activeData.confidence}
             </span>
           </div>
-        </div>
-
-        {/* ├─ ChatGPT Modes Breakdown (1 Col) */}
-        <div className="p-5 rounded-2xl bg-[#080c14] border border-white/[0.08] flex flex-col justify-between">
-          <div>
-            <div className="pb-3 border-b border-white/[0.06]">
-              <div className="text-xs font-tech-mono uppercase tracking-widest text-emerald-400 font-bold flex items-center gap-1.5">
-                <Cpu className="w-3.5 h-3.5" />
-                <span>CHATGPT RESPONSE MODES MATRIX</span>
-              </div>
-              <div className="text-[11px] text-slate-400 font-mono mt-0.5">
-                OpenAI ChatGPT query channels sampled (847 prompt vectors)
-              </div>
-            </div>
-
-            <div className="space-y-3.5 mt-4">
-              {engineBreakdown.map((eng) => (
-                <div key={eng.name} className="space-y-1">
-                  <div className="flex items-center justify-between text-xs font-tech-mono">
-                    <span className="text-white font-medium">{eng.name}</span>
-                    <span className="text-emerald-400 font-bold">{eng.mentionRate}%</span>
-                  </div>
-                  
-                  {/* Two-tier progress bar: Mention Rate (solid emerald) & Rec Rate (cyan) */}
-                  <div className="h-1.5 w-full bg-white/[0.06] rounded-full overflow-hidden flex">
-                    <div 
-                      className="bg-emerald-400 h-full rounded-full transition-all"
-                      style={{ width: `${eng.mentionRate}%` }}
-                    />
-                  </div>
-
-                  <div className="flex justify-between text-[10px] font-mono text-slate-400 pt-0.5">
-                    <span>Rec: {eng.recRate}%</span>
-                    <span>Top-3: {eng.top3Rate}%</span>
-                    <span className={`text-[9px] uppercase font-tech-mono ${
-                      eng.status === 'Peak' ? 'text-emerald-400' :
-                      eng.status === 'High' ? 'text-cyan-400' : 'text-amber-400'
-                    }`}>
-                      {eng.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-4 pt-3 border-t border-white/[0.06] text-center">
-            <span className="text-[11px] font-tech-mono text-slate-400">
-              Telemetry status: <strong className="text-emerald-400">OpenAI ChatGPT Live Stream</strong>
-            </span>
-          </div>
-        </div>
-
       </div>
 
       {/* Filterable Prompt Matrix Universe */}
