@@ -10,7 +10,6 @@ import {
 
 export default function AiVisibilityTab() {
   const [timeRange, setTimeRange] = useState('90d'); // '30d' | '60d' | '90d'
-  const [selectedEngine, setSelectedEngine] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPromptTrace, setSelectedPromptTrace] = useState(null);
 
@@ -343,9 +342,7 @@ export default function AiVisibilityTab() {
   ];
 
   const filteredPrompts = samplePrompts.filter((p) => {
-    const matchesEngine = selectedEngine === 'all' || p.engineKey === selectedEngine || p.engine.toLowerCase().includes(selectedEngine.toLowerCase());
-    const matchesSearch = p.query.toLowerCase().includes(searchQuery.toLowerCase()) || p.snippet.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesEngine && matchesSearch;
+    return p.query.toLowerCase().includes(searchQuery.toLowerCase()) || p.snippet.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
   return (
@@ -609,21 +606,9 @@ export default function AiVisibilityTab() {
                 placeholder="Filter prompt or keyword..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1.5 bg-[#05070c] border border-white/[0.1] rounded-lg text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500/80 w-44 sm:w-56"
+                className="pl-8 pr-3 py-1.5 bg-[#05070c] border border-white/[0.1] rounded-lg text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500/80 w-56 sm:w-72"
               />
             </div>
-
-            <select
-              value={selectedEngine}
-              onChange={(e) => setSelectedEngine(e.target.value)}
-              className="px-3 py-1.5 bg-[#05070c] border border-white/[0.1] rounded-lg text-xs font-tech-mono text-slate-300 focus:outline-none focus:border-emerald-500/80 cursor-pointer"
-            >
-              <option value="all">All ChatGPT Modes</option>
-              <option value="search">ChatGPT Search (Web)</option>
-              <option value="gpt-4o">GPT-4o Standard</option>
-              <option value="enterprise">ChatGPT Enterprise</option>
-              <option value="mini">GPT-4o Mini</option>
-            </select>
           </div>
         </div>
 
@@ -634,7 +619,6 @@ export default function AiVisibilityTab() {
               <tr className="border-b border-white/[0.08] text-[11px] font-tech-mono uppercase text-slate-400 bg-white/[0.01]">
                 <th className="py-2.5 px-3">Prompt Query</th>
                 <th className="py-2.5 px-3">Search Intent</th>
-                <th className="py-2.5 px-3">ChatGPT Mode</th>
                 <th className="py-2.5 px-3">Brand Mentioned</th>
                 <th className="py-2.5 px-3">Rank Placement</th>
                 <th className="py-2.5 px-3">Confidence</th>
@@ -652,7 +636,6 @@ export default function AiVisibilityTab() {
                       {row.intent}
                     </span>
                   </td>
-                  <td className="py-3 px-3 text-slate-300 font-tech-mono">{row.engine}</td>
                   <td className="py-3 px-3">
                     {row.mentioned ? (
                       <span className="inline-flex items-center gap-1 text-emerald-400 text-[11px]">
@@ -716,8 +699,8 @@ export default function AiVisibilityTab() {
 
               <div className="grid grid-cols-2 gap-3 text-[11px] font-tech-mono">
                 <div className="p-2.5 rounded bg-white/[0.02] border border-white/[0.06]">
-                  <span className="text-slate-500 block">CHATGPT MODE</span>
-                  <span className="text-white font-bold">{selectedPromptTrace.engine}</span>
+                  <span className="text-slate-500 block">TARGET MODEL</span>
+                  <span className="text-white font-bold">OpenAI ChatGPT</span>
                 </div>
                 <div className="p-2.5 rounded bg-white/[0.02] border border-white/[0.06]">
                   <span className="text-slate-500 block">PLACEMENT</span>
