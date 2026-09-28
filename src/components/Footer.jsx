@@ -53,7 +53,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#framework-architecture" className="text-slate-400 hover:text-emerald-400 transition-colors">
-                  Perplexity Vector Diagnostic
+                  SearchGPT Vector Diagnostic
                 </a>
               </li>
               <li>

@@ -42,7 +42,7 @@ export default function DispatchModal({ dispatchId, onClose }) {
                 <span>OCTOBER 2024</span>
               </div>
               <p className="text-slate-300 leading-relaxed font-sans text-xs">
-                <strong className="text-white">Abstract:</strong> A 90-day multi-turn diagnostic evaluating tier-1 payment processor entity presence across GPT-4o, Claude 3.5 Sonnet, and Perplexity Pro. We observed that 34% of zero-shot commercial queries surfaced hallucinated merchant fee structures due to ungrounded aggregator blog indexing.
+                <strong className="text-white">Abstract:</strong> A 90-day multi-turn diagnostic evaluating tier-1 payment processor entity presence across OpenAI ChatGPT & SearchGPT response environments. We observed that 34% of zero-shot commercial queries surfaced hallucinated merchant fee structures due to ungrounded aggregator blog indexing.
               </p>
               <p className="text-slate-300 leading-relaxed font-sans text-xs">
                 <strong className="text-white">Intervention:</strong> Deployment of a canonical vector schema anchor containing cryptographically verifiable fee schedules and SOC2 Type II compliance credentials.

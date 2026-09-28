@@ -98,14 +98,14 @@ export default function AiAccuracyTrustTab() {
       color: 'text-amber-400',
     },
     {
-      id: 'cross-engine-consistency',
-      label: 'Cross-Engine Consistency',
-      sublabel: 'Output agreement between frontier LLMs',
-      value: '82.0%',
-      delta: '+5.0%',
+      id: 'response-consistency',
+      label: 'Response Consistency',
+      sublabel: 'Repeat prompt agreement in ChatGPT',
+      value: '88.6%',
+      delta: '+4.8%',
       positive: true,
-      fraction: 'Inter-model consensus',
-      badge: 'High Agreement',
+      fraction: 'Monte Carlo repeat runs',
+      badge: 'High Consensus',
       color: 'text-emerald-400',
     },
   ];
@@ -117,7 +117,7 @@ export default function AiAccuracyTrustTab() {
       category: 'Pricing Accuracy',
       severity: 'Critical',
       severityColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
-      engine: 'OpenAI GPT-4o & Gemini',
+      engine: 'GPT-4o Parametric & Cache',
       claim: 'Claims Acme Pro plan is priced at $299/month with max 500 prompts.',
       truth: 'Acme Pro plan was updated to $499/month with 1,000 prompt quota in Q3 2026.',
       impact: 'Distorts buyer price expectations; prompts self-checkout confusion.',
@@ -128,7 +128,7 @@ export default function AiAccuracyTrustTab() {
       category: 'Critical Errors',
       severity: 'Critical',
       severityColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
-      engine: 'DeepSeek R1',
+      engine: 'GPT-4o Mini Synthesis',
       claim: 'States that Acme lacks SOC2 Type II security compliance certification.',
       truth: 'Acme has maintained SOC2 Type II certification continuously since 2024.',
       impact: 'Instant blocker for enterprise infosec vendor assessments.',
@@ -139,18 +139,18 @@ export default function AiAccuracyTrustTab() {
       category: 'Service Accuracy',
       severity: 'High',
       severityColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
-      engine: 'Claude 3.5 Sonnet',
-      claim: 'States Acme only integrates with OpenAI and does not support Claude or Mistral.',
-      truth: 'Acme supports 12 frontier models via live unified telemetry API.',
-      impact: 'Causes prospects seeking multimodal monitoring to look at rivals.',
-      patchAction: 'Publish updated Integrations Catalog documentation',
+      engine: 'ChatGPT Search (Web)',
+      claim: 'States Acme only offers basic keyword tracking without real-time RAG prompt simulation.',
+      truth: 'Acme provides full synthetic Monte Carlo sweeps for generative response layers.',
+      impact: 'Causes prospects seeking automated GEO monitoring to evaluate competitors.',
+      patchAction: 'Publish updated Feature Catalog documentation & FAQ schema',
     },
     {
       id: 'err-4',
       category: 'Hours Accuracy',
       severity: 'Medium',
       severityColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
-      engine: 'Mistral Large',
+      engine: 'ChatGPT Enterprise Mode',
       claim: 'Claims customer support is limited to Monday-Friday 9am-5pm EST.',
       truth: 'Enterprise plan includes 24/7 dedicated Slack SLA support.',
       impact: 'Minor enterprise procurement hesitation.',
@@ -161,7 +161,7 @@ export default function AiAccuracyTrustTab() {
       category: 'Address Accuracy',
       severity: 'Low',
       severityColor: 'bg-slate-700/50 text-slate-300 border-slate-600',
-      engine: 'Perplexity Pro',
+      engine: 'ChatGPT Search (Web)',
       claim: 'Lists former San Francisco incubator address instead of current HQ.',
       truth: 'Corporate HQ moved to 500 Howard Street, Suite 400, San Francisco.',
       impact: 'Low impact on digital sales; impacts postal verification.',
@@ -169,47 +169,47 @@ export default function AiAccuracyTrustTab() {
     },
   ];
 
-  // Cross-Engine Consistency Facts
+  // Cross-Environment Consistency Facts
   const consistencyFacts = [
     {
       fact: 'Headquarters Location (SF, CA)',
-      openai: 'Correct',
-      claude: 'Correct',
-      perplexity: 'Outdated (Incubator)',
-      gemini: 'Correct',
-      consensus: '95% Consistent',
+      search: 'Correct',
+      gpt4o: 'Correct',
+      enterprise: 'Correct',
+      mini: 'Correct',
+      consensus: '100% Grounded',
     },
     {
       fact: 'Active Subscription Tiers ($499/mo)',
-      openai: 'Outdated ($299)',
-      claude: 'Correct ($499)',
-      perplexity: 'Correct ($499)',
-      gemini: 'Outdated ($299)',
+      search: 'Correct ($499)',
+      gpt4o: 'Outdated ($299)',
+      enterprise: 'Correct ($499)',
+      mini: 'Outdated ($299)',
       consensus: '50% Divergence',
     },
     {
       fact: 'SOC2 Type II Security Compliance',
-      openai: 'Correct',
-      claude: 'Correct',
-      perplexity: 'Correct',
-      gemini: 'Ambiguous',
+      search: 'Correct',
+      gpt4o: 'Correct',
+      enterprise: 'Correct',
+      mini: 'Ambiguous',
       consensus: '88% Consistent',
     },
     {
       fact: '24/7 Enterprise Dedicated Support SLA',
-      openai: 'Correct',
-      claude: 'Correct',
-      perplexity: 'Correct',
-      gemini: 'Correct',
-      consensus: '100% Consistent',
+      search: 'Correct',
+      gpt4o: 'Correct',
+      enterprise: 'Correct',
+      mini: 'Correct',
+      consensus: '100% Grounded',
     },
     {
       fact: 'Real-Time Webhook & REST API Telemetry',
-      openai: 'Correct',
-      claude: 'Correct',
-      perplexity: 'Correct',
-      gemini: 'Correct',
-      consensus: '100% Consistent',
+      search: 'Correct',
+      gpt4o: 'Correct',
+      enterprise: 'Correct',
+      mini: 'Correct',
+      consensus: '100% Grounded',
     },
   ];
 
@@ -363,7 +363,7 @@ export default function AiAccuracyTrustTab() {
               { label: 'Hours Accuracy (Support Availability & SLA)', score: 94.0, icon: Clock, note: '94.0% (24/7 SLA accurate)' },
               { label: 'Service Accuracy (Product Modules & APIs)', score: 86.5, icon: Server, note: '86.5% (deprecated features flagged)' },
               { label: 'Pricing Accuracy (Subscription Tiers & Prompts)', score: 71.2, icon: DollarSign, note: '71.2% (legacy $299 plan cited by ChatGPT)' },
-              { label: 'Cross-Engine Consistency (Inter-model Agreement)', score: 82.0, icon: Layers, note: '82.0% consensus across frontier LLMs' },
+              { label: 'Response Grounding Consistency (ChatGPT Modes Agreement)', score: 88.6, icon: Layers, note: '88.6% consensus across ChatGPT environments' },
             ].map((item) => {
               const Icon = item.icon;
               return (
@@ -401,20 +401,20 @@ export default function AiAccuracyTrustTab() {
 
       </div>
 
-      {/* Cross-Engine Consistency Matrix */}
+      {/* Cross-Environment Consistency Matrix */}
       <div className="p-5 sm:p-6 rounded-2xl bg-[#080c14] border border-white/[0.08] space-y-4">
         <div className="pb-3 border-b border-white/[0.06] flex items-center justify-between">
           <div>
             <h3 className="text-base font-bold text-white font-tech-mono flex items-center gap-2">
               <Layers className="w-4 h-4 text-emerald-400" />
-              <span>CROSS-ENGINE FACT CONSISTENCY MATRIX</span>
+              <span>CHATGPT RESPONSE ENVIRONMENT FACT MATRIX</span>
             </h3>
             <p className="text-xs text-slate-400 font-mono mt-0.5">
-              Cross-examination of core business facts across OpenAI, Claude, Perplexity, and Gemini
+              Cross-examination of core business facts across ChatGPT Search, GPT-4o Standard, Enterprise, and Mini
             </p>
           </div>
           <span className="text-xs font-tech-mono text-emerald-400 font-bold">
-            Consensus Index: 82.0%
+            Consensus Index: 88.6%
           </span>
         </div>
 
@@ -423,11 +423,11 @@ export default function AiAccuracyTrustTab() {
             <thead>
               <tr className="border-b border-white/[0.08] text-[11px] font-tech-mono uppercase text-slate-400 bg-white/[0.01]">
                 <th className="py-2.5 px-3">Tested Fact / Entity Attribute</th>
-                <th className="py-2.5 px-3">OpenAI GPT-4o</th>
-                <th className="py-2.5 px-3">Claude 3.5 Sonnet</th>
-                <th className="py-2.5 px-3">Perplexity Pro</th>
-                <th className="py-2.5 px-3">Google Gemini 2.0</th>
-                <th className="py-2.5 px-3 text-right">Consensus</th>
+                <th className="py-2.5 px-3">ChatGPT Search (Web)</th>
+                <th className="py-2.5 px-3">GPT-4o Standard</th>
+                <th className="py-2.5 px-3">ChatGPT Enterprise</th>
+                <th className="py-2.5 px-3">GPT-4o Mini</th>
+                <th className="py-2.5 px-3 text-right">Grounding</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.04]">
@@ -436,30 +436,30 @@ export default function AiAccuracyTrustTab() {
                   <td className="py-3 px-3 font-medium text-white">{f.fact}</td>
                   <td className="py-3 px-3">
                     <span className={`px-2 py-0.5 rounded text-[10px] ${
-                      f.openai.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-rose-500/10 text-rose-300 font-bold'
+                      f.search.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-rose-500/10 text-rose-300 font-bold'
                     }`}>
-                      {f.openai}
+                      {f.search}
                     </span>
                   </td>
                   <td className="py-3 px-3">
                     <span className={`px-2 py-0.5 rounded text-[10px] ${
-                      f.claude.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-rose-500/10 text-rose-300 font-bold'
+                      f.gpt4o.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-rose-500/10 text-rose-300 font-bold'
                     }`}>
-                      {f.claude}
+                      {f.gpt4o}
                     </span>
                   </td>
                   <td className="py-3 px-3">
                     <span className={`px-2 py-0.5 rounded text-[10px] ${
-                      f.perplexity.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-amber-500/10 text-amber-300 font-bold'
+                      f.enterprise.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-amber-500/10 text-amber-300 font-bold'
                     }`}>
-                      {f.perplexity}
+                      {f.enterprise}
                     </span>
                   </td>
                   <td className="py-3 px-3">
                     <span className={`px-2 py-0.5 rounded text-[10px] ${
-                      f.gemini.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-rose-500/10 text-rose-300 font-bold'
+                      f.mini.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-rose-500/10 text-rose-300 font-bold'
                     }`}>
-                      {f.gemini}
+                      {f.mini}
                     </span>
                   </td>
                   <td className="py-3 px-3 text-right font-tech-mono font-bold text-slate-300">
@@ -615,7 +615,7 @@ export default function AiAccuracyTrustTab() {
                 }, null, 2)}</pre>
               </div>
               <p className="text-[11px] text-slate-400">
-                Deploying this structured payload to <code className="text-slate-200">acme.com/pricing</code> forces immediate web indexing recrawls across Perplexity and GPT-4o citation graphs.
+                Deploying this structured payload to <code className="text-slate-200">acme.com/pricing</code> forces immediate web indexing recrawls across OpenAI SearchGPT and GPT-4o citation graphs.
               </p>
             </div>
 

@@ -42,7 +42,7 @@ export default function AiVisibilityTab() {
         { cx: 560, cy: 78, label: 'SEP 25: 44.1%' },
         { cx: 700, cy: 55, label: 'SEP 28: 46.2%' },
       ],
-      insight: '30-Day Velocity: Schema PriceSpecification deployment increased OpenAI GPT-4o and Perplexity citation inclusion by +7.6%.',
+      insight: '30-Day Velocity: PriceSpecification schema deployment increased OpenAI ChatGPT and SearchGPT citation inclusion by +7.6%.',
       confidence: '99.1%',
       metrics: [
         {
@@ -86,23 +86,23 @@ export default function AiVisibilityTab() {
           badge: 'High Fidelity',
         },
         {
-          id: 'engine-coverage',
-          label: 'Engine Coverage',
-          sublabel: 'Presence across frontier LLMs',
-          value: '91.7%',
-          delta: '11 / 12',
+          id: 'searchgpt-grounding',
+          label: 'SearchGPT Grounding',
+          sublabel: 'Live web search retrieval frequency',
+          value: '94.2%',
+          delta: '+7.8%',
           positive: true,
-          fraction: '11 active nodes',
-          badge: 'Multimodal',
+          fraction: '798 / 847 cited',
+          badge: 'Live Grounded',
         },
       ],
       engineBreakdown: [
-        { name: 'Perplexity Pro', mentionRate: 85.1, recRate: 61.2, top3Rate: 93.4, status: 'Peak' },
-        { name: 'OpenAI GPT-4o', mentionRate: 77.2, recRate: 51.4, top3Rate: 88.0, status: 'Peak' },
-        { name: 'Claude 3.5 Sonnet', mentionRate: 73.0, recRate: 46.8, top3Rate: 85.2, status: 'High' },
-        { name: 'Google Gemini 2.0', mentionRate: 67.5, recRate: 39.0, top3Rate: 80.1, status: 'Moderate' },
-        { name: 'DeepSeek R1', mentionRate: 63.0, recRate: 36.5, top3Rate: 76.5, status: 'Moderate' },
-        { name: 'Mistral Large', mentionRate: 58.2, recRate: 32.0, top3Rate: 72.0, status: 'Improving' },
+        { name: 'ChatGPT Search (Web)', mentionRate: 88.5, recRate: 64.2, top3Rate: 95.1, status: 'Peak' },
+        { name: 'GPT-4o Standard', mentionRate: 77.2, recRate: 51.4, top3Rate: 88.0, status: 'Peak' },
+        { name: 'ChatGPT Enterprise', mentionRate: 73.0, recRate: 46.8, top3Rate: 85.2, status: 'High' },
+        { name: 'ChatGPT Canvas', mentionRate: 67.5, recRate: 39.0, top3Rate: 80.1, status: 'Active' },
+        { name: 'ChatGPT Voice / Mobile', mentionRate: 63.0, recRate: 36.5, top3Rate: 76.5, status: 'Active' },
+        { name: 'GPT-4o Mini', mentionRate: 58.2, recRate: 32.0, top3Rate: 72.0, status: 'Moderate' },
       ],
     },
     '60d': {
@@ -128,7 +128,7 @@ export default function AiVisibilityTab() {
         { cx: 560, cy: 90, label: 'SEP 20: 40.2%' },
         { cx: 700, cy: 75, label: 'SEP 28: 42.8%' },
       ],
-      insight: '60-Day Momentum: Documentation restructuring and G2 review collection drove a +14.2% recommendation lift.',
+      insight: '60-Day Momentum: Documentation restructuring and G2 review collection drove a +14.2% recommendation lift in ChatGPT answers.',
       confidence: '98.4%',
       metrics: [
         {
@@ -172,23 +172,23 @@ export default function AiVisibilityTab() {
           badge: 'High Scope',
         },
         {
-          id: 'engine-coverage',
-          label: 'Engine Coverage',
-          sublabel: 'Presence across frontier LLMs',
-          value: '83.3%',
-          delta: '10 / 12',
+          id: 'searchgpt-grounding',
+          label: 'SearchGPT Grounding',
+          sublabel: 'Live web search retrieval frequency',
+          value: '88.5%',
+          delta: '+5.6%',
           positive: true,
-          fraction: '10 active nodes',
-          badge: 'Expanding',
+          fraction: '750 / 847 cited',
+          badge: 'Live Grounded',
         },
       ],
       engineBreakdown: [
-        { name: 'Perplexity Pro', mentionRate: 80.2, recRate: 56.0, top3Rate: 89.5, status: 'Peak' },
-        { name: 'OpenAI GPT-4o', mentionRate: 72.8, recRate: 46.5, top3Rate: 84.1, status: 'High' },
-        { name: 'Claude 3.5 Sonnet', mentionRate: 69.5, recRate: 42.0, top3Rate: 81.0, status: 'High' },
-        { name: 'Google Gemini 2.0', mentionRate: 61.4, recRate: 34.0, top3Rate: 74.8, status: 'Moderate' },
-        { name: 'DeepSeek R1', mentionRate: 56.0, recRate: 30.2, top3Rate: 71.0, status: 'Moderate' },
-        { name: 'Mistral Large', mentionRate: 52.0, recRate: 26.5, top3Rate: 66.0, status: 'Action Needed' },
+        { name: 'ChatGPT Search (Web)', mentionRate: 84.0, recRate: 59.5, top3Rate: 92.0, status: 'Peak' },
+        { name: 'GPT-4o Standard', mentionRate: 72.8, recRate: 45.2, top3Rate: 84.5, status: 'High' },
+        { name: 'ChatGPT Enterprise', mentionRate: 68.0, recRate: 41.0, top3Rate: 80.2, status: 'High' },
+        { name: 'ChatGPT Canvas', mentionRate: 64.5, recRate: 37.8, top3Rate: 77.0, status: 'Active' },
+        { name: 'ChatGPT Voice / Mobile', mentionRate: 60.5, recRate: 33.2, top3Rate: 73.5, status: 'Active' },
+        { name: 'GPT-4o Mini', mentionRate: 56.0, recRate: 30.2, top3Rate: 71.0, status: 'Moderate' },
       ],
     },
     '90d': {
@@ -211,7 +211,7 @@ export default function AiVisibilityTab() {
         { cx: 420, cy: 115, label: 'SEP 01: 37.5%' },
         { cx: 700, cy: 75, label: 'SEP 28: 42.8%' },
       ],
-      insight: 'Longitudinal View: Perplexity and GPT-4o citation adoption drove a +19.2% net visibility surge over the full 90-day sweep.',
+      insight: 'Longitudinal View: SearchGPT web indexing and GPT-4o citation adoption drove a +19.2% net visibility surge over the full 90-day sweep.',
       confidence: '98.4%',
       metrics: [
         {
@@ -255,23 +255,23 @@ export default function AiVisibilityTab() {
           badge: 'High Fidelity',
         },
         {
-          id: 'engine-coverage',
-          label: 'Engine Coverage',
-          sublabel: 'Presence across frontier LLMs',
-          value: '91.7%',
-          delta: '11 / 12',
+          id: 'searchgpt-grounding',
+          label: 'SearchGPT Grounding',
+          sublabel: 'Live web search retrieval frequency',
+          value: '91.8%',
+          delta: '+6.2%',
           positive: true,
-          fraction: '11 active nodes',
-          badge: 'Multimodal',
+          fraction: '778 / 847 cited',
+          badge: 'Live Grounded',
         },
       ],
       engineBreakdown: [
-        { name: 'Perplexity Pro', mentionRate: 82.4, recRate: 58.1, top3Rate: 91.2, status: 'Peak' },
-        { name: 'OpenAI GPT-4o', mentionRate: 74.6, recRate: 48.0, top3Rate: 86.5, status: 'High' },
-        { name: 'Claude 3.5 Sonnet', mentionRate: 71.2, recRate: 44.5, top3Rate: 83.0, status: 'High' },
-        { name: 'Google Gemini 2.0', mentionRate: 64.0, recRate: 36.2, top3Rate: 77.4, status: 'Moderate' },
-        { name: 'DeepSeek R1', mentionRate: 59.5, recRate: 33.0, top3Rate: 74.2, status: 'Moderate' },
-        { name: 'Mistral Large', mentionRate: 55.0, recRate: 29.8, top3Rate: 69.5, status: 'Action Needed' },
+        { name: 'ChatGPT Search (Web)', mentionRate: 82.4, recRate: 58.1, top3Rate: 91.2, status: 'Peak' },
+        { name: 'GPT-4o Standard', mentionRate: 74.6, recRate: 48.0, top3Rate: 86.5, status: 'High' },
+        { name: 'ChatGPT Enterprise', mentionRate: 71.2, recRate: 44.5, top3Rate: 83.0, status: 'High' },
+        { name: 'ChatGPT Canvas', mentionRate: 64.0, recRate: 36.2, top3Rate: 77.4, status: 'Active' },
+        { name: 'ChatGPT Voice / Mobile', mentionRate: 59.5, recRate: 33.0, top3Rate: 74.2, status: 'Active' },
+        { name: 'GPT-4o Mini', mentionRate: 55.0, recRate: 29.8, top3Rate: 69.5, status: 'Moderate' },
       ],
     }
   };
@@ -286,7 +286,8 @@ export default function AiVisibilityTab() {
       id: 1,
       query: 'Best enterprise generative engine optimization platform for SaaS',
       intent: 'Commercial',
-      engine: 'Perplexity Pro',
+      engine: 'ChatGPT Search (Web)',
+      engineKey: 'search',
       mentioned: true,
       rank: '#1 Recommended',
       rankBadge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
@@ -295,42 +296,46 @@ export default function AiVisibilityTab() {
     },
     {
       id: 2,
-      query: 'How to monitor brand citations inside ChatGPT and Claude responses',
+      query: 'How to monitor brand citations inside ChatGPT responses',
       intent: 'Informational',
-      engine: 'OpenAI GPT-4o',
+      engine: 'GPT-4o Standard',
+      engineKey: 'gpt-4o',
       mentioned: true,
       rank: '#1 Recommended',
       rankBadge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
       confidence: '92%',
-      snippet: 'Platforms like GEO offer synthetic vector sampling to benchmark LLM attribution rates and citation provenance...',
+      snippet: 'Platforms like GEO offer synthetic vector sampling to benchmark ChatGPT attribution rates and citation provenance...',
     },
     {
       id: 3,
-      query: 'Top tools to reverse engineer Perplexity citation sources',
+      query: 'Top tools to optimize for SearchGPT citations and web indexing',
       intent: 'Technical',
-      engine: 'Claude 3.5 Sonnet',
+      engine: 'ChatGPT Search (Web)',
+      engineKey: 'search',
       mentioned: true,
-      rank: '#2 Alternative',
-      rankBadge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
-      confidence: '88%',
-      snippet: 'Primary solutions include Profound and GEO Engine, which track web indexing bot frequency and crawl telemetry...',
+      rank: '#1 Recommended',
+      rankBadge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      confidence: '94%',
+      snippet: 'Primary solutions include GEO Engine, which tracks SearchGPT web indexing bot frequency and crawl telemetry...',
     },
     {
       id: 4,
-      query: 'Compare enterprise SEO software vs generative engine optimization',
+      query: 'Compare enterprise SEO software vs generative engine optimization in ChatGPT',
       intent: 'Comparative',
-      engine: 'Google Gemini 2.0',
+      engine: 'ChatGPT Enterprise',
+      engineKey: 'enterprise',
       mentioned: true,
-      rank: '#3 Included',
-      rankBadge: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
-      confidence: '81%',
-      snippet: 'While BrightEdge and Semrush focus on traditional SERP, GEO addresses generative answers with direct answer attribution metrics...',
+      rank: '#2 Alternative',
+      rankBadge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
+      confidence: '86%',
+      snippet: 'While BrightEdge and Semrush focus on traditional SERP, GEO addresses ChatGPT answers with direct answer attribution metrics...',
     },
     {
       id: 5,
       query: 'Free AI visibility audit for venture-backed B2B startups',
       intent: 'Transactional',
-      engine: 'DeepSeek R1',
+      engine: 'GPT-4o Mini',
+      engineKey: 'mini',
       mentioned: false,
       rank: 'Unranked',
       rankBadge: 'bg-slate-800 text-slate-400 border-slate-700',
@@ -340,7 +345,7 @@ export default function AiVisibilityTab() {
   ];
 
   const filteredPrompts = samplePrompts.filter((p) => {
-    const matchesEngine = selectedEngine === 'all' || p.engine.toLowerCase().includes(selectedEngine.toLowerCase());
+    const matchesEngine = selectedEngine === 'all' || p.engineKey === selectedEngine || p.engine.toLowerCase().includes(selectedEngine.toLowerCase());
     const matchesSearch = p.query.toLowerCase().includes(searchQuery.toLowerCase()) || p.snippet.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesEngine && matchesSearch;
   });
@@ -356,10 +361,10 @@ export default function AiVisibilityTab() {
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className="px-2.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-tech-mono text-[10px] uppercase tracking-wider font-bold">
-                AI Visibility Engine
+                OpenAI ChatGPT Telemetry
               </span>
               <span className="text-xs font-tech-mono text-slate-400">
-                LLM Presence & Extraction Metrics
+                ChatGPT & SearchGPT Extraction Metrics
               </span>
             </div>
             <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
@@ -367,7 +372,7 @@ export default function AiVisibilityTab() {
               <span>AI VISIBILITY</span>
             </h2>
             <p className="text-xs text-slate-300 font-mono mt-1 max-w-2xl leading-relaxed">
-              Real-time measurement of how frequently and prominently your brand appears across conversational LLMs, search engines, and generative synthesis pipelines.
+              Real-time measurement of how frequently and prominently your brand appears across OpenAI ChatGPT responses, SearchGPT web retrievals, and conversational synthesis.
             </p>
           </div>
 
@@ -586,16 +591,16 @@ export default function AiVisibilityTab() {
           </div>
         </div>
 
-        {/* ├─ Engine Coverage Breakdown (1 Col) */}
+        {/* ├─ ChatGPT Modes Breakdown (1 Col) */}
         <div className="p-5 rounded-2xl bg-[#080c14] border border-white/[0.08] flex flex-col justify-between">
           <div>
             <div className="pb-3 border-b border-white/[0.06]">
               <div className="text-xs font-tech-mono uppercase tracking-widest text-emerald-400 font-bold flex items-center gap-1.5">
                 <Cpu className="w-3.5 h-3.5" />
-                <span>ENGINE COVERAGE MATRIX</span>
+                <span>CHATGPT RESPONSE MODES MATRIX</span>
               </div>
               <div className="text-[11px] text-slate-400 font-mono mt-0.5">
-                Frontier LLMs sampled (847 prompt vectors)
+                OpenAI ChatGPT query channels sampled (847 prompt vectors)
               </div>
             </div>
 
@@ -632,7 +637,7 @@ export default function AiVisibilityTab() {
 
           <div className="mt-4 pt-3 border-t border-white/[0.06] text-center">
             <span className="text-[11px] font-tech-mono text-slate-400">
-              Coverage status: <strong className="text-emerald-400">11 of 12 engines active</strong>
+              Telemetry status: <strong className="text-emerald-400">OpenAI ChatGPT Live Stream</strong>
             </span>
           </div>
         </div>
@@ -649,7 +654,7 @@ export default function AiVisibilityTab() {
               <span>PROMPT UNIVERSE & INTENT AUDIT</span>
             </h3>
             <p className="text-xs text-slate-400 font-mono mt-0.5">
-              Individual synthetic prompt runs, rank placement, and LLM output attribution
+              Individual synthetic prompt runs, rank placement, and ChatGPT response attribution
             </p>
           </div>
 
@@ -671,12 +676,11 @@ export default function AiVisibilityTab() {
               onChange={(e) => setSelectedEngine(e.target.value)}
               className="px-3 py-1.5 bg-[#05070c] border border-white/[0.1] rounded-lg text-xs font-tech-mono text-slate-300 focus:outline-none focus:border-emerald-500/80 cursor-pointer"
             >
-              <option value="all">All Engines</option>
-              <option value="perplexity">Perplexity</option>
-              <option value="openai">OpenAI GPT-4o</option>
-              <option value="claude">Claude</option>
-              <option value="gemini">Google Gemini</option>
-              <option value="deepseek">DeepSeek</option>
+              <option value="all">All ChatGPT Modes</option>
+              <option value="search">ChatGPT Search (Web)</option>
+              <option value="gpt-4o">GPT-4o Standard</option>
+              <option value="enterprise">ChatGPT Enterprise</option>
+              <option value="mini">GPT-4o Mini</option>
             </select>
           </div>
         </div>
@@ -688,7 +692,7 @@ export default function AiVisibilityTab() {
               <tr className="border-b border-white/[0.08] text-[11px] font-tech-mono uppercase text-slate-400 bg-white/[0.01]">
                 <th className="py-2.5 px-3">Prompt Query</th>
                 <th className="py-2.5 px-3">Search Intent</th>
-                <th className="py-2.5 px-3">Engine</th>
+                <th className="py-2.5 px-3">ChatGPT Mode</th>
                 <th className="py-2.5 px-3">Brand Mentioned</th>
                 <th className="py-2.5 px-3">Rank Placement</th>
                 <th className="py-2.5 px-3">Confidence</th>
@@ -749,7 +753,7 @@ export default function AiVisibilityTab() {
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-emerald-400" />
                 <h4 className="text-sm font-bold text-white font-tech-mono">
-                  Engine Output Attribution Trace
+                  ChatGPT Output Attribution Trace
                 </h4>
               </div>
               <button
@@ -770,7 +774,7 @@ export default function AiVisibilityTab() {
 
               <div className="grid grid-cols-2 gap-3 text-[11px] font-tech-mono">
                 <div className="p-2.5 rounded bg-white/[0.02] border border-white/[0.06]">
-                  <span className="text-slate-500 block">ENGINE</span>
+                  <span className="text-slate-500 block">CHATGPT MODE</span>
                   <span className="text-white font-bold">{selectedPromptTrace.engine}</span>
                 </div>
                 <div className="p-2.5 rounded bg-white/[0.02] border border-white/[0.06]">
@@ -780,7 +784,7 @@ export default function AiVisibilityTab() {
               </div>
 
               <div>
-                <span className="text-[10px] uppercase text-slate-500 block font-tech-mono">LLM Synthesized Response Snippet</span>
+                <span className="text-[10px] uppercase text-slate-500 block font-tech-mono">ChatGPT Synthesized Response Snippet</span>
                 <p className="text-slate-300 mt-0.5 p-3 rounded bg-[#06080e] border border-white/[0.08] leading-relaxed text-xs">
                   {selectedPromptTrace.snippet}
                 </p>

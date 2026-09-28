@@ -193,10 +193,10 @@ export default function AccountSettingsModal({ isOpen, onClose, currentUser, onU
               </div>
 
               <div className="p-4 rounded-xl bg-[#06080e] border border-white/[0.06] space-y-2">
-                <div className="text-white font-bold text-sm">Monitored Foundation Engines</div>
-                <div className="text-slate-400 text-[11px] mb-3">12 retrieval nodes actively sampled</div>
+                <div className="text-white font-bold text-sm">Monitored OpenAI Environments</div>
+                <div className="text-slate-400 text-[11px] mb-3">Active ChatGPT and GPT-4o telemetry channels</div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
-                  {['OpenAI GPT-4o', 'Claude 3.5 Sonnet', 'Perplexity Pro', 'Gemini 2.0 Pro', 'Mistral Large', 'DeepSeek R1', 'Llama 3.3 70B', 'Cohere Command'].map((eng) => (
+                  {['ChatGPT Search (Web)', 'GPT-4o Omnimodal', 'GPT-4o Mini', 'ChatGPT Enterprise', 'ChatGPT Canvas', 'ChatGPT Voice', 'OpenAI o1 Reasoning', 'Embeddings 3 Large'].map((eng) => (
                     <div key={eng} className="p-2 rounded bg-white/[0.03] border border-white/[0.06] text-slate-300 text-center">
                       ✓ {eng}
                     </div>

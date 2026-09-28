@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 const FAQ_DATA = [
   {
     question: "What is GEO (Generative Engine Optimization)?",
-    answer: "Generative Engine Optimization (GEO) is the forensic and engineering discipline of auditing, shaping, and validating how probabilistic reasoning models (GPT-4o, Claude 3.5, Gemini Pro, Perplexity) retrieve, weigh, and synthesize your enterprise within zero-click answer generations. Unlike classical SEO—which optimized for crawler-based indexing and backlink graphs—GEO operates at the latent token representation layer, optimizing for entity co-occurrence, semantic anchor density, and knowledge graph grounding."
+    answer: "Generative Engine Optimization (GEO) is the forensic and engineering discipline of auditing, shaping, and validating how generative answer models (OpenAI ChatGPT, GPT-4o, SearchGPT) retrieve, weigh, and synthesize your enterprise within zero-click answer generations. Unlike classical SEO—which optimized for crawler-based indexing and backlink graphs—GEO operates at the latent token representation layer, optimizing for entity co-occurrence, semantic anchor density, and knowledge graph grounding."
   },
   {
     question: "How does GEO measure my brand's visibility across LLMs?",

@@ -106,7 +106,7 @@ export default function BriefingModal({ isOpen, onClose }) {
                 <label className="block text-slate-400 mb-1.5 uppercase">Specific Retrieval Challenge / Target Entity</label>
                 <textarea
                   rows="2"
-                  placeholder="e.g. Inverting competitor co-occurrence in Perplexity Pro"
+                  placeholder="e.g. Inverting competitor co-occurrence in OpenAI ChatGPT & SearchGPT"
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   className="w-full bg-[#05070c] border border-white/[0.1] rounded px-3 py-2 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/80"

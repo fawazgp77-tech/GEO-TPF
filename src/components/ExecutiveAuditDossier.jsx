@@ -45,7 +45,7 @@ export default function ExecutiveAuditDossier({ onGenerateAudit }) {
 
         {/* Subtitle */}
         <p className="text-slate-400 text-sm sm:text-base font-light leading-relaxed max-w-2xl mx-auto mb-12">
-          Receive a custom 14-page diagnostic detailing your organization's current rank position, citation ground-truth fidelity, and competitor co-occurrence across 5 frontier LLMs.
+          Receive a custom 14-page diagnostic detailing your organization's current rank position, citation ground-truth fidelity, and competitor co-occurrence inside OpenAI ChatGPT & SearchGPT.
         </p>
 
         {/* Form Container */}
@@ -59,7 +59,7 @@ export default function ExecutiveAuditDossier({ onGenerateAudit }) {
                 Executive Dossier Generation Initialized
               </h3>
               <p className="text-xs sm:text-sm text-slate-400 max-w-md mx-auto">
-                Monte Carlo sampling nodes are querying GPT-4o, Claude 3.5, and Perplexity Pro for <span className="text-emerald-400 font-mono">{formData.corporateDomain}</span>. The 14-page PDF brief will be dispatched to <span className="text-slate-200 font-mono">{formData.workEmail}</span>.
+                Monte Carlo sampling nodes are querying OpenAI ChatGPT & SearchGPT for <span className="text-emerald-400 font-mono">{formData.corporateDomain}</span>. The 14-page PDF brief will be dispatched to <span className="text-slate-200 font-mono">{formData.workEmail}</span>.
               </p>
               <button
                 onClick={() => setSubmitted(false)}

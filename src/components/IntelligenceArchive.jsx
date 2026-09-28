@@ -51,11 +51,11 @@ export default function IntelligenceArchive({ onOpenDispatch }) {
                 </div>
 
                 <h3 className="font-serif-display text-2xl sm:text-3xl text-white font-normal tracking-tight leading-snug">
-                  Fintech Enterprise Index: The Cross-LLM Payment Gateway Matrix
+                  Fintech Enterprise Index: The OpenAI ChatGPT Payment Gateway Matrix
                 </h3>
 
                 <p className="text-slate-400 text-xs sm:text-sm font-light leading-relaxed">
-                  A 90-day diagnostic monitoring global tier-1 payment processor mentions across GPT-4o, Perplexity Pro, and Claude 3.5 Sonnet. How one enterprise inverted a 34% hallucinated fee rate into a verified #1 recommendation position through structured semantic anchor re-engineering.
+                  A 90-day diagnostic monitoring global tier-1 payment processor mentions across OpenAI ChatGPT & SearchGPT response environments. How one enterprise inverted a 34% hallucinated fee rate into a verified #1 recommendation position through structured semantic anchor re-engineering.
                 </p>
 
                 <div className="pt-2">

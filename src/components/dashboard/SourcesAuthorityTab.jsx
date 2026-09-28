@@ -151,7 +151,7 @@ export default function SourcesAuthorityTab() {
       url: 'acme.com/docs/api/realtime-telemetry',
       channel: 'Official Docs',
       citations: 284,
-      engines: 'Perplexity, ChatGPT, Claude',
+      engines: 'ChatGPT Search & GPT-4o RAG',
       freshness: '4 days ago',
       health: '200 OK (Clean)',
     },
@@ -160,7 +160,7 @@ export default function SourcesAuthorityTab() {
       url: 'acme.com/pricing',
       channel: 'Official Domain',
       citations: 210,
-      engines: 'Perplexity, Gemini',
+      engines: 'ChatGPT Search (Web Index)',
       freshness: '12 days ago',
       health: '200 OK (Schema Synced)',
     },
@@ -169,7 +169,7 @@ export default function SourcesAuthorityTab() {
       url: 'g2.com/products/geo-engine/reviews',
       channel: 'Review Platform',
       citations: 165,
-      engines: 'Claude, ChatGPT',
+      engines: 'ChatGPT Enterprise & Plus',
       freshness: '18 days ago',
       health: 'Active (4.8 / 5)',
     },
@@ -178,7 +178,7 @@ export default function SourcesAuthorityTab() {
       url: 'venturebeat.com/ai/synthetic-vector-benchmarking-georanking',
       channel: 'Press Article',
       citations: 92,
-      engines: 'Perplexity, DeepSeek',
+      engines: 'ChatGPT Search (Web)',
       freshness: '32 days ago',
       health: '200 OK',
     },
@@ -187,7 +187,7 @@ export default function SourcesAuthorityTab() {
       url: 'acme.com/blog/llm-hallucination-elimination-guide',
       channel: 'Official Blog',
       citations: 78,
-      engines: 'Perplexity, Claude',
+      engines: 'GPT-4o Standard & Canvas',
       freshness: '45 days ago',
       health: '200 OK',
     },
@@ -213,7 +213,7 @@ export default function SourcesAuthorityTab() {
                 Citation Provenance
               </span>
               <span className="text-xs font-tech-mono text-slate-400">
-                Attribution Provenance & Citation Backlinks
+                ChatGPT Attribution Provenance & Backlinks
               </span>
             </div>
             <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
@@ -221,7 +221,7 @@ export default function SourcesAuthorityTab() {
               <span>SOURCES & AUTHORITY</span>
             </h2>
             <p className="text-xs text-slate-300 font-mono mt-1 max-w-2xl leading-relaxed">
-              Track the exact sources, documentation URLs, and high-authority third-party publications that AI engines rely upon to cite your brand and formulate recommendations.
+              Track the exact sources, documentation URLs, and high-authority third-party publications that OpenAI ChatGPT relies upon to cite your brand and formulate recommendations.
             </p>
           </div>
 
@@ -306,7 +306,7 @@ export default function SourcesAuthorityTab() {
           </div>
 
           <div className="pt-2 text-xs font-mono text-slate-400 border-t border-white/[0.04]">
-            Key Takeaway: <strong className="text-white">Perplexity</strong> pulls heavily from G2 and Reddit threads, while <strong className="text-white">GPT-4o</strong> relies primarily on official schema-embedded documentation.
+            Key Takeaway: <strong className="text-white">ChatGPT Search</strong> pulls heavily from G2 and verified directory listings, while <strong className="text-white">GPT-4o Standard</strong> relies primarily on official schema-embedded documentation.
           </div>
         </div>
 
@@ -458,7 +458,7 @@ export default function SourcesAuthorityTab() {
                 <th className="py-2.5 px-3">Indexed Source URL</th>
                 <th className="py-2.5 px-3">Channel Type</th>
                 <th className="py-2.5 px-3">Citations Logged</th>
-                <th className="py-2.5 px-3">Attributed Engines</th>
+                <th className="py-2.5 px-3">ChatGPT Retrieval Vector</th>
                 <th className="py-2.5 px-3">Freshness</th>
                 <th className="py-2.5 px-3 text-right">HTTP / Content Health</th>
               </tr>
@@ -518,7 +518,7 @@ export default function SourcesAuthorityTab() {
               <div>
                 <span className="text-[10px] uppercase font-tech-mono text-slate-500 block">Recommended Pitch Angle</span>
                 <p className="text-slate-300 mt-1 leading-relaxed bg-[#06080e] p-3 rounded-lg border border-white/[0.08]">
-                  Highlight that Acme recently released automated Monte Carlo sweeps for 12 frontier LLMs, outperforming {gapOutreachModal.competitorCited} in telemetry speed and API accuracy.
+                  Highlight that Acme recently released automated Monte Carlo sweeps for OpenAI ChatGPT & SearchGPT, outperforming {gapOutreachModal.competitorCited} in citation attribution speed and API accuracy.
                 </p>
               </div>
 

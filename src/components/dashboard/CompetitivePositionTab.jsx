@@ -87,8 +87,8 @@ export default function CompetitivePositionTab() {
       citations: 412,
       color: 'bg-emerald-400',
       badge: 'Primary Entity',
-      strongestEngine: 'Perplexity Pro (82%)',
-      weakestEngine: 'Mistral (55%)',
+      strongestEngine: 'ChatGPT Search (84%)',
+      vulnerability: 'Pricing schema recrawl',
     },
     {
       id: 'athena',
@@ -101,8 +101,8 @@ export default function CompetitivePositionTab() {
       citations: 345,
       color: 'bg-cyan-400',
       badge: 'Nearest Rival',
-      strongestEngine: 'OpenAI GPT-4o (64%)',
-      weakestEngine: 'Claude (49%)',
+      strongestEngine: 'GPT-4o Standard (64%)',
+      vulnerability: 'Missing schema ground truth',
     },
     {
       id: 'generative-edge',
@@ -115,8 +115,8 @@ export default function CompetitivePositionTab() {
       citations: 260,
       color: 'bg-purple-400',
       badge: 'Challenger',
-      strongestEngine: 'Google Gemini (56%)',
-      weakestEngine: 'DeepSeek (38%)',
+      strongestEngine: 'ChatGPT Search (56%)',
+      vulnerability: 'Outdated feature taxonomy',
     },
     {
       id: 'omniprompt',
@@ -129,8 +129,8 @@ export default function CompetitivePositionTab() {
       citations: 188,
       color: 'bg-amber-400',
       badge: 'Niche Player',
-      strongestEngine: 'Mistral (45%)',
-      weakestEngine: 'Perplexity (32%)',
+      strongestEngine: 'GPT-4o Mini (45%)',
+      vulnerability: 'No SearchGPT indexing',
     },
   ];
 
@@ -143,8 +143,8 @@ export default function CompetitivePositionTab() {
       winner: 'Acme',
       verdictBadge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
       verdictText: 'Win (+18pt advantage)',
-      enginesAgreed: '4 of 4 engines',
-      keyReason: 'Acme cited for superior Monte Carlo simulation and API coverage.',
+      enginesAgreed: '10 of 10 test vectors',
+      keyReason: 'Acme cited in ChatGPT for superior Monte Carlo simulation and API coverage.',
     },
     {
       id: 2,
@@ -153,7 +153,7 @@ export default function CompetitivePositionTab() {
       winner: 'Acme',
       verdictBadge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
       verdictText: 'Win (#1 Pick)',
-      enginesAgreed: 'Claude, ChatGPT, Perplexity',
+      enginesAgreed: 'SearchGPT & GPT-4o Standard',
       keyReason: 'Acme positioned as modern replacement with JSON-LD ground truth feed.',
     },
     {
@@ -163,7 +163,7 @@ export default function CompetitivePositionTab() {
       winner: 'GenerativeEdge',
       verdictBadge: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
       verdictText: 'Competitor Edge',
-      enginesAgreed: 'ChatGPT, Gemini',
+      enginesAgreed: 'ChatGPT Free & Plus Tiers',
       keyReason: 'GenerativeEdge offers free tier; Acme enterprise plan perceived as premium ($499/mo).',
     },
     {
@@ -173,7 +173,7 @@ export default function CompetitivePositionTab() {
       winner: 'Acme',
       verdictBadge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
       verdictText: 'Decisive Win',
-      enginesAgreed: 'All Frontier Models',
+      enginesAgreed: 'All ChatGPT Environments',
       keyReason: 'OmniPrompt lacks real-time hallucination triage; Acme leads across all benchmarks.',
     },
     {
@@ -183,7 +183,7 @@ export default function CompetitivePositionTab() {
       winner: 'Split / Tied',
       verdictBadge: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
       verdictText: 'Both Included (Acme #1, Athena #2)',
-      enginesAgreed: 'Perplexity, Claude',
+      enginesAgreed: 'Search & Canvas Modes',
       keyReason: 'Both brands included in top tier; Acme ranked #1 for accuracy.',
     },
   ];
@@ -339,7 +339,7 @@ export default function CompetitivePositionTab() {
                 <th className="py-3 px-3">Competitive Win Rate</th>
                 <th className="py-3 px-3">Recommendation Rate</th>
                 <th className="py-3 px-3">Citations Logged</th>
-                <th className="py-3 px-3">Strongest Engine</th>
+                <th className="py-3 px-3">Top ChatGPT Domain</th>
                 <th className="py-3 px-3">Primary Vulnerability</th>
               </tr>
             </thead>
@@ -384,7 +384,7 @@ export default function CompetitivePositionTab() {
                     {c.strongestEngine}
                   </td>
                   <td className="py-3.5 px-3 text-slate-400 text-[11px]">
-                    {c.isSelf ? 'Mistral RAG coverage' : 'Missing schema ground truth'}
+                    {c.vulnerability}
                   </td>
                 </tr>
               ))}
@@ -402,7 +402,7 @@ export default function CompetitivePositionTab() {
               <span>HEAD-TO-HEAD PROMPT BATTLEGROUND</span>
             </h3>
             <p className="text-xs text-slate-400 font-mono mt-0.5">
-              Direct commercial evaluation queries and multi-engine comparative verdict
+              Direct commercial evaluation queries and ChatGPT comparative verdict
             </p>
           </div>
           <span className="text-xs font-tech-mono text-slate-400">
@@ -435,7 +435,7 @@ export default function CompetitivePositionTab() {
 
               <div className="flex items-center gap-3 self-start md:self-auto flex-shrink-0">
                 <div className="text-right">
-                  <div className="text-[10px] font-tech-mono text-slate-500 uppercase">Engine Verdict</div>
+                  <div className="text-[10px] font-tech-mono text-slate-500 uppercase">ChatGPT Verdict</div>
                   <span className={`px-2.5 py-1 rounded text-xs font-tech-mono font-bold border inline-block mt-0.5 ${battle.verdictBadge}`}>
                     {battle.verdictText}
                   </span>

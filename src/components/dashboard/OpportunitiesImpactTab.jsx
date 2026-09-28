@@ -113,7 +113,7 @@ export default function OpportunitiesImpactTab() {
       action: 'G2 & Review Directory Syndication',
       category: 'Third-Party Authority',
       avgLift: '+6.4%',
-      metricImpacted: 'Perplexity Citations & Rec Rate',
+      metricImpacted: 'ChatGPT Search Citations & Rec Rate',
       confidence: '94%',
       color: 'bg-cyan-400',
     },
@@ -121,7 +121,7 @@ export default function OpportunitiesImpactTab() {
       action: 'Wikidata & Knowledge Graph Disambiguation',
       category: 'Entity Grounding',
       avgLift: '+5.2%',
-      metricImpacted: 'Cross-Engine Consistency',
+      metricImpacted: 'ChatGPT Grounding Consistency',
       confidence: '91%',
       color: 'bg-purple-400',
     },
@@ -129,7 +129,7 @@ export default function OpportunitiesImpactTab() {
       action: 'Technical API Documentation Indexing & Sitemap Sync',
       category: 'RAG Retrieval',
       avgLift: '+4.6%',
-      metricImpacted: 'Claude & GPT-4o Citations',
+      metricImpacted: 'GPT-4o Standard Citations',
       confidence: '89%',
       color: 'bg-amber-400',
     },
@@ -152,7 +152,7 @@ export default function OpportunitiesImpactTab() {
       critical: true,
       projectedLift: '+8.1% Accuracy',
       effort: 'Low (10 mins)',
-      description: 'ChatGPT and Gemini are citing an outdated $299 price tier. Injecting structured price schema forces immediate RAG ingestion.',
+      description: 'ChatGPT Search is citing an outdated $299 price tier. Injecting structured price schema forces immediate RAG ingestion.',
       status: 'Verified Patch',
     },
     {
@@ -167,12 +167,12 @@ export default function OpportunitiesImpactTab() {
     },
     {
       id: 'fix-3',
-      title: 'Remediate DeepSeek R1 SOC2 Type II Hallucination',
+      title: 'Remediate ChatGPT SOC2 Type II Hallucination',
       category: 'Entity Grounding',
       critical: true,
       projectedLift: '+5.8% Trust',
       effort: 'Low (1 hour)',
-      description: 'DeepSeek is answering "No SOC2 compliance". Publish security-overview.json and link to live Trust Center certificate.',
+      description: 'ChatGPT is answering "No SOC2 compliance" on ungrounded queries. Publish security-overview.json and link to live Trust Center certificate.',
       status: 'Open Action',
     },
     {
@@ -182,7 +182,7 @@ export default function OpportunitiesImpactTab() {
       critical: false,
       projectedLift: '+4.2% Visibility',
       effort: 'Medium (1 day)',
-      description: 'Expose technical benchmarks comparing latency across 12 engines to capture "fastest GEO platform" prompt intents.',
+      description: 'Expose technical benchmarks comparing latency and accuracy to capture "fastest GEO platform for ChatGPT" prompt intents.',
       status: 'Verified Patch',
     },
     {
@@ -378,7 +378,7 @@ export default function OpportunitiesImpactTab() {
 
           <div className="pt-3 border-t border-white/[0.06] text-center">
             <button
-              onClick={() => alert('New A/B prompt experiment queued for OpenAI and Perplexity engines.')}
+              onClick={() => alert('New A/B prompt experiment queued for OpenAI ChatGPT response channels.')}
               className="w-full py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-amber-950 font-tech-mono text-xs font-bold transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] cursor-pointer"
             >
               + Launch New Prompt Experiment
@@ -528,7 +528,7 @@ export default function OpportunitiesImpactTab() {
               <div>
                 <span className="text-[10px] uppercase font-tech-mono text-slate-500 block">Simulated Model Response After Fix</span>
                 <p className="text-slate-300 mt-1 leading-relaxed bg-[#06080e] p-3 rounded-lg border border-white/[0.08]">
-                  Predictive vectors show +14.2% increased inclusion probability across Perplexity Pro and OpenAI GPT-4o queries within 72 hours of patch deployment.
+                  Predictive vectors show +14.2% increased inclusion probability across OpenAI ChatGPT Search and GPT-4o queries within 72 hours of patch deployment.
                 </p>
               </div>
             </div>

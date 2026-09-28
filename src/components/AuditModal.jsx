@@ -16,7 +16,7 @@ export default function AuditModal({ isOpen, onClose }) {
 
     setStep('scanning');
     setScanProgress(15);
-    setCurrentScanStep('Querying Perplexity, OpenAI & Anthropic clusters...');
+    setCurrentScanStep('Querying OpenAI ChatGPT & SearchGPT response clusters...');
 
     setTimeout(() => {
       setScanProgress(45);
@@ -63,7 +63,7 @@ export default function AuditModal({ isOpen, onClose }) {
               Schedule Custom Brand Audit
             </h3>
             <p className="text-xs sm:text-sm text-slate-400 font-light mb-6">
-              Enter your brand details to initiate real-time probing across 14 LLM and generative search engines.
+              Enter your brand details to initiate real-time probing across OpenAI ChatGPT & SearchGPT response environments.
             </p>
 
             <form onSubmit={handleStartAudit} className="space-y-4">
@@ -96,10 +96,10 @@ export default function AuditModal({ isOpen, onClose }) {
 
               <div className="pt-2">
                 <label className="block text-xs font-tech-mono text-slate-400 uppercase tracking-wider mb-2">
-                  Monitored LLM Environments (All Included)
+                  Monitored OpenAI Environments (All Included)
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] font-tech-mono text-slate-300">
-                  {['OpenAI GPT-4o', 'Claude 3.5', 'Perplexity Pro', 'Gemini 2.0'].map((engine) => (
+                  {['ChatGPT Search', 'GPT-4o Standard', 'ChatGPT Enterprise', 'GPT-4o Mini'].map((engine) => (
                     <div
                       key={engine}
                       className="px-2.5 py-1.5 rounded bg-white/[0.03] border border-white/[0.06] text-center text-emerald-300"

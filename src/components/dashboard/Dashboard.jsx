@@ -286,7 +286,7 @@ export default function Dashboard({ currentUser, onLogout, onUpdateUser }) {
 
             <div className="flex items-center gap-3 mt-1 text-[11px] font-tech-mono text-slate-500">
               <span>PROMPTS: <strong className="text-emerald-400">847</strong></span>
-              <span>AI ENGINES: <strong className="text-emerald-400">12</strong></span>
+              <span>AI MODEL: <strong className="text-emerald-400">OPENAI CHATGPT</strong></span>
               <span className="text-slate-400 hidden sm:inline">• Live Monte Carlo Sweeps</span>
             </div>
           </div>
