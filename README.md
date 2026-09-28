@@ -1,6 +1,6 @@
 # GEO — Generative Engine Optimization Platform
 
-High-fidelity frontend for **GEO (Generative Engine Optimization)** — an enterprise telemetry and visibility analytics suite designed to monitor, benchmark, and optimize brand presence across conversational search models and LLM answer engines (OpenAI GPT-4o, Claude 3.5 Sonnet, Perplexity Pro, Google Gemini 2.0, DeepSeek R1, Mistral, and more).
+High-fidelity frontend for **GEO (Generative Engine Optimization)** — an enterprise telemetry and visibility analytics suite designed to monitor, benchmark, and optimize brand presence across conversational search models and LLM answer engines.
 
 ---
 
