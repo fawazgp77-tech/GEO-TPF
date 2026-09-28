@@ -219,32 +219,32 @@ export default function CompetitivePositionTab() {
         </div>
       </div>
 
-      {/* 6 Core Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5">
+      {/* 6 Core Metric Cards - 3 boxes per row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {metrics.map((m) => (
           <div 
             key={m.id}
-            className="p-4 rounded-xl bg-[#090d16] border border-white/[0.08] hover:border-cyan-500/40 transition-all flex flex-col justify-between group shadow-sm"
+            className="p-5 rounded-2xl bg-[#090d16] border border-white/[0.08] hover:border-cyan-500/40 transition-all flex flex-col justify-between group shadow-sm hover:shadow-[0_4px_20px_rgba(6,182,212,0.1)]"
           >
             <div>
-              <div className="flex items-center justify-between text-[11px] font-tech-mono text-slate-400 mb-1">
-                <span className="truncate">{m.label}</span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.04] text-slate-300 font-mono">
+              <div className="flex items-center justify-between gap-2 text-xs font-tech-mono text-slate-300 mb-1.5">
+                <span className="font-semibold tracking-wide">{m.label}</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-md bg-white/[0.05] text-slate-300 font-mono border border-white/[0.08] whitespace-nowrap">
                   {m.badge}
                 </span>
               </div>
-              <div className="text-2xl font-bold font-tech-mono text-white mt-1 group-hover:text-cyan-300 transition-colors">
+              <div className="text-3xl font-bold font-tech-mono text-white mt-1 group-hover:text-cyan-300 transition-colors">
                 {m.value}
               </div>
-              <div className="text-[10px] text-slate-500 font-mono mt-0.5 truncate">
+              <div className="text-xs text-slate-400 font-mono mt-1 leading-relaxed">
                 {m.sublabel}
               </div>
             </div>
 
-            <div className="mt-3 pt-2.5 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-tech-mono">
-              <span className="text-slate-400 truncate">{m.fraction}</span>
-              <span className={`font-bold flex items-center ${m.positive ? 'text-emerald-400' : 'text-slate-400'}`}>
-                {m.positive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+            <div className="mt-4 pt-3 border-t border-white/[0.08] flex items-center justify-between text-xs font-tech-mono">
+              <span className="text-slate-400 font-medium">{m.fraction}</span>
+              <span className={`font-bold flex items-center gap-0.5 ${m.positive ? 'text-emerald-400' : 'text-slate-400'}`}>
+                {m.positive ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
                 {m.delta}
               </span>
             </div>
