@@ -54,7 +54,7 @@ export default function BriefingModal({ isOpen, onClose }) {
         ) : (
           <div>
             <div className="text-[10px] font-tech-mono uppercase tracking-widest text-emerald-400 mb-2">
-              CONFIDENTIAL INGESTION PROTOCOL
+              TECHNICAL BRIEFING PROTOCOL
             </div>
             <h3 className="font-serif-display text-2xl text-white font-normal mb-2">
               Schedule Architecture Briefing
@@ -106,7 +106,7 @@ export default function BriefingModal({ isOpen, onClose }) {
                 <label className="block text-slate-400 mb-1.5 uppercase">Specific Retrieval Challenge / Target Entity</label>
                 <textarea
                   rows="2"
-                  placeholder="e.g. Inverting competitor co-occurrence in OpenAI ChatGPT & SearchGPT"
+                  placeholder="e.g. Inverting competitor co-occurrence in OpenAI ChatGPT"
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   className="w-full bg-[#05070c] border border-white/[0.1] rounded px-3 py-2 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/80"
@@ -123,7 +123,7 @@ export default function BriefingModal({ isOpen, onClose }) {
               </div>
 
               <p className="text-[10px] text-slate-500 text-center pt-1">
-                Covered under mutual NDA. SOC2 Type II compliant communications.
+                Covered under mutual NDA. Secure & encrypted communications.
               </p>
             </form>
           </div>

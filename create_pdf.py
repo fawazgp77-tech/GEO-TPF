@@ -61,7 +61,7 @@ slides_data = [
         "id": "05_landing_faq",
         "tag": "MARKETING SUITE // DIMENSION 05",
         "title": "Technical Architecture FAQ & Telemetry Ingestion",
-        "subtitle": "Technical FAQs on SearchGPT web indexing bot frequency and crawl telemetry",
+        "subtitle": "Technical FAQs on OpenAI ChatGPT answer synthesis and citation telemetry",
         "action": lambda page: (
             page.goto("http://localhost:5173/"),
             page.wait_for_timeout(500),
@@ -293,7 +293,7 @@ c.setFillColor(TEXT_CYAN)
 c.drawString(100, page_height - 265, "TARGET PLATFORM:")
 c.setFont("Helvetica", 11)
 c.setFillColor(TEXT_WHITE)
-c.drawString(240, page_height - 265, "OpenAI ChatGPT & SearchGPT Unified Telemetry")
+c.drawString(240, page_height - 265, "OpenAI ChatGPT Unified Telemetry")
 
 c.setFont("Helvetica-Bold", 11)
 c.setFillColor(TEXT_CYAN)
@@ -416,8 +416,8 @@ for idx, slide in enumerate(slides_data, 1):
     # Bottom Footer
     c.setFont("Helvetica", 7.5)
     c.setFillColor(colors.HexColor("#64748b"))
-    c.drawString(25, 14, "GEO Telemetry System • Confidential Client Dossier • OpenAI ChatGPT & SearchGPT Unified Engine")
-    c.drawRightString(page_width - 25, 14, "https://github.com/fawazgp77-tech/GEO-TPF")
+    c.drawString(25, 14, "GEO Telemetry System • OpenAI ChatGPT Unified Engine")
+    c.drawRightString(page_width - 25, 14, f"Slide {idx + 1} of {len(slides_data)}")
 
     c.showPage()
 

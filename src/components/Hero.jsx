@@ -5,10 +5,10 @@ const SYNTHESIZER_PRESETS = [
   {
     id: 'pm',
     tab: 'Project Mgmt',
-    prompt: 'Compare the top five enterprise platforms for cross-functional sprint planning, resource velocity, and SOC2 compliance.',
+    prompt: 'Compare the top five enterprise platforms for cross-functional sprint planning, resource velocity, and automated reporting.',
     geoScore: '78/100',
     accuracy: '94.2% Grounded',
-    coords: '0.812 · -0.419 · 0.12',
+    citationRank: 'Rank #3 (Top 3)',
     entities: [
       { rank: '01', name: 'Linear', confidence: '99.1%', tag: 'Benchmark Leader', isTarget: false },
       { rank: '02', name: 'Jira Enterprise', confidence: '97.4%', tag: 'Legacy Anchor', isTarget: false },
@@ -23,26 +23,26 @@ const SYNTHESIZER_PRESETS = [
     prompt: 'Synthesize the leading high-velocity enterprise sales hubs capable of real-time multi-currency attribution and custom LLM co-pilot integration.',
     geoScore: '84/100',
     accuracy: '96.8% Grounded',
-    coords: '0.941 · -0.218 · 0.05',
+    citationRank: 'Rank #3 (Top 3)',
     entities: [
       { rank: '01', name: 'Salesforce Core', confidence: '98.7%', tag: 'Dominant Entity', isTarget: false },
       { rank: '02', name: 'HubSpot Enterprise', confidence: '96.2%', tag: 'Benchmark Alternate', isTarget: false },
       { rank: '03', name: 'YOUR BRAND [ACME]', confidence: '93.5%', tag: 'ACTIVE TARGET // SURFACED', isTarget: true },
-      { rank: '04', name: 'Attio Cloud', confidence: '88.1%', tag: 'Challenger Vector', isTarget: false },
+      { rank: '04', name: 'Attio Cloud', confidence: '88.1%', tag: 'Challenger Platform', isTarget: false },
       { rank: '05', name: 'Microsoft Dynamics', confidence: '84.6%', tag: 'Legacy Enterprise', isTarget: false },
     ]
   },
   {
     id: 'sec',
     tab: 'Cloud Security',
-    prompt: 'Benchmark the top automated CSPM and continuous compliance verification architectures for multi-cloud Kubernetes clusters.',
+    prompt: 'Benchmark the top automated developer tooling and continuous integration architectures for multi-cloud Kubernetes clusters.',
     geoScore: '89/100',
     accuracy: '98.1% Grounded',
-    coords: '0.763 · -0.584 · 0.29',
+    citationRank: 'Rank #2 (Top 3)',
     entities: [
       { rank: '01', name: 'Wiz Enterprise', confidence: '99.4%', tag: 'Benchmark Leader', isTarget: false },
       { rank: '02', name: 'YOUR BRAND [ACME]', confidence: '95.8%', tag: 'ACTIVE TARGET // SURFACED', isTarget: true },
-      { rank: '03', name: 'Orca Security', confidence: '93.1%', tag: 'Co-Occurrence Vector', isTarget: false },
+      { rank: '03', name: 'Orca Security', confidence: '93.1%', tag: 'Co-Occurrence Citation', isTarget: false },
       { rank: '04', name: 'Palo Alto Prisma', confidence: '90.4%', tag: 'Legacy Authority', isTarget: false },
       { rank: '05', name: 'Lacework Cloud', confidence: '83.9%', tag: 'Secondary Mention', isTarget: false },
     ]
@@ -85,7 +85,7 @@ export default function Hero({ onOpenAudit }) {
 
               {/* Paragraph */}
               <p className="text-slate-400 text-sm sm:text-base font-light leading-relaxed max-w-lg mb-7">
-                See how your enterprise surfaces, ranks, and synthesizes across LLM retrieval layers. Authoritative intelligence engineered for the post-keyword paradigm.
+                See how your enterprise surfaces, ranks, and synthesizes across ChatGPT answer generations. Authoritative intelligence engineered for the post-keyword paradigm.
               </p>
 
               {/* Action Buttons */}
@@ -117,7 +117,7 @@ export default function Hero({ onOpenAudit }) {
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#10b981]" />
                   <span className="font-tech-mono text-[11px] tracking-wider text-slate-200 uppercase font-semibold">
-                    PROMPT_VECTOR_SYNTHESIZER // LIVE STREAM
+                    CHATGPT_PROMPT_SYNTHESIZER // LIVE STREAM
                   </span>
                 </div>
 
@@ -143,7 +143,7 @@ export default function Hero({ onOpenAudit }) {
               <div className="px-4 py-2.5 border-b border-white/[0.08] bg-[#090d16]">
                 <div className="flex items-center justify-between text-[9px] font-tech-mono uppercase text-slate-500 mb-1.5">
                   <span className="tracking-widest">EVALUATED SYNTHETIC PROMPT</span>
-                  <span className="text-emerald-400/80">LATENT TEMPERATURE: 0.27</span>
+                  <span className="text-emerald-400/80">PROMPT SENSITIVITY: STANDARD</span>
                 </div>
                 <div className="bg-[#05070c] border border-white/[0.06] rounded px-3 py-2 text-[11px] sm:text-xs text-slate-300 font-mono leading-relaxed relative">
                   <span className="text-emerald-400 font-bold mr-1.5">&gt;</span>
@@ -248,10 +248,10 @@ export default function Hero({ onOpenAudit }) {
                 </div>
                 <div>
                   <div className="text-[8px] font-tech-mono uppercase text-slate-500 tracking-wider">
-                    LATENT COORD
+                    CITATION RANK
                   </div>
-                  <div className="text-[11px] font-tech-mono text-slate-400 mt-0.5 truncate px-1">
-                    {currentPreset.coords}
+                  <div className="text-[11px] font-tech-mono text-emerald-400 font-semibold mt-0.5 truncate px-1">
+                    {currentPreset.citationRank}
                   </div>
                 </div>
               </div>

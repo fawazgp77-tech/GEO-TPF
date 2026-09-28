@@ -53,7 +53,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#framework-architecture" className="text-slate-400 hover:text-emerald-400 transition-colors">
-                  SearchGPT Vector Diagnostic
+                  ChatGPT Response Diagnostic
                 </a>
               </li>
               <li>

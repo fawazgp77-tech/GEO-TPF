@@ -4,27 +4,27 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 const FAQ_DATA = [
   {
     question: "What is GEO (Generative Engine Optimization)?",
-    answer: "Generative Engine Optimization (GEO) is the forensic and engineering discipline of auditing, shaping, and validating how generative answer models (OpenAI ChatGPT, GPT-4o, SearchGPT) retrieve, weigh, and synthesize your enterprise within zero-click answer generations. Unlike classical SEO—which optimized for crawler-based indexing and backlink graphs—GEO operates at the latent token representation layer, optimizing for entity co-occurrence, semantic anchor density, and knowledge graph grounding."
+    answer: "Generative Engine Optimization (GEO) is the forensic and engineering discipline of auditing, shaping, and validating how OpenAI ChatGPT retrieves, weighs, and synthesizes your enterprise within zero-click conversational answer generations. Unlike classical SEO—which optimized for crawler-based indexing and backlink graphs—GEO analyzes generated text outputs across thousands of prompt variations, optimizing for brand mention frequency, citation authority, structured data schemas, and factual accuracy."
   },
   {
-    question: "How does GEO measure my brand's visibility across LLMs?",
-    answer: "GEO executes high-throughput Monte Carlo prompt simulations across millions of localized, multi-turn permutations. We probe model layers for entity inclusion rates, citation fidelity, relative positional confidence (rank order in recommendation matrices), and prompt-sensitivity thresholds across temperature variations ranging from 0.0 to 1.0."
+    question: "How does GEO measure my brand's visibility in ChatGPT?",
+    answer: "GEO executes high-throughput Monte Carlo prompt simulations across extensive conversational permutations. We analyze ChatGPT response outputs for entity inclusion rates, citation provenance, relative positional ranking in recommendation lists, and prompt-sensitivity variations."
   },
   {
     question: "What is the GEO Score and how is it calculated?",
-    answer: "The GEO Score (0–100) is a normalized, cross-model composite index evaluating three primary dimensions: Prominence (frequency and positional rank in answer listings), Authority Grounding (verified linkage to primary canonical sources and zero hallucination drift), and Entity Co-Occurrence (favorable adjacency against primary category benchmarks)."
+    answer: "The GEO Score (0–100) is a composite index evaluating ChatGPT answer performance across three primary dimensions: Prominence (frequency and positional rank in answer listings), Authority Grounding (verified linkage to primary canonical sources and absence of hallucination drift), and Entity Co-Occurrence (favorable positioning against primary category benchmarks)."
   },
   {
     question: "Can we influence how generative engines describe our product?",
-    answer: "Yes. Generative engines construct consensus models based on information gravity, schema structure, and token adjacencies found across training corpora and real-time retrieval sweeps. By deploying our Algorithmic Remediation schemas (structural JSON-LD disambiguation, vector-aligned technical specifications, and canonical semantic anchors), enterprises force immediate re-alignment in retrieval-augmented generation (RAG) pipelines."
+    answer: "Yes. Generative engines synthesize responses based on authoritative web sources, clear schema structure, and unambiguous public documentation. By deploying our Algorithmic Remediation schemas (structural JSON-LD disambiguation, verified canonical documentation, and comprehensive feature specification anchors), enterprises significantly improve answer accuracy and citation inclusion in ChatGPT responses."
   },
   {
     question: "How does competitor analysis function in generative contexts?",
-    answer: "We map the exact embedding graph topology showing which alternative entities frontier models associate with your trademark. This reveals 'Deflection Vectors'—scenarios where an AI model acknowledges your product but deflects to a competitor due to perceived limitations, missing compliance badges, or outdated benchmark citations."
+    answer: "We map the comparative prompt patterns showing which alternative solutions ChatGPT associates with your brand and category. This reveals 'Deflection Scenarios'—queries where ChatGPT mentions your product but recommends a competitor due to perceived capability gaps, outdated pricing citations, or ungrounded competitor claims."
   },
   {
     question: "What about hallucination and outdated pricing data?",
-    answer: "GEO’s Fact Grounding & Drift engine audits model outputs against your verified corporate knowledge base to detect hallucinations (e.g., deprecated pricing tiers, invented limitations, or missing SOC2 certifications). When drift is detected, GEO isolates the corrupted source node in the public corpus and issues targeted programmatic remediation blueprints."
+    answer: "GEO's Fact Grounding engine audits ChatGPT outputs against your verified corporate knowledge base to detect hallucinations (e.g., deprecated pricing tiers, invented limitations, or outdated feature specifications). When discrepancies are detected, GEO isolates the inaccurate source citation in the public domain and issues targeted remediation blueprints."
   }
 ];
 

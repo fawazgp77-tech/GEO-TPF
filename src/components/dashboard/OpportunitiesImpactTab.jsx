@@ -167,12 +167,12 @@ export default function OpportunitiesImpactTab() {
     },
     {
       id: 'fix-3',
-      title: 'Remediate ChatGPT SOC2 Type II Hallucination',
+      title: 'Remediate ChatGPT API Capabilities Hallucination',
       category: 'Entity Grounding',
       critical: true,
       projectedLift: '+5.8% Trust',
       effort: 'Low (1 hour)',
-      description: 'ChatGPT is answering "No SOC2 compliance" on ungrounded queries. Publish security-overview.json and link to live Trust Center certificate.',
+      description: 'ChatGPT is answering "Lacks native webhooks" on ungrounded technical queries. Publish api-specifications.json and link to official developer documentation.',
       status: 'Open Action',
     },
     {

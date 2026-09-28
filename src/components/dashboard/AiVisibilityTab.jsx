@@ -40,7 +40,7 @@ export default function AiVisibilityTab() {
         { cx: 560, cy: 78, label: 'SEP 25: 44.1%' },
         { cx: 700, cy: 55, label: 'SEP 28: 46.2%' },
       ],
-      insight: '30-Day Velocity: PriceSpecification schema deployment increased OpenAI ChatGPT and SearchGPT citation inclusion by +7.6%.',
+      insight: '30-Day Velocity: PriceSpecification schema deployment increased OpenAI ChatGPT citation inclusion by +7.6%.',
       confidence: '99.1%',
       metrics: [
         {
@@ -84,9 +84,9 @@ export default function AiVisibilityTab() {
           badge: 'High Fidelity',
         },
         {
-          id: 'searchgpt-grounding',
-          label: 'SearchGPT Grounding',
-          sublabel: 'Live web search retrieval frequency',
+          id: 'fact-grounding',
+          label: 'Fact Grounding',
+          sublabel: 'Web source attribution frequency',
           value: '94.2%',
           delta: '+7.8%',
           positive: true,
@@ -170,9 +170,9 @@ export default function AiVisibilityTab() {
           badge: 'High Scope',
         },
         {
-          id: 'searchgpt-grounding',
-          label: 'SearchGPT Grounding',
-          sublabel: 'Live web search retrieval frequency',
+          id: 'fact-grounding',
+          label: 'Fact Grounding',
+          sublabel: 'Web source attribution frequency',
           value: '88.5%',
           delta: '+5.6%',
           positive: true,
@@ -209,7 +209,7 @@ export default function AiVisibilityTab() {
         { cx: 420, cy: 115, label: 'SEP 01: 37.5%' },
         { cx: 700, cy: 75, label: 'SEP 28: 42.8%' },
       ],
-      insight: 'Longitudinal View: SearchGPT web indexing and GPT-4o citation adoption drove a +19.2% net visibility surge over the full 90-day sweep.',
+      insight: 'Longitudinal View: ChatGPT web search synthesis and GPT-4o citation adoption drove a +19.2% net visibility surge over the full 90-day sweep.',
       confidence: '98.4%',
       metrics: [
         {
@@ -253,9 +253,9 @@ export default function AiVisibilityTab() {
           badge: 'High Fidelity',
         },
         {
-          id: 'searchgpt-grounding',
-          label: 'SearchGPT Grounding',
-          sublabel: 'Live web search retrieval frequency',
+          id: 'fact-grounding',
+          label: 'Fact Grounding',
+          sublabel: 'Web source attribution frequency',
           value: '91.8%',
           delta: '+6.2%',
           positive: true,
@@ -301,11 +301,11 @@ export default function AiVisibilityTab() {
       rank: '#1 Recommended',
       rankBadge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
       confidence: '92%',
-      snippet: 'Platforms like GEO offer synthetic vector sampling to benchmark ChatGPT attribution rates and citation provenance...',
+      snippet: 'Platforms like GEO offer targeted prompt sampling to benchmark ChatGPT attribution rates and citation provenance...',
     },
     {
       id: 3,
-      query: 'Top tools to optimize for SearchGPT citations and web indexing',
+      query: 'Top tools to optimize for ChatGPT citations and web answer synthesis',
       intent: 'Technical',
       engine: 'ChatGPT Search (Web)',
       engineKey: 'search',
@@ -313,7 +313,7 @@ export default function AiVisibilityTab() {
       rank: '#1 Recommended',
       rankBadge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
       confidence: '94%',
-      snippet: 'Primary solutions include GEO Engine, which tracks SearchGPT web indexing bot frequency and crawl telemetry...',
+      snippet: 'Primary solutions include GEO Engine, which tracks ChatGPT answer attribution and citation provenance...',
     },
     {
       id: 4,
@@ -359,7 +359,7 @@ export default function AiVisibilityTab() {
                 OpenAI ChatGPT Telemetry
               </span>
               <span className="text-xs font-tech-mono text-slate-400">
-                ChatGPT & SearchGPT Extraction Metrics
+                OpenAI ChatGPT Telemetry Metrics
               </span>
             </div>
             <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
@@ -367,7 +367,7 @@ export default function AiVisibilityTab() {
               <span>AI VISIBILITY</span>
             </h2>
             <p className="text-xs text-slate-300 font-mono mt-1 max-w-2xl leading-relaxed">
-              Real-time measurement of how frequently and prominently your brand appears across OpenAI ChatGPT responses, SearchGPT web retrievals, and conversational synthesis.
+              Real-time measurement of how frequently and prominently your brand appears across OpenAI ChatGPT responses and conversational answer synthesis.
             </p>
           </div>
 

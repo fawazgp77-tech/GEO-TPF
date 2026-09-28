@@ -49,7 +49,7 @@ export default function AiAccuracyTrustTab() {
       value: '3 Flagged',
       delta: '-2 errors',
       positive: true,
-      fraction: 'Pricing & SOC2',
+      fraction: 'Pricing & Features',
       badge: 'High Priority',
       color: 'text-rose-400',
     },
@@ -129,10 +129,10 @@ export default function AiAccuracyTrustTab() {
       severity: 'Critical',
       severityColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
       engine: 'OpenAI ChatGPT',
-      claim: 'States that Acme lacks SOC2 Type II security compliance certification.',
-      truth: 'Acme has maintained SOC2 Type II certification continuously since 2024.',
-      impact: 'Instant blocker for enterprise infosec vendor assessments.',
-      patchAction: 'Deploy TrustCenter.json & schema.org/SecurityReview',
+      claim: 'States that Acme lacks native real-time webhook telemetry and streaming support.',
+      truth: 'Acme provides full native real-time webhook and REST API streaming out of the box.',
+      impact: 'Blocks technical evaluation for engineering teams requiring event streaming.',
+      patchAction: 'Deploy WebhookDocumentation.json & schema.org/APIReference',
     },
     {
       id: 'err-3',
@@ -188,9 +188,9 @@ export default function AiAccuracyTrustTab() {
       grounding: '50% Divergence',
     },
     {
-      fact: 'SOC2 Type II Security Compliance',
-      groundTruth: 'Certified SOC2 Type II (Annual Audit)',
-      chatgptOutput: 'Ambiguous compliance verification phrasing',
+      fact: 'Real-Time Webhook & Event Streaming',
+      groundTruth: 'Supported (Sub-50ms Event Delivery)',
+      chatgptOutput: 'Ambiguous webhook streaming capabilities phrasing',
       status: 'Remediation Needed',
       statusType: 'warning',
       grounding: '88% Consistent',
@@ -395,7 +395,7 @@ export default function AiAccuracyTrustTab() {
           </div>
 
           <div className="pt-2 text-xs font-mono text-slate-400 border-t border-white/[0.04]">
-            Action recommendation: Inject <strong className="text-white">schema.org/PriceSpecification</strong> to immediately correct legacy pricing in GPT-4o training weights.
+            Action recommendation: Inject <strong className="text-white">schema.org/PriceSpecification</strong> to ensure ChatGPT cites verified, current pricing in future responses.
           </div>
         </div>
 
@@ -410,7 +410,7 @@ export default function AiAccuracyTrustTab() {
               <span>CHATGPT GROUND TRUTH & FACT VERIFICATION MATRIX</span>
             </h3>
             <p className="text-xs text-slate-400 font-mono mt-0.5">
-              Continuous audit of core brand facts, pricing, and compliance in OpenAI ChatGPT responses
+              Continuous audit of core brand facts, pricing, and feature specs in OpenAI ChatGPT responses
             </p>
           </div>
           <span className="text-xs font-tech-mono text-emerald-400 font-bold">
@@ -594,7 +594,7 @@ export default function AiAccuracyTrustTab() {
                   "name": "GEO Platform",
                   "price": "499.00",
                   "priceCurrency": "USD",
-                  "securityStandard": "SOC2 Type II",
+                  "apiAvailability": "99.9% Uptime SLA",
                   "operatingHours": "24/7 Dedicated Support SLA"
                 }, null, 2)}</pre>
               </div>

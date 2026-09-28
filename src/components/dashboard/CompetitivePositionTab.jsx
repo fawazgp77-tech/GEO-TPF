@@ -126,7 +126,7 @@ export default function CompetitivePositionTab() {
       citations: 188,
       color: 'bg-amber-400',
       badge: 'Niche Player',
-      vulnerability: 'No SearchGPT indexing',
+      vulnerability: 'Missing web knowledge citations',
     },
   ];
 
@@ -149,7 +149,7 @@ export default function CompetitivePositionTab() {
       winner: 'Acme',
       verdictBadge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
       verdictText: 'Win (#1 Pick)',
-      enginesAgreed: 'SearchGPT & GPT-4o Standard',
+      enginesAgreed: 'ChatGPT Web & GPT-4o Standard',
       keyReason: 'Acme positioned as modern replacement with JSON-LD ground truth feed.',
     },
     {

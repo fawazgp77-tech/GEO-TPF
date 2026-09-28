@@ -399,7 +399,7 @@ export default function LoginModal({ isOpen, onClose, initialMode = 'login', onL
                     className="w-3.5 h-3.5 mt-0.5 rounded bg-[#06080e] border-white/20 text-[#2ee59d] cursor-pointer accent-[#2ee59d]"
                   />
                   <span className="text-[11px] leading-tight">
-                    I agree to the <span className="text-slate-300 underline">Terms of Ingestion</span> and <span className="text-slate-300 underline">SOC2 Confidentiality</span> agreement.
+                    I agree to the <span className="text-slate-300 underline">Terms of Ingestion</span> and <span className="text-slate-300 underline">Confidentiality</span> agreement.
                   </span>
                 </label>
               </div>

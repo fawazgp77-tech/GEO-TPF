@@ -39,7 +39,7 @@ export default function FrameworkArchitecture() {
                 </h3>
 
                 <p className="text-slate-400 text-xs sm:text-sm font-light leading-relaxed mb-6">
-                  Where does your brand consistently surface in LLM zero-click recommendation lists across diverse prompt temperatures?
+                  Where does your brand consistently surface in ChatGPT zero-click recommendation lists across diverse prompt formulations?
                 </p>
               </div>
 
@@ -98,7 +98,7 @@ export default function FrameworkArchitecture() {
                 </h3>
 
                 <p className="text-slate-400 text-xs sm:text-sm font-light leading-relaxed mb-6">
-                  Who appears alongside your solution, and how frequently do LLMs recommend competitors as superior alternatives?
+                  Who appears alongside your solution, and how frequently does ChatGPT recommend competitors as superior alternatives?
                 </p>
               </div>
 
@@ -199,7 +199,7 @@ export default function FrameworkArchitecture() {
                 </h3>
 
                 <p className="text-slate-400 text-xs font-light leading-relaxed mb-6">
-                  Verifying whether generative models quote current feature specs, verified pricing, and certified security compliance without hallucinations.
+                  Verifying whether ChatGPT quotes current feature specs, verified pricing, and core product capabilities without hallucinations.
                 </p>
               </div>
 
@@ -244,7 +244,7 @@ export default function FrameworkArchitecture() {
                 </h3>
 
                 <p className="text-slate-400 text-xs font-light leading-relaxed mb-6">
-                  Targeted code and document structural blueprints engineered to force immediate re-alignment in future model pre-training & retrieval sweeps.
+                  Targeted schema and documentation blueprints engineered to improve alignment in ChatGPT retrieval and answer synthesis.
                 </p>
               </div>
 
@@ -252,7 +252,7 @@ export default function FrameworkArchitecture() {
               <div className="bg-[#05070c] border border-white/[0.06] rounded p-3 font-mono text-[11px] leading-relaxed overflow-x-auto">
                 <div className="text-slate-500 mb-1">// RECOMMENDATION_PATCH.JSON</div>
                 <div className="text-emerald-400">+ schema: "SoftwareApplication"</div>
-                <div className="text-emerald-400">+ embedding_anchor: "SOC2 Type II"</div>
+                <div className="text-emerald-400">+ canonical_feature: "Real-Time Telemetry"</div>
                 <div className="text-emerald-400">+ disambiguation: "NOT_AN_ADDON"</div>
               </div>
             </div>

@@ -32,7 +32,7 @@ export default function DispatchModal({ dispatchId, onClose }) {
                 SPEC-CASE-084 // PEER-REVIEWED FORENSIC AUDIT
               </div>
               <h3 className="font-serif-display text-2xl sm:text-3xl text-white font-normal leading-snug">
-                Fintech Enterprise Index: The Cross-LLM Payment Gateway Matrix
+                Fintech Enterprise Index: The ChatGPT Payment Gateway Matrix
               </h3>
             </div>
 
@@ -42,10 +42,10 @@ export default function DispatchModal({ dispatchId, onClose }) {
                 <span>OCTOBER 2024</span>
               </div>
               <p className="text-slate-300 leading-relaxed font-sans text-xs">
-                <strong className="text-white">Abstract:</strong> A 90-day multi-turn diagnostic evaluating tier-1 payment processor entity presence across OpenAI ChatGPT & SearchGPT response environments. We observed that 34% of zero-shot commercial queries surfaced hallucinated merchant fee structures due to ungrounded aggregator blog indexing.
+                <strong className="text-white">Abstract:</strong> A 90-day multi-turn diagnostic evaluating tier-1 payment processor entity presence across OpenAI ChatGPT response environments. We observed that 34% of zero-shot commercial queries surfaced hallucinated merchant fee structures due to ungrounded aggregator blog indexing.
               </p>
               <p className="text-slate-300 leading-relaxed font-sans text-xs">
-                <strong className="text-white">Intervention:</strong> Deployment of a canonical vector schema anchor containing cryptographically verifiable fee schedules and SOC2 Type II compliance credentials.
+                <strong className="text-white">Intervention:</strong> Deployment of a canonical structured schema containing verified fee schedules and official product capability specifications.
               </p>
               <div className="p-2.5 rounded bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 font-mono text-[11px]">
                 RESULT: Hallucination rate reduced to 0.0% across 50,000 validation runs. GEO visibility increased by +38pt (from 44/100 to 82/100), placing the client at #1 recommendation rank.
@@ -74,7 +74,7 @@ export default function DispatchModal({ dispatchId, onClose }) {
                 SPEC-CASE-091 // RETRIEVAL SHIFT INVESTIGATION
               </div>
               <h3 className="font-serif-display text-2xl sm:text-3xl text-white font-normal leading-snug">
-                B2B Workspace Benchmark: Generative Disruption Following Model Weights Update
+                B2B Workspace Benchmark: Generative Disruption Following ChatGPT System Updates
               </h3>
             </div>
 
@@ -84,10 +84,10 @@ export default function DispatchModal({ dispatchId, onClose }) {
                 <span>NOVEMBER 2024</span>
               </div>
               <p className="text-slate-300 leading-relaxed font-sans text-xs">
-                <strong className="text-white">Abstract:</strong> Analysis of the sudden drop in citation velocity for legacy enterprise workspace software after major foundation model updates. The subject enterprise experienced an overnight 42% decrease in zero-shot AI citations as new reasoning models favored modular documentation schemas.
+                <strong className="text-white">Abstract:</strong> Analysis of the sudden drop in citation velocity for legacy enterprise workspace software after ChatGPT model updates. The subject enterprise experienced an overnight 42% decrease in zero-shot AI citations as answer synthesis favored modular documentation schemas.
               </p>
               <div className="p-2.5 rounded bg-red-950/40 border border-red-500/30 text-red-300 font-mono text-[11px]">
-                COLLAPSE VECTOR: LLMs substituted the primary legacy brand with modern venture-backed competitors due to token compression in legacy API documentation.
+                ATTRITION FACTOR: ChatGPT substituted the primary legacy brand with modern venture-backed competitors due to unstructured formatting in legacy API documentation.
               </div>
             </div>
 

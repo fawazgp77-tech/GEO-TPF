@@ -7,7 +7,7 @@ export default function ForensicExtraction({ onOpenAudit }) {
       num: 'CORE PILLAR 01',
       title: 'Continuous Synthesis Auditing',
       description: 'Executing multi-turn Monte Carlo prompt simulations across enterprise use cases to track rank volatility, sentiment drift, and prompt sensitivity thresholds.',
-      tag: '24/7 PROBABILISTIC RADAR',
+      tag: '24/7 CHATGPT RESPONSE TELEMETRY',
       icon: Activity,
     },
     {
@@ -20,8 +20,8 @@ export default function ForensicExtraction({ onOpenAudit }) {
     {
       num: 'CORE PILLAR 03',
       title: 'Entity Relationship Mapping',
-      description: 'Extracting the exact token clusters and contextual adjectives modern reasoning models associate with your trademark across multiple generation temperatures.',
-      tag: 'EMBEDDING GRAPH TOPOLOGY',
+      description: 'Analyzing the exact phrases, entity associations, and brand positioning ChatGPT surfaces when prompted across diverse enterprise buying scenarios.',
+      tag: 'BRAND ATTRIBUTION MAPPING',
       icon: GitGraph,
     },
   ];
@@ -46,7 +46,7 @@ export default function ForensicExtraction({ onOpenAudit }) {
 
           <div className="lg:col-span-6">
             <p className="text-slate-400 text-base sm:text-lg font-light leading-relaxed">
-              Generative systems do not index web pages through deterministic keyword spiders. Instead, they transform semantic corpus weights into probabilistic summaries. GEO dissects the latent text representations, entity citations, and parameter probabilities that decide whether your enterprise is recommended or erased.
+              ChatGPT generates answers by synthesizing web information and authoritative references into direct conversational recommendations. GEO sends targeted test prompts and rigorously analyzes the resulting text responses—evaluating entity mentions, positional rankings, cited sources, and factual accuracy to determine whether your enterprise is recommended or omitted.
             </p>
           </div>
         </div>
@@ -56,7 +56,7 @@ export default function ForensicExtraction({ onOpenAudit }) {
           {/* Old Paradigm */}
           <div className="rounded-lg bg-[#080b12]/80 border border-white/[0.08] p-7 transition-all">
             <div className="text-[10px] font-tech-mono tracking-widest text-slate-500 uppercase mb-2">
-              OLD PARADIGM: INDEX RANKING
+               OLD PARADIGM: INDEX RANKING
             </div>
             <h3 className="text-xl sm:text-2xl font-serif-display text-slate-300 font-normal mb-3">
               Search Engine Optimization
@@ -76,7 +76,7 @@ export default function ForensicExtraction({ onOpenAudit }) {
               Generative Engine Optimization
             </h3>
             <p className="text-slate-300 text-sm font-light leading-relaxed">
-              Entity co-occurrence weight, prompt synthesis resonance, structured factual anchors, and citation fidelity.
+              Brand mention frequency, answer ranking placement, structured factual verification, and citation source fidelity.
             </p>
           </div>
         </div>

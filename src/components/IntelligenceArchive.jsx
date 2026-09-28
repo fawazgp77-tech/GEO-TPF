@@ -55,7 +55,7 @@ export default function IntelligenceArchive({ onOpenDispatch }) {
                 </h3>
 
                 <p className="text-slate-400 text-xs sm:text-sm font-light leading-relaxed">
-                  A 90-day diagnostic monitoring global tier-1 payment processor mentions across OpenAI ChatGPT & SearchGPT response environments. How one enterprise inverted a 34% hallucinated fee rate into a verified #1 recommendation position through structured semantic anchor re-engineering.
+                  A 90-day diagnostic monitoring global tier-1 payment processor mentions across OpenAI ChatGPT response environments. How one enterprise inverted a 34% hallucinated fee rate into a verified #1 recommendation position through structured schema and documentation optimization.
                 </p>
 
                 <div className="pt-2">
@@ -116,11 +116,11 @@ export default function IntelligenceArchive({ onOpenDispatch }) {
                 </div>
 
                 <h3 className="font-serif-display text-2xl sm:text-3xl text-white font-normal tracking-tight leading-snug">
-                  B2B Workspace Benchmark: Generative Disruption Following Model Weights Update
+                  B2B Workspace Benchmark: Generative Disruption Following ChatGPT System Updates
                 </h3>
 
                 <p className="text-slate-400 text-xs sm:text-sm font-light leading-relaxed">
-                  Tracking the overnight erasure of an 8-year market leader from AI answer engines following the release of new reasoning models, and the rapid deployment of a vector-aligned documentation schema that restored their authoritative presence in 11 days.
+                  Tracking the citation decline of an 8-year market leader across ChatGPT answers following new model releases, and the rapid deployment of an authoritative documentation schema that restored their presence in 11 days.
                 </p>
 
                 <div className="pt-2">

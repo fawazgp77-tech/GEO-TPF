@@ -16,7 +16,7 @@ export default function AuditModal({ isOpen, onClose }) {
 
     setStep('scanning');
     setScanProgress(15);
-    setCurrentScanStep('Querying OpenAI ChatGPT & SearchGPT response clusters...');
+    setCurrentScanStep('Querying OpenAI ChatGPT response clusters...');
 
     setTimeout(() => {
       setScanProgress(45);
@@ -63,7 +63,7 @@ export default function AuditModal({ isOpen, onClose }) {
               Schedule Custom Brand Audit
             </h3>
             <p className="text-xs sm:text-sm text-slate-400 font-light mb-6">
-              Enter your brand details to initiate real-time probing across OpenAI ChatGPT & SearchGPT response environments.
+              Enter your brand details to initiate real-time probing across OpenAI ChatGPT response environments.
             </p>
 
             <form onSubmit={handleStartAudit} className="space-y-4">

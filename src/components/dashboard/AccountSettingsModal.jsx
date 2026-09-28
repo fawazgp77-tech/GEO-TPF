@@ -69,7 +69,7 @@ export default function AccountSettingsModal({ isOpen, onClose, currentUser, onU
           {[
             { id: 'general', label: 'General Profile', icon: User },
             { id: 'workspace', label: 'Workspace & Scope', icon: Building },
-            { id: 'api', label: 'API Keys', icon: Key },
+            { id: 'api', label: 'API Keys (Coming Soon)', icon: Key },
             { id: 'billing', label: 'Billing & Plan', icon: CreditCard },
           ].map((tab) => {
             const Icon = tab.icon;
@@ -178,7 +178,7 @@ export default function AccountSettingsModal({ isOpen, onClose, currentUser, onU
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-white font-bold text-sm">Corporate Domain Scope</div>
-                    <div className="text-slate-400 text-[11px] mt-0.5">Primary entity tracked across LLM retrieval indexes</div>
+                    <div className="text-slate-400 text-[11px] mt-0.5">Primary entity tracked across ChatGPT answer generations</div>
                   </div>
                   <span className="px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-[10px]">
                     ACTIVE TARGET
@@ -196,7 +196,7 @@ export default function AccountSettingsModal({ isOpen, onClose, currentUser, onU
                 <div className="text-white font-bold text-sm">Monitored OpenAI Environments</div>
                 <div className="text-slate-400 text-[11px] mb-3">Active ChatGPT and GPT-4o telemetry channels</div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
-                  {['ChatGPT Search (Web)', 'GPT-4o Omnimodal', 'GPT-4o Mini', 'ChatGPT Enterprise', 'ChatGPT Canvas', 'ChatGPT Voice', 'OpenAI o1 Reasoning', 'Embeddings 3 Large'].map((eng) => (
+                  {['ChatGPT Search (Web)', 'GPT-4o Standard', 'GPT-4o Mini', 'ChatGPT Enterprise', 'ChatGPT Canvas', 'ChatGPT Voice', 'OpenAI o1 Reasoning', 'ChatGPT Plus'].map((eng) => (
                     <div key={eng} className="p-2 rounded bg-white/[0.03] border border-white/[0.06] text-slate-300 text-center">
                       ✓ {eng}
                     </div>
@@ -209,18 +209,25 @@ export default function AccountSettingsModal({ isOpen, onClose, currentUser, onU
           {/* API KEYS TAB */}
           {activeTab === 'api' && (
             <div className="space-y-4">
+              <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-xs font-tech-mono">
+                <span className="text-emerald-300 font-semibold">DEVELOPER PREVIEW // COMING SOON</span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold uppercase">
+                  v1.0 Beta
+                </span>
+              </div>
+
               <div className="p-4 rounded-xl bg-[#06080e] border border-white/[0.06] space-y-3">
-                <div className="text-white font-bold text-sm">Production Telemetry API Key</div>
+                <div className="text-white font-bold text-sm">Programmatic Telemetry API Key</div>
                 <p className="text-xs text-slate-400">
-                  Use this secret key to query the Citation Matrix API and automate programmatic Monte Carlo sweeps.
+                  Direct programmatic access to citation benchmarks and prompt evaluation telemetry will be available to enterprise workspaces in the upcoming v1.0 release.
                 </p>
 
                 <div className="flex items-center gap-2">
                   <input
                     type="password"
                     readOnly
-                    value="geo_live_sk_948f98a2b37c41e893e9821876"
-                    className="flex-1 bg-[#0a0d15] border border-white/[0.1] rounded-lg px-3 py-2 text-xs font-mono text-emerald-400"
+                    value="geo_preview_sk_948f98a2b37c41e893e9821876"
+                    className="flex-1 bg-[#0a0d15] border border-white/[0.1] rounded-lg px-3 py-2 text-xs font-mono text-emerald-400 opacity-60"
                   />
                   <button
                     onClick={handleCopyKey}
@@ -233,11 +240,11 @@ export default function AccountSettingsModal({ isOpen, onClose, currentUser, onU
               </div>
 
               <div className="p-4 rounded-xl bg-[#06080e] border border-white/[0.06] space-y-2 text-xs font-mono">
-                <div className="text-slate-300 font-bold">API Permissions:</div>
+                <div className="text-slate-300 font-bold">Planned API Endpoints:</div>
                 <div className="text-slate-400 space-y-1">
-                  <div>• read:geo_score</div>
-                  <div>• read:citation_matrix</div>
-                  <div>• write:synthetic_prompts</div>
+                  <div>• GET /v1/telemetry/chatgpt-score</div>
+                  <div>• GET /v1/telemetry/citation-provenance</div>
+                  <div>• POST /v1/telemetry/prompt-simulations</div>
                 </div>
               </div>
             </div>

@@ -23,7 +23,7 @@ export default function InstitutionalResearch() {
             </h2>
 
             <p className="text-slate-400 text-base sm:text-lg font-light leading-relaxed">
-              GEO Lab was established by veteran information retrieval scientists, neural linguistics engineers, and enterprise search architects. As search engines morph from deterministic indexes into non-deterministic predictive engines, our mission is to provide organizations with mathematical clarity over their machine-generated reputation.
+              GEO Lab was established by information retrieval specialists and enterprise search practitioners. As search morphs from deterministic indexes into generative answer synthesis, our mission is to provide organizations with clarity over their presence across AI responses.
             </p>
 
             {/* Two Stats in a Row */}
@@ -42,7 +42,7 @@ export default function InstitutionalResearch() {
                   &lt;400ms Pipeline
                 </div>
                 <p className="text-xs text-slate-400 font-light leading-relaxed">
-                  Real-time inference interception and latent token analysis.
+                  Automated prompt dispatch and response text attribution analysis.
                 </p>
               </div>
             </div>
@@ -65,7 +65,7 @@ export default function InstitutionalResearch() {
 
               {/* Quote */}
               <blockquote className="font-serif-display text-xl sm:text-2xl text-slate-100 font-normal leading-relaxed italic mb-8">
-                "Modern generative engines are not black boxes; they are statistical matrices that respond predictably to structured information gravity. We make that gravity visible."
+                "Modern generative engines synthesize responses based on clear, authoritative public information. We make your brand's presence and accuracy measurable and actionable."
               </blockquote>
 
               {/* Author & Protocol Info */}
