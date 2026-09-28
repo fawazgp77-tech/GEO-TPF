@@ -23,12 +23,25 @@ import OpportunitiesImpactTab from './OpportunitiesImpactTab';
 import AccountSettingsModal from './AccountSettingsModal';
 
 export default function Dashboard({ currentUser, onLogout, onUpdateUser }) {
-  const [activeTab, setActiveTab] = useState('visibility'); // 'visibility', 'competitive', 'accuracy', 'sources', 'opportunities'
+  const [activeTab, setActiveTab] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('tab') || 'visibility';
+    } catch {
+      return 'visibility';
+    }
+  });
   const [selectedRun, setSelectedRun] = useState('Sep 26');
   const [showExportToast, setShowExportToast] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [accountModalOpen, setAccountModalOpen] = useState(false);
+  const [accountModalOpen, setAccountModalOpen] = useState(() => {
+    try {
+      return new URLSearchParams(window.location.search).get('modal') === 'settings';
+    } catch {
+      return false;
+    }
+  });
   const [accountModalTab, setAccountModalTab] = useState('general');
   const [localUser, setLocalUser] = useState(null);
   const userData = localUser || currentUser || { name: 'Sarah Chen', email: 'sarah.chen@acme.com', company: 'acme.com' };

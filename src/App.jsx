@@ -14,10 +14,35 @@ import LoginModal from './components/LoginModal';
 import Dashboard from './components/dashboard/Dashboard';
 
 function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'dashboard'
-  const [auditModalOpen, setAuditModalOpen] = useState(false);
-  const [briefingModalOpen, setBriefingModalOpen] = useState(false);
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [currentView, setCurrentView] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('view') || 'landing';
+    } catch {
+      return 'landing';
+    }
+  });
+  const [auditModalOpen, setAuditModalOpen] = useState(() => {
+    try {
+      return new URLSearchParams(window.location.search).get('modal') === 'audit';
+    } catch {
+      return false;
+    }
+  });
+  const [briefingModalOpen, setBriefingModalOpen] = useState(() => {
+    try {
+      return new URLSearchParams(window.location.search).get('modal') === 'briefing';
+    } catch {
+      return false;
+    }
+  });
+  const [loginModalOpen, setLoginModalOpen] = useState(() => {
+    try {
+      return new URLSearchParams(window.location.search).get('modal') === 'login';
+    } catch {
+      return false;
+    }
+  });
   const [authMode, setAuthMode] = useState('login');
   
   // User session state
