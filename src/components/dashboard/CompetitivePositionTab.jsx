@@ -87,7 +87,6 @@ export default function CompetitivePositionTab() {
       citations: 412,
       color: 'bg-emerald-400',
       badge: 'Primary Entity',
-      strongestEngine: 'ChatGPT Search (84%)',
       vulnerability: 'Pricing schema recrawl',
     },
     {
@@ -101,7 +100,6 @@ export default function CompetitivePositionTab() {
       citations: 345,
       color: 'bg-cyan-400',
       badge: 'Nearest Rival',
-      strongestEngine: 'GPT-4o Standard (64%)',
       vulnerability: 'Missing schema ground truth',
     },
     {
@@ -115,7 +113,6 @@ export default function CompetitivePositionTab() {
       citations: 260,
       color: 'bg-purple-400',
       badge: 'Challenger',
-      strongestEngine: 'ChatGPT Search (56%)',
       vulnerability: 'Outdated feature taxonomy',
     },
     {
@@ -129,7 +126,6 @@ export default function CompetitivePositionTab() {
       citations: 188,
       color: 'bg-amber-400',
       badge: 'Niche Player',
-      strongestEngine: 'GPT-4o Mini (45%)',
       vulnerability: 'No SearchGPT indexing',
     },
   ];
@@ -339,7 +335,6 @@ export default function CompetitivePositionTab() {
                 <th className="py-3 px-3">Competitive Win Rate</th>
                 <th className="py-3 px-3">Recommendation Rate</th>
                 <th className="py-3 px-3">Citations Logged</th>
-                <th className="py-3 px-3">Top ChatGPT Domain</th>
                 <th className="py-3 px-3">Primary Vulnerability</th>
               </tr>
             </thead>
@@ -379,9 +374,6 @@ export default function CompetitivePositionTab() {
                   </td>
                   <td className="py-3.5 px-3 font-tech-mono text-slate-300">
                     {c.citations} citations
-                  </td>
-                  <td className="py-3.5 px-3 text-slate-300 text-[11px] font-tech-mono">
-                    {c.strongestEngine}
                   </td>
                   <td className="py-3.5 px-3 text-slate-400 text-[11px]">
                     {c.vulnerability}
