@@ -171,31 +171,33 @@ export default function SourcesAuthorityTab() {
       </div>
 
       {/* 7 Core Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-3.5">
-        {metrics.map((m) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-4.5">
+        {metrics.map((m, idx) => (
           <div 
             key={m.id}
-            className="p-4 rounded-xl bg-[#090d16] border border-white/[0.08] hover:border-purple-500/40 transition-all flex flex-col justify-between group shadow-sm"
+            className={`p-4.5 sm:p-5 rounded-2xl bg-[#090d16] border border-white/[0.08] hover:border-purple-500/40 transition-all flex flex-col justify-between group shadow-sm min-h-[145px] ${
+              idx === 6 ? 'sm:col-span-2 lg:col-span-2' : ''
+            }`}
           >
             <div>
-              <div className="flex items-center justify-between text-[11px] font-tech-mono text-slate-400 mb-1">
-                <span className="truncate">{m.label}</span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.04] text-slate-300 font-mono">
+              <div className="flex items-center justify-between text-xs font-tech-mono text-slate-300 mb-1.5 gap-2">
+                <span className="font-semibold text-slate-200">{m.label}</span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-white/[0.04] text-slate-300 font-mono whitespace-nowrap flex-shrink-0 border border-white/[0.06]">
                   {m.badge}
                 </span>
               </div>
-              <div className="text-2xl font-bold font-tech-mono text-white mt-1 group-hover:text-purple-300 transition-colors">
+              <div className="text-2xl sm:text-3xl font-bold font-tech-mono text-white mt-1 group-hover:text-purple-300 transition-colors">
                 {m.value}
               </div>
-              <div className="text-[10px] text-slate-500 font-mono mt-0.5 truncate">
+              <div className="text-xs text-slate-400 font-mono mt-1.5 leading-snug">
                 {m.sublabel}
               </div>
             </div>
 
-            <div className="mt-3 pt-2.5 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-tech-mono">
-              <span className="text-slate-400 truncate">{m.fraction}</span>
-              <span className="text-purple-400 font-bold flex items-center">
-                <ArrowUpRight className="w-3 h-3" />
+            <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-tech-mono gap-2">
+              <span className="text-slate-400">{m.fraction}</span>
+              <span className="text-purple-400 font-bold flex items-center flex-shrink-0">
+                <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" />
                 {m.delta}
               </span>
             </div>
