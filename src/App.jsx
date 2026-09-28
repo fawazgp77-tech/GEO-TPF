@@ -5,7 +5,6 @@ import ForensicExtraction from './components/ForensicExtraction';
 import FrameworkArchitecture from './components/FrameworkArchitecture';
 import InstitutionalResearch from './components/InstitutionalResearch';
 import TechnicalFaq from './components/TechnicalFaq';
-import ExecutiveAuditDossier from './components/ExecutiveAuditDossier';
 import Footer from './components/Footer';
 
 import AuditModal from './components/AuditModal';
@@ -117,9 +116,6 @@ function App() {
 
         {/* 05 // TECHNICAL FAQ: Frequently Asked Questions */}
         <TechnicalFaq onOpenBriefing={() => setBriefingModalOpen(true)} />
-
-        {/* TELEMETRY ACCESS DOSSIER: Request an Executive GEO Audit */}
-        <ExecutiveAuditDossier onGenerateAudit={() => setAuditModalOpen(true)} />
       </main>
 
       {/* Footer */}
