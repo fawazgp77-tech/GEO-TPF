@@ -108,7 +108,6 @@ export default function SourcesAuthorityTab() {
       type: 'Review Directory',
       competitorCited: 'Athena AI (#1 Grid Leader)',
       citationsWon: '142 citations',
-      authorityWeight: '94 / 100',
       status: 'Critical Deficit',
       recommendedAction: 'Claim profile & collect 10 verified customer G2 reviews',
     },
@@ -118,7 +117,6 @@ export default function SourcesAuthorityTab() {
       type: 'Tier 1 Tech Press',
       competitorCited: 'GenerativeEdge & Athena',
       citationsWon: '98 citations',
-      authorityWeight: '91 / 100',
       status: 'High Deficit',
       recommendedAction: 'Editorial correction pitch regarding automated vector sweeps',
     },
@@ -128,7 +126,6 @@ export default function SourcesAuthorityTab() {
       type: 'Community Thread',
       competitorCited: 'Athena AI',
       citationsWon: '64 citations',
-      authorityWeight: '88 / 100',
       status: 'Medium Deficit',
       recommendedAction: 'Publish community benchmark guide and API reference',
     },
@@ -138,7 +135,6 @@ export default function SourcesAuthorityTab() {
       type: 'Buyer Directory',
       competitorCited: 'OmniPrompt Labs',
       citationsWon: '48 citations',
-      authorityWeight: '85 / 100',
       status: 'Medium Deficit',
       recommendedAction: 'Synchronize pricing tier and feature matrix schema',
     },
@@ -385,9 +381,6 @@ export default function SourcesAuthorityTab() {
                   </span>
                   <span className="text-[10px] font-tech-mono px-2 py-0.5 rounded bg-white/5 text-slate-400 border border-white/10">
                     {gap.type}
-                  </span>
-                  <span className="text-[10px] font-tech-mono text-amber-400">
-                    Authority: {gap.authorityWeight}
                   </span>
                 </div>
 
