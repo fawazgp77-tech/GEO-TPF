@@ -186,28 +186,6 @@ slides_data = [
         )
     },
     {
-        "id": "16_dash_opportunities",
-        "tag": "DASHBOARD // TAB 05",
-        "title": "Opportunities & Financial Impact Simulation",
-        "subtitle": "Annualized ARR projection models, high-ROI action matrix, and opportunity priority backlog",
-        "action": lambda page: (
-            page.goto("http://localhost:5173/?view=dashboard&tab=opportunities"),
-            page.wait_for_timeout(1000)
-        )
-    },
-    {
-        "id": "17_modal_simulation",
-        "tag": "DASHBOARD // IMPACT SIMULATION",
-        "title": "Action Lift Simulation Modal",
-        "subtitle": "Pre-execution projected citation lift, implementation effort, and ROI metrics",
-        "action": lambda page: (
-            page.goto("http://localhost:5173/?view=dashboard&tab=opportunities"),
-            page.wait_for_timeout(1000),
-            page.locator("button:has-text('Simulate Impact')").first.click(),
-            page.wait_for_timeout(600)
-        )
-    },
-    {
         "id": "18_modal_settings",
         "tag": "DASHBOARD // SETTINGS",
         "title": "Account Settings Modal",
@@ -317,7 +295,7 @@ c.setFillColor(TEXT_CYAN)
 c.drawString(100, page_height - 315, "INCLUDED SCREENS:")
 c.setFont("Helvetica", 11)
 c.setFillColor(TEXT_WHITE)
-c.drawString(240, page_height - 315, f"{len(slides_data)} Complete Views (Marketing, Modals, & 5 Dashboard Modules)")
+c.drawString(240, page_height - 315, f"{len(slides_data)} Complete Views (Marketing, Modals, & 4 Dashboard Modules)")
 
 # Table of contents box
 c.setFillColor(colors.HexColor("#0f172a"))
@@ -343,19 +321,18 @@ col1 = [
 col2 = [
     "07. Confidential Technical Briefing Modal",
     "08. Telemetry Authentication Portal",
-    "09. Dashboard 01: AI Visibility & Trends",
-    "10. Prompt Universe Output Trace Modal",
-    "11. Dashboard 02: Competitive Position",
-    "12. Dashboard 03: AI Accuracy & Trust"
+    "09. Workspace Onboarding: User",
+    "10. Workspace Onboarding: Business",
+    "11. Dashboard 01: AI Visibility & Trends",
+    "12. Prompt Universe Output Trace Modal"
 ]
 
 col3 = [
-    "13. JSON-LD Schema Remediation Modal",
-    "14. Dashboard 04: Sources & Authority",
-    "15. Synthesized Gap Outreach Modal",
-    "16. Dashboard 05: Opportunities & ROI",
-    "17. Action Lift Simulation Modal",
-    "18. Account & Organization Settings"
+    "13. Dashboard 02: Competitive Position",
+    "14. Dashboard 03: AI Accuracy & Trust",
+    "15. Dashboard 04: Sources & Authority",
+    "16. Synthesized Gap Outreach Modal",
+    "17. Account & Organization Settings"
 ]
 
 y_start = 185

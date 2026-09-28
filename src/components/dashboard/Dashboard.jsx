@@ -4,7 +4,6 @@ import {
   Target, 
   ShieldCheck, 
   Globe, 
-  Zap, 
   Download, 
   LogOut, 
   CheckCircle2,
@@ -17,14 +16,14 @@ import AiVisibilityTab from './AiVisibilityTab';
 import CompetitivePositionTab from './CompetitivePositionTab';
 import AiAccuracyTrustTab from './AiAccuracyTrustTab';
 import SourcesAuthorityTab from './SourcesAuthorityTab';
-import OpportunitiesImpactTab from './OpportunitiesImpactTab';
 import AccountSettingsModal from './AccountSettingsModal';
 
 export default function Dashboard({ currentUser, onLogout, onUpdateUser }) {
   const [activeTab, setActiveTab] = useState(() => {
     try {
       const params = new URLSearchParams(window.location.search);
-      return params.get('tab') || 'visibility';
+      const tab = params.get('tab');
+      return tab && tab !== 'opportunities' ? tab : 'visibility';
     } catch {
       return 'visibility';
     }
@@ -48,7 +47,6 @@ export default function Dashboard({ currentUser, onLogout, onUpdateUser }) {
     { id: 'competitive', label: 'COMPETITIVE POSITION', icon: Target },
     { id: 'accuracy', label: 'AI ACCURACY & TRUST', icon: ShieldCheck },
     { id: 'sources', label: 'SOURCES & AUTHORITY', icon: Globe },
-    { id: 'opportunities', label: 'OPPORTUNITIES & IMPACT', icon: Zap },
   ];
 
   const recentRuns = [
@@ -294,7 +292,6 @@ export default function Dashboard({ currentUser, onLogout, onUpdateUser }) {
           {activeTab === 'competitive' && <CompetitivePositionTab />}
           {activeTab === 'accuracy' && <AiAccuracyTrustTab />}
           {activeTab === 'sources' && <SourcesAuthorityTab />}
-          {activeTab === 'opportunities' && <OpportunitiesImpactTab />}
         </main>
 
       </div>
