@@ -92,12 +92,12 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
   ];
 
   const queryTypeOptions = [
-    '“Best [product/service]”',
-    '“[product] vs [competitor]”',
-    '“Alternatives to [product]”',
-    '“How to solve [problem]”',
-    '“[product/service] for [specific audience]”',
-    '“Companies/services near me”',
+    'Best [product/service]',
+    '[product] vs [competitor]',
+    'Alternatives to [product]',
+    'How to solve [problem]',
+    '[product/service] for [specific audience]',
+    'Companies/services near me',
     'Other'
   ];
 
@@ -429,7 +429,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. “Top rated enterprise tools for [industry]”..."
+                    placeholder="e.g. Top rated enterprise tools for [industry]..."
                     value={queryTypeOther}
                     onChange={(e) => setQueryTypeOther(e.target.value)}
                     className="w-full sm:max-w-md bg-[#06080e] border border-emerald-500/40 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 font-mono outline-none"
