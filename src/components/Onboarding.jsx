@@ -204,7 +204,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
             {/* Step 1 Button */}
             <button
               onClick={() => setCurrentStep(1)}
-              className={`flex items-center gap-3 p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer ${
+              className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all cursor-pointer ${
                 currentStep === 1
                   ? 'bg-emerald-950/40 border-emerald-500/50 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]'
                   : isStep1Answered
@@ -212,18 +212,18 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                   : 'bg-[#0b0f17]/60 border-white/[0.08] hover:border-white/20'
               }`}
             >
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
                 isStep1Answered
                   ? 'bg-emerald-400 text-emerald-950'
                   : currentStep === 1
                   ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
                   : 'bg-white/5 text-slate-400 border border-white/10'
               }`}>
-                {isStep1Answered ? <Check className="w-4 h-4 stroke-[2.5]" /> : '01'}
+                {isStep1Answered ? <Check className="w-4.5 h-4.5 stroke-[2.5]" /> : '01'}
               </div>
               <div className="min-w-0">
                 <div className="text-[10px] font-tech-mono uppercase tracking-wider text-slate-400">Step 1</div>
-                <div className={`text-xs sm:text-sm font-semibold truncate ${
+                <div className={`text-sm sm:text-base font-semibold truncate ${
                   currentStep === 1 ? 'text-white' : 'text-slate-300'
                 }`}>
                   About The User
@@ -234,7 +234,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
             {/* Step 2 Button */}
             <button
               onClick={() => setCurrentStep(2)}
-              className={`flex items-center gap-3 p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer ${
+              className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all cursor-pointer ${
                 currentStep === 2
                   ? 'bg-emerald-950/40 border-emerald-500/50 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]'
                   : isStep2Answered
@@ -242,18 +242,18 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                   : 'bg-[#0b0f17]/60 border-white/[0.08] hover:border-white/20'
               }`}
             >
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
                 isStep2Answered
                   ? 'bg-emerald-400 text-emerald-950'
                   : currentStep === 2
                   ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
                   : 'bg-white/5 text-slate-400 border border-white/10'
               }`}>
-                {isStep2Answered ? <Check className="w-4 h-4 stroke-[2.5]" /> : '02'}
+                {isStep2Answered ? <Check className="w-4.5 h-4.5 stroke-[2.5]" /> : '02'}
               </div>
               <div className="min-w-0">
                 <div className="text-[10px] font-tech-mono uppercase tracking-wider text-slate-400">Step 2</div>
-                <div className={`text-xs sm:text-sm font-semibold truncate ${
+                <div className={`text-sm sm:text-base font-semibold truncate ${
                   currentStep === 2 ? 'text-white' : 'text-slate-300'
                 }`}>
                   About The Business
@@ -263,7 +263,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
           </div>
 
           {/* Progress Indicator */}
-          <div className="w-full bg-[#111622] h-1 rounded-full mt-3 overflow-hidden">
+          <div className="w-full bg-[#111622] h-1.5 rounded-full mt-3.5 overflow-hidden">
             <div 
               className="bg-emerald-400 h-full transition-all duration-300"
               style={{ width: currentStep === 1 ? '50%' : '100%' }}
@@ -273,7 +273,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-10">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12">
         
         {/* ================= STEP 1: ABOUT THE USER ================= */}
         {currentStep === 1 && (
@@ -304,7 +304,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                 <p className="text-xs text-slate-400 mt-0.5">Select the role that best describes your primary responsibilities.</p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
                 {roleOptions.map((opt) => {
                   const isSelected = role === opt;
                   return (
@@ -312,17 +312,17 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                       key={opt}
                       type="button"
                       onClick={() => setRole(opt)}
-                      className={`p-3.5 rounded-xl border text-left transition-all flex items-center justify-between cursor-pointer ${
+                      className={`p-4 sm:p-5 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer min-h-[62px] ${
                         isSelected
                           ? 'bg-emerald-950/50 border-emerald-400 text-white shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400'
                           : 'bg-[#0b0f17] border-white/[0.09] text-slate-300 hover:border-white/20 hover:bg-[#0e131d]'
                       }`}
                     >
-                      <span className="text-xs sm:text-sm font-medium">{opt}</span>
-                      <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ml-2 transition-all ${
+                      <span className="text-sm sm:text-base font-medium">{opt}</span>
+                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ml-2 transition-all ${
                         isSelected ? 'border-emerald-400 bg-emerald-400 text-emerald-950' : 'border-white/30 bg-transparent'
                       }`}>
-                        {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-emerald-950" />}
+                        {isSelected && <div className="w-2 h-2 rounded-full bg-emerald-950" />}
                       </div>
                     </button>
                   );
@@ -340,7 +340,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                     placeholder="e.g. Chief Revenue Officer, Data Scientist, Content Lead..."
                     value={roleOther}
                     onChange={(e) => setRoleOther(e.target.value)}
-                    className="w-full sm:max-w-md bg-[#06080e] border border-emerald-500/40 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 font-mono outline-none"
+                    className="w-full sm:max-w-md bg-[#06080e] border border-emerald-500/40 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-3 text-sm sm:text-base text-slate-100 placeholder:text-slate-500 font-mono outline-none"
                   />
                 </div>
               )}
@@ -358,7 +358,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                 <p className="text-xs text-slate-400 mt-0.5">Select all goals that apply to your team.</p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                 {goalOptions.map((opt) => {
                   const isSelected = goals.includes(opt);
                   return (
@@ -366,17 +366,17 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                       key={opt}
                       type="button"
                       onClick={() => toggleSelection(goals, setGoals, opt)}
-                      className={`p-4 rounded-xl border text-left transition-all flex items-start justify-between cursor-pointer ${
+                      className={`p-5 sm:p-5.5 rounded-2xl border text-left transition-all flex items-start justify-between cursor-pointer min-h-[68px] ${
                         isSelected
                           ? 'bg-emerald-950/50 border-emerald-400 text-white shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400'
                           : 'bg-[#0b0f17] border-white/[0.09] text-slate-300 hover:border-white/20 hover:bg-[#0e131d]'
                       }`}
                     >
-                      <span className="text-xs sm:text-sm font-medium pr-3 leading-snug">{opt}</span>
-                      <div className={`w-4 h-4 rounded mt-0.5 border flex items-center justify-center shrink-0 transition-all ${
+                      <span className="text-sm sm:text-base font-medium pr-3 leading-snug">{opt}</span>
+                      <div className={`w-5 h-5 rounded mt-0.5 border flex items-center justify-center shrink-0 transition-all ${
                         isSelected ? 'border-emerald-400 bg-emerald-400 text-emerald-950' : 'border-white/30 bg-transparent'
                       }`}>
-                        {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
                     </button>
                   );
@@ -396,7 +396,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                 <p className="text-xs text-slate-400 mt-0.5">Select prompt templates and comparison queries that reflect your target buyers.</p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                 {queryTypeOptions.map((opt) => {
                   const isSelected = queryTypes.includes(opt);
                   return (
@@ -404,17 +404,17 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                       key={opt}
                       type="button"
                       onClick={() => toggleSelection(queryTypes, setQueryTypes, opt)}
-                      className={`p-3.5 rounded-xl border text-left transition-all flex items-center justify-between cursor-pointer ${
+                      className={`p-5 sm:p-5.5 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer min-h-[68px] ${
                         isSelected
                           ? 'bg-emerald-950/50 border-emerald-400 text-white shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400'
                           : 'bg-[#0b0f17] border-white/[0.09] text-slate-300 hover:border-white/20 hover:bg-[#0e131d]'
                       }`}
                     >
-                      <span className="text-xs sm:text-sm font-mono mr-2 leading-relaxed">{opt}</span>
-                      <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-all ${
+                      <span className="text-sm sm:text-base font-mono mr-2 leading-relaxed tracking-tight">{opt}</span>
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 transition-all ${
                         isSelected ? 'border-emerald-400 bg-emerald-400 text-emerald-950' : 'border-white/30 bg-transparent'
                       }`}>
-                        {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
                     </button>
                   );
@@ -484,7 +484,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                 <p className="text-xs text-slate-400 mt-0.5">Select your primary offering structure.</p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
                 {offeringOptions.map((opt) => {
                   const isSelected = offering === opt;
                   return (
@@ -492,17 +492,17 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                       key={opt}
                       type="button"
                       onClick={() => setOffering(opt)}
-                      className={`p-3.5 rounded-xl border text-left transition-all flex items-center justify-between cursor-pointer ${
+                      className={`p-4.5 sm:p-5 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer min-h-[62px] ${
                         isSelected
                           ? 'bg-emerald-950/50 border-emerald-400 text-white shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400'
                           : 'bg-[#0b0f17] border-white/[0.09] text-slate-300 hover:border-white/20 hover:bg-[#0e131d]'
                       }`}
                     >
-                      <span className="text-xs sm:text-sm font-medium">{opt}</span>
-                      <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ml-2 transition-all ${
+                      <span className="text-sm sm:text-base font-medium">{opt}</span>
+                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ml-2 transition-all ${
                         isSelected ? 'border-emerald-400 bg-emerald-400 text-emerald-950' : 'border-white/30 bg-transparent'
                       }`}>
-                        {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-emerald-950" />}
+                        {isSelected && <div className="w-2 h-2 rounded-full bg-emerald-950" />}
                       </div>
                     </button>
                   );
@@ -520,7 +520,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                     placeholder="e.g. Hybrid Hardware + Cloud Platform..."
                     value={offeringOther}
                     onChange={(e) => setOfferingOther(e.target.value)}
-                    className="w-full sm:max-w-md bg-[#06080e] border border-emerald-500/40 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 font-mono outline-none"
+                    className="w-full sm:max-w-md bg-[#06080e] border border-emerald-500/40 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-3 text-sm sm:text-base text-slate-100 placeholder:text-slate-500 font-mono outline-none"
                   />
                 </div>
               )}
@@ -538,7 +538,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                 <p className="text-xs text-slate-400 mt-0.5">Select the key customer outcomes your product or service delivers.</p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
                 {problemOptions.map((opt) => {
                   const isSelected = problemsSolved.includes(opt);
                   return (
@@ -546,17 +546,17 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                       key={opt}
                       type="button"
                       onClick={() => toggleSelection(problemsSolved, setProblemsSolved, opt)}
-                      className={`p-3.5 rounded-xl border text-left transition-all flex items-center justify-between cursor-pointer ${
+                      className={`p-4.5 sm:p-5 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer min-h-[62px] ${
                         isSelected
                           ? 'bg-emerald-950/50 border-emerald-400 text-white shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400'
                           : 'bg-[#0b0f17] border-white/[0.09] text-slate-300 hover:border-white/20 hover:bg-[#0e131d]'
                       }`}
                     >
-                      <span className="text-xs sm:text-sm font-medium mr-2">{opt}</span>
-                      <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-all ${
+                      <span className="text-sm sm:text-base font-medium mr-2">{opt}</span>
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 transition-all ${
                         isSelected ? 'border-emerald-400 bg-emerald-400 text-emerald-950' : 'border-white/30 bg-transparent'
                       }`}>
-                        {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
                     </button>
                   );
@@ -574,7 +574,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                     placeholder="e.g. Regulatory compliance & risk mitigation..."
                     value={problemOther}
                     onChange={(e) => setProblemOther(e.target.value)}
-                    className="w-full sm:max-w-md bg-[#06080e] border border-emerald-500/40 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 font-mono outline-none"
+                    className="w-full sm:max-w-md bg-[#06080e] border border-emerald-500/40 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-3 text-sm sm:text-base text-slate-100 placeholder:text-slate-500 font-mono outline-none"
                   />
                 </div>
               )}
@@ -592,7 +592,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                 <p className="text-xs text-slate-400 mt-0.5">Select the customer tiers you actively serve or acquire.</p>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5">
                 {customerOptions.map((opt) => {
                   const isSelected = customers.includes(opt);
                   return (
@@ -600,17 +600,17 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                       key={opt}
                       type="button"
                       onClick={() => toggleSelection(customers, setCustomers, opt)}
-                      className={`p-3.5 rounded-xl border text-left transition-all flex items-center justify-between cursor-pointer ${
+                      className={`p-4.5 sm:p-5 rounded-2xl border text-left transition-all flex items-center justify-between cursor-pointer min-h-[62px] ${
                         isSelected
                           ? 'bg-emerald-950/50 border-emerald-400 text-white shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400'
                           : 'bg-[#0b0f17] border-white/[0.09] text-slate-300 hover:border-white/20 hover:bg-[#0e131d]'
                       }`}
                     >
-                      <span className="text-xs sm:text-sm font-medium mr-1.5">{opt}</span>
-                      <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-all ${
+                      <span className="text-sm sm:text-base font-medium mr-1.5">{opt}</span>
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 transition-all ${
                         isSelected ? 'border-emerald-400 bg-emerald-400 text-emerald-950' : 'border-white/30 bg-transparent'
                       }`}>
-                        {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
                     </button>
                   );
