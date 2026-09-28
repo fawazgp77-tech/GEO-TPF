@@ -11,8 +11,7 @@ import {
   Menu,
   X,
   Settings,
-  CreditCard,
-  Key
+  CreditCard
 } from 'lucide-react';
 
 import AiVisibilityTab from './AiVisibilityTab';
@@ -211,19 +210,7 @@ export default function Dashboard({ currentUser, onLogout, onUpdateUser }) {
                     className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded hover:bg-white/5 text-slate-300 hover:text-white text-left transition-colors cursor-pointer"
                   >
                     <Settings className="w-3.5 h-3.5 text-slate-400" />
-                    <span>Account & Workspace</span>
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setProfileMenuOpen(false);
-                      setAccountModalTab('api');
-                      setAccountModalOpen(true);
-                    }}
-                    className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded hover:bg-white/5 text-slate-300 hover:text-white text-left transition-colors cursor-pointer"
-                  >
-                    <Key className="w-3.5 h-3.5 text-slate-400" />
-                    <span>API Keys & Tokens</span>
+                    <span>Account Settings</span>
                   </button>
 
                   <button

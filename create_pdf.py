@@ -200,8 +200,8 @@ slides_data = [
     {
         "id": "18_modal_settings",
         "tag": "DASHBOARD // SETTINGS",
-        "title": "Account & Workspace Settings Modal",
-        "subtitle": "Enterprise team management, Pro plan subscription, and live API key management",
+        "title": "Account Settings Modal",
+        "subtitle": "Enterprise profile configuration and Pro plan subscription details",
         "action": lambda page: (
             page.goto("http://localhost:5173/?view=dashboard&modal=settings"),
             page.wait_for_timeout(1000)
