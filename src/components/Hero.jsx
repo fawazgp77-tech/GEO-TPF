@@ -89,7 +89,7 @@ export default function Hero({ onOpenAudit }) {
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-4 mb-14">
+              <div className="flex flex-wrap items-center gap-4">
                 <button
                   onClick={onOpenAudit}
                   className="px-7 py-3 rounded text-xs font-tech-mono font-semibold text-emerald-950 bg-emerald-400 hover:bg-emerald-300 transition-all duration-200 shadow-[0_0_25px_-3px_rgba(16,185,129,0.5)] hover:shadow-[0_0_30px_0_rgba(16,185,129,0.7)] hover:-translate-y-0.5 active:translate-y-0 text-center cursor-pointer"
@@ -104,48 +104,6 @@ export default function Hero({ onOpenAudit }) {
                   <Terminal className="w-3.5 h-3.5 text-emerald-400" />
                   <span>See How It Works</span>
                 </a>
-              </div>
-            </div>
-
-            {/* Bottom 3 Stat Cards in a Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 border-t border-white/[0.08]">
-              {/* Stat 1 */}
-              <div className="bg-[#0b0e16]/80 border border-white/[0.07] p-3.5 rounded">
-                <div className="text-[10px] font-tech-mono tracking-wider uppercase text-slate-500 mb-1">
-                  SAMPLED INFERENCES
-                </div>
-                <div className="text-xl sm:text-2xl font-tech-mono font-bold text-white tracking-tight">
-                  14.2M<span className="text-xs text-slate-400 font-normal">/day</span>
-                </div>
-                <div className="text-[10px] font-tech-mono text-emerald-400/80 mt-1">
-                  Monte Carlo Ingestion
-                </div>
-              </div>
-
-              {/* Stat 2 */}
-              <div className="bg-[#0b0e16]/80 border border-white/[0.07] p-3.5 rounded">
-                <div className="text-[10px] font-tech-mono tracking-wider uppercase text-slate-500 mb-1">
-                  MONITORED MODELS
-                </div>
-                <div className="text-xl sm:text-2xl font-tech-mono font-bold text-white tracking-tight">
-                  5 Engines
-                </div>
-                <div className="text-[10px] font-tech-mono text-slate-400 mt-1 truncate">
-                  GPT 4o, Claude, Perplexity+
-                </div>
-              </div>
-
-              {/* Stat 3 */}
-              <div className="bg-[#0b0e16]/80 border border-white/[0.07] p-3.5 rounded">
-                <div className="text-[10px] font-tech-mono tracking-wider uppercase text-slate-500 mb-1">
-                  RETRIEVAL BENCHMARKING
-                </div>
-                <div className="text-xl sm:text-2xl font-tech-mono font-bold text-white tracking-tight">
-                  &lt;380ms
-                </div>
-                <div className="text-[10px] font-tech-mono text-emerald-400/80 mt-1">
-                  Cold Syntheses Cycle
-                </div>
               </div>
             </div>
           </div>
