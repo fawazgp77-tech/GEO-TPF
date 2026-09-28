@@ -157,22 +157,10 @@ slides_data = [
         "id": "12_dash_accuracy",
         "tag": "DASHBOARD // TAB 03",
         "title": "AI Accuracy, Trust & Ground Truth Verification",
-        "subtitle": "Hallucination triage queue, verified ground truth matrix, and pricing/compliance audit",
+        "subtitle": "Ground truth verification matrix, factual accuracy breakdown, and pricing/compliance audit",
         "action": lambda page: (
             page.goto("http://localhost:5173/?view=dashboard&tab=accuracy"),
             page.wait_for_timeout(1000)
-        )
-    },
-    {
-        "id": "13_modal_schema",
-        "tag": "DASHBOARD // REMEDIATION",
-        "title": "JSON-LD Schema Remediation Modal",
-        "subtitle": "Automated structured data payload generator to eliminate LLM pricing hallucinations",
-        "action": lambda page: (
-            page.goto("http://localhost:5173/?view=dashboard&tab=accuracy"),
-            page.wait_for_timeout(1000),
-            page.locator("button:has-text('View Schema Fix')").first.click(),
-            page.wait_for_timeout(600)
         )
     },
     {

@@ -1,23 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   ShieldCheck, 
-  AlertTriangle, 
   CheckCircle2, 
   ArrowUpRight, 
   Clock, 
   MapPin, 
   DollarSign, 
   Server, 
-  Layers,
-  Sparkles,
-  Check
+  Layers
 } from 'lucide-react';
 
 export default function AiAccuracyTrustTab() {
-  const [filterSeverity, setFilterSeverity] = useState('all');
-  const [resolvedIssues, setResolvedIssues] = useState([]);
-  const [patchModalItem, setPatchModalItem] = useState(null);
-
   // 03 AI ACCURACY & TRUST - CORE METRICS
   const metrics = [
     {
@@ -110,65 +103,6 @@ export default function AiAccuracyTrustTab() {
     },
   ];
 
-  // Hallucination Triage Queue
-  const claimsQueue = [
-    {
-      id: 'err-1',
-      category: 'Pricing Accuracy',
-      severity: 'Critical',
-      severityColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
-      engine: 'GPT-4o Parametric & Cache',
-      claim: 'Claims Acme Pro plan is priced at $299/month with max 500 prompts.',
-      truth: 'Acme Pro plan was updated to $499/month with 1,000 prompt quota in Q3 2026.',
-      impact: 'Distorts buyer price expectations; prompts self-checkout confusion.',
-      patchAction: 'JSON-LD PriceSpecification schema injection',
-    },
-    {
-      id: 'err-2',
-      category: 'Critical Errors',
-      severity: 'Critical',
-      severityColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
-      engine: 'OpenAI ChatGPT',
-      claim: 'States that Acme lacks native real-time webhook telemetry and streaming support.',
-      truth: 'Acme provides full native real-time webhook and REST API streaming out of the box.',
-      impact: 'Blocks technical evaluation for engineering teams requiring event streaming.',
-      patchAction: 'Deploy WebhookDocumentation.json & schema.org/APIReference',
-    },
-    {
-      id: 'err-3',
-      category: 'Service Accuracy',
-      severity: 'High',
-      severityColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
-      engine: 'OpenAI ChatGPT',
-      claim: 'States Acme only offers basic keyword tracking without real-time RAG prompt simulation.',
-      truth: 'Acme provides full synthetic Monte Carlo sweeps for generative response layers.',
-      impact: 'Causes prospects seeking automated GEO monitoring to evaluate competitors.',
-      patchAction: 'Publish updated Feature Catalog documentation & FAQ schema',
-    },
-    {
-      id: 'err-4',
-      category: 'Hours Accuracy',
-      severity: 'Medium',
-      severityColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
-      engine: 'OpenAI ChatGPT',
-      claim: 'Claims customer support is limited to Monday-Friday 9am-5pm EST.',
-      truth: 'Enterprise plan includes 24/7 dedicated Slack SLA support.',
-      impact: 'Minor enterprise procurement hesitation.',
-      patchAction: 'ContactPoint schema update',
-    },
-    {
-      id: 'err-5',
-      category: 'Address Accuracy',
-      severity: 'Low',
-      severityColor: 'bg-slate-700/50 text-slate-300 border-slate-600',
-      engine: 'OpenAI ChatGPT',
-      claim: 'Lists former San Francisco incubator address instead of current HQ.',
-      truth: 'Corporate HQ moved to 500 Howard Street, Suite 400, San Francisco.',
-      impact: 'Low impact on digital sales; impacts postal verification.',
-      patchAction: 'Google Business Profile & Wikidata entity sync',
-    },
-  ];
-
   // Ground Truth Fact Verification Data (Tested against OpenAI ChatGPT)
   const consistencyFacts = [
     {
@@ -212,17 +146,6 @@ export default function AiAccuracyTrustTab() {
       grounding: '100% Grounded',
     },
   ];
-
-  const handleResolve = (id) => {
-    if (!resolvedIssues.includes(id)) {
-      setResolvedIssues([...resolvedIssues, id]);
-    }
-  };
-
-  const filteredClaims = claimsQueue.filter((c) => {
-    if (filterSeverity === 'all') return true;
-    return c.severity.toLowerCase() === filterSeverity.toLowerCase();
-  });
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
@@ -455,174 +378,6 @@ export default function AiAccuracyTrustTab() {
           </table>
         </div>
       </div>
-
-      {/* Hallucination Triage & Critical Error Log */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-[#080c14] border border-white/[0.08] space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
-          <div>
-            <h3 className="text-base font-bold text-white font-tech-mono flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-amber-400" />
-              <span>ACTIVE HALLUCINATIONS & CRITICAL ERROR REMEDIATION</span>
-            </h3>
-            <p className="text-xs text-slate-400 font-mono mt-0.5">
-              14 detected discrepancies requiring schema ground-truth injection
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {['all', 'critical', 'high', 'medium'].map((sev) => (
-              <button
-                key={sev}
-                onClick={() => setFilterSeverity(sev)}
-                className={`px-3 py-1 rounded-lg text-xs font-tech-mono uppercase transition-colors cursor-pointer ${
-                  filterSeverity === sev
-                    ? 'bg-white/10 text-white font-bold border border-white/20'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {sev}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          {filteredClaims.map((item) => {
-            const isResolved = resolvedIssues.includes(item.id);
-            return (
-              <div 
-                key={item.id}
-                className={`p-4 rounded-xl border transition-all ${
-                  isResolved 
-                    ? 'bg-emerald-950/10 border-emerald-500/30 opacity-70'
-                    : 'bg-[#06080e] border-white/[0.06] hover:border-amber-500/40'
-                }`}
-              >
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                  <div className="space-y-2 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-tech-mono uppercase font-bold border ${item.severityColor}`}>
-                        {item.severity}
-                      </span>
-                      <span className="text-xs font-tech-mono text-slate-400">
-                        {item.category} • {item.engine}
-                      </span>
-                      {isResolved && (
-                        <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-tech-mono flex items-center gap-1">
-                          <Check className="w-3 h-3" />
-                          <span>Patch Deployed</span>
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-                      <div className="p-3 rounded-lg bg-rose-950/20 border border-rose-500/20 text-xs font-mono">
-                        <span className="text-[10px] uppercase font-tech-mono text-rose-400 font-bold block mb-0.5">
-                          Detected Hallucination:
-                        </span>
-                        <p className="text-slate-300">{item.claim}</p>
-                      </div>
-
-                      <div className="p-3 rounded-lg bg-emerald-950/20 border border-emerald-500/20 text-xs font-mono">
-                        <span className="text-[10px] uppercase font-tech-mono text-emerald-400 font-bold block mb-0.5">
-                          Verified Ground Truth:
-                        </span>
-                        <p className="text-slate-300">{item.truth}</p>
-                      </div>
-                    </div>
-
-                    <div className="text-[11px] text-slate-400 font-mono flex items-center gap-2">
-                      <span className="text-slate-500">Commercial Impact:</span>
-                      <span>{item.impact}</span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2 self-start md:self-center flex-shrink-0">
-                    <button
-                      onClick={() => setPatchModalItem(item)}
-                      className="px-3.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-tech-mono text-slate-200 transition-colors cursor-pointer"
-                    >
-                      View Schema Fix
-                    </button>
-                    <button
-                      onClick={() => handleResolve(item.id)}
-                      disabled={isResolved}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-tech-mono font-bold transition-colors cursor-pointer ${
-                        isResolved
-                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                          : 'bg-emerald-400 hover:bg-emerald-300 text-emerald-950'
-                      }`}
-                    >
-                      {isResolved ? 'Patched' : 'Deploy Patch'}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Modal for Schema Fix Inspector */}
-      {patchModalItem && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0c101b] border border-white/[0.12] rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-emerald-400" />
-                <h4 className="text-sm font-bold text-white font-tech-mono">
-                  Ground Truth Schema Patch
-                </h4>
-              </div>
-              <button
-                onClick={() => setPatchModalItem(null)}
-                className="text-slate-400 hover:text-white p-1 rounded"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="space-y-3 font-mono text-xs">
-              <div className="text-slate-300">
-                Recommended Action: <strong className="text-emerald-400">{patchModalItem.patchAction}</strong>
-              </div>
-
-              <div className="p-3 rounded-lg bg-[#05070c] border border-white/[0.08] text-[11px] font-mono text-emerald-300 overflow-x-auto">
-                <pre>{JSON.stringify({
-                  "@context": "https://schema.org",
-                  "@type": "SoftwareApplication",
-                  "name": "GEO Platform",
-                  "price": "499.00",
-                  "priceCurrency": "USD",
-                  "apiAvailability": "99.9% Uptime SLA",
-                  "operatingHours": "24/7 Dedicated Support SLA"
-                }, null, 2)}</pre>
-              </div>
-              <p className="text-[11px] text-slate-400">
-                Deploying this structured payload to <code className="text-slate-200">acme.com/pricing</code> forces immediate web indexing recrawls across OpenAI ChatGPT knowledge and citation graphs.
-              </p>
-            </div>
-
-            <div className="pt-2 flex justify-end gap-2">
-              <button
-                onClick={() => setPatchModalItem(null)}
-                className="px-4 py-1.5 rounded-lg bg-white/5 text-slate-300 text-xs font-tech-mono"
-              >
-                Close
-              </button>
-              <button
-                onClick={() => {
-                  handleResolve(patchModalItem.id);
-                  setPatchModalItem(null);
-                }}
-                className="px-4 py-1.5 rounded-lg bg-emerald-400 text-emerald-950 font-bold text-xs font-tech-mono"
-              >
-                Execute Injection
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );
