@@ -15,69 +15,270 @@ export default function AiVisibilityTab() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPromptTrace, setSelectedPromptTrace] = useState(null);
 
-  // 01 AI VISIBILITY - CORE METRICS
-  const metrics = [
-    {
-      id: 'mention-rate',
-      label: 'Mention Rate',
-      sublabel: '% of total prompts citing brand',
-      value: '68.4%',
-      delta: '+5.2%',
-      positive: true,
-      fraction: '579 / 847 prompts',
-      badge: 'Tier 1 Strong',
-    },
-    {
-      id: 'recommendation-rate',
-      label: 'Recommendation Rate',
-      sublabel: '% prompts recommending as #1 solution',
-      value: '42.8%',
-      delta: '+3.1%',
-      positive: true,
-      fraction: '362 / 847 prompts',
-      badge: 'Leader Index',
-    },
-    {
-      id: 'top-3-rate',
-      label: 'Top-3 Rate',
-      sublabel: 'Presence within top 3 AI suggestions',
-      value: '81.2%',
-      delta: '+4.6%',
-      positive: true,
-      fraction: '688 / 847 prompts',
-      badge: 'Dominant',
-    },
-    {
-      id: 'prompt-coverage',
-      label: 'Prompt Coverage',
-      sublabel: 'Sector search intent scope tested',
-      value: '84.7%',
-      delta: '+12.0%',
-      positive: true,
-      fraction: '847 / 1,000 tracked',
-      badge: 'High Fidelity',
-    },
-    {
-      id: 'engine-coverage',
-      label: 'Engine Coverage',
-      sublabel: 'Presence across frontier LLMs',
-      value: '91.7%',
-      delta: '11 / 12',
-      positive: true,
-      fraction: '11 active nodes',
-      badge: 'Multimodal',
-    },
-  ];
+  const [hoveredPoint, setHoveredPoint] = useState(null);
 
-  // Engine Breakdown Data
-  const engineBreakdown = [
-    { name: 'Perplexity Pro', mentionRate: 82.4, recRate: 58.1, top3Rate: 91.2, status: 'Peak' },
-    { name: 'OpenAI GPT-4o', mentionRate: 74.6, recRate: 48.0, top3Rate: 86.5, status: 'High' },
-    { name: 'Claude 3.5 Sonnet', mentionRate: 71.2, recRate: 44.5, top3Rate: 83.0, status: 'High' },
-    { name: 'Google Gemini 2.0', mentionRate: 64.0, recRate: 36.2, top3Rate: 77.4, status: 'Moderate' },
-    { name: 'DeepSeek R1', mentionRate: 59.5, recRate: 33.0, top3Rate: 74.2, status: 'Moderate' },
-    { name: 'Mistral Large', mentionRate: 55.0, recRate: 29.8, top3Rate: 69.5, status: 'Action Needed' },
-  ];
+  // Dynamic time-range datasets for 30D, 60D, and 90D
+  const timeRangeData = {
+    '30d': {
+      label: '30-Day Sprint Trajectory',
+      chartTitle: 'VISIBILITY TREND (30-DAY SPRINT VELOCITY)',
+      chartSubtitle: 'High-frequency telemetry sweep: Mention Rate vs Recommendation Rate',
+      mentionRate: '71.8%',
+      recRate: '46.2%',
+      dates: ['AUG 28', 'SEP 04', 'SEP 11', 'SEP 18', 'SEP 25', 'SEP 28 (CURRENT)'],
+      mentionSvgPath: 'M0,105 C140,95 280,75 420,55 560,35 630,28 700,18',
+      mentionAreaPath: 'M0,105 C140,95 280,75 420,55 560,35 630,28 700,18 L700,190 L0,190 Z',
+      recSvgPath: 'M0,145 C140,130 280,110 420,95 560,78 630,70 700,55',
+      recAreaPath: 'M0,145 C140,130 280,110 420,95 560,78 630,70 700,55 L700,190 L0,190 Z',
+      checkpoints: [
+        { cx: 140, cy: 95, label: 'SEP 04: 62.4%' },
+        { cx: 280, cy: 75, label: 'SEP 11: 65.8%' },
+        { cx: 420, cy: 55, label: 'SEP 18: 68.2%' },
+        { cx: 560, cy: 35, label: 'SEP 25: 70.4%' },
+        { cx: 700, cy: 18, label: 'SEP 28: 71.8%' },
+      ],
+      recCheckpoints: [
+        { cx: 280, cy: 110, label: 'SEP 11: 39.5%' },
+        { cx: 560, cy: 78, label: 'SEP 25: 44.1%' },
+        { cx: 700, cy: 55, label: 'SEP 28: 46.2%' },
+      ],
+      insight: '30-Day Velocity: Schema PriceSpecification deployment increased OpenAI GPT-4o and Perplexity citation inclusion by +7.6%.',
+      confidence: '99.1%',
+      metrics: [
+        {
+          id: 'mention-rate',
+          label: 'Mention Rate',
+          sublabel: '% of total prompts citing brand',
+          value: '71.8%',
+          delta: '+3.4%',
+          positive: true,
+          fraction: '608 / 847 prompts',
+          badge: 'Sprint Peak',
+        },
+        {
+          id: 'recommendation-rate',
+          label: 'Recommendation Rate',
+          sublabel: '% prompts recommending as #1 solution',
+          value: '46.2%',
+          delta: '+3.4%',
+          positive: true,
+          fraction: '391 / 847 prompts',
+          badge: 'Leader Index',
+        },
+        {
+          id: 'top-3-rate',
+          label: 'Top-3 Rate',
+          sublabel: 'Presence within top 3 AI suggestions',
+          value: '83.5%',
+          delta: '+2.3%',
+          positive: true,
+          fraction: '707 / 847 prompts',
+          badge: 'Dominant',
+        },
+        {
+          id: 'prompt-coverage',
+          label: 'Prompt Coverage',
+          sublabel: 'Sector search intent scope tested',
+          value: '87.2%',
+          delta: '+2.5%',
+          positive: true,
+          fraction: '738 / 847 tracked',
+          badge: 'High Fidelity',
+        },
+        {
+          id: 'engine-coverage',
+          label: 'Engine Coverage',
+          sublabel: 'Presence across frontier LLMs',
+          value: '91.7%',
+          delta: '11 / 12',
+          positive: true,
+          fraction: '11 active nodes',
+          badge: 'Multimodal',
+        },
+      ],
+      engineBreakdown: [
+        { name: 'Perplexity Pro', mentionRate: 85.1, recRate: 61.2, top3Rate: 93.4, status: 'Peak' },
+        { name: 'OpenAI GPT-4o', mentionRate: 77.2, recRate: 51.4, top3Rate: 88.0, status: 'Peak' },
+        { name: 'Claude 3.5 Sonnet', mentionRate: 73.0, recRate: 46.8, top3Rate: 85.2, status: 'High' },
+        { name: 'Google Gemini 2.0', mentionRate: 67.5, recRate: 39.0, top3Rate: 80.1, status: 'Moderate' },
+        { name: 'DeepSeek R1', mentionRate: 63.0, recRate: 36.5, top3Rate: 76.5, status: 'Moderate' },
+        { name: 'Mistral Large', mentionRate: 58.2, recRate: 32.0, top3Rate: 72.0, status: 'Improving' },
+      ],
+    },
+    '60d': {
+      label: '60-Day Multi-Cycle Trajectory',
+      chartTitle: 'VISIBILITY TREND (60-DAY MULTI-CYCLE TRAJECTORY)',
+      chartSubtitle: 'Bi-monthly attribution index: Mention Rate vs Recommendation Rate',
+      mentionRate: '64.2%',
+      recRate: '39.5%',
+      dates: ['JUL 28', 'AUG 10', 'AUG 25', 'SEP 10', 'SEP 20', 'SEP 28 (CURRENT)'],
+      mentionSvgPath: 'M0,115 C140,105 280,85 420,65 560,45 630,35 700,25',
+      mentionAreaPath: 'M0,115 C140,105 280,85 420,65 560,45 630,35 700,25 L700,190 L0,190 Z',
+      recSvgPath: 'M0,150 C140,140 280,125 420,105 560,90 630,80 700,75',
+      recAreaPath: 'M0,150 C140,140 280,125 420,105 560,90 630,80 700,75 L700,190 L0,190 Z',
+      checkpoints: [
+        { cx: 140, cy: 105, label: 'AUG 10: 55.2%' },
+        { cx: 280, cy: 85, label: 'AUG 25: 58.0%' },
+        { cx: 420, cy: 65, label: 'SEP 10: 62.4%' },
+        { cx: 560, cy: 45, label: 'SEP 20: 66.5%' },
+        { cx: 700, cy: 25, label: 'SEP 28: 68.4%' },
+      ],
+      recCheckpoints: [
+        { cx: 280, cy: 125, label: 'AUG 25: 35.0%' },
+        { cx: 560, cy: 90, label: 'SEP 20: 40.2%' },
+        { cx: 700, cy: 75, label: 'SEP 28: 42.8%' },
+      ],
+      insight: '60-Day Momentum: Documentation restructuring and G2 review collection drove a +14.2% recommendation lift.',
+      confidence: '98.4%',
+      metrics: [
+        {
+          id: 'mention-rate',
+          label: 'Mention Rate',
+          sublabel: '% of total prompts citing brand',
+          value: '64.2%',
+          delta: '+6.8%',
+          positive: true,
+          fraction: '543 / 847 prompts',
+          badge: 'Strong Climb',
+        },
+        {
+          id: 'recommendation-rate',
+          label: 'Recommendation Rate',
+          sublabel: '% prompts recommending as #1 solution',
+          value: '39.5%',
+          delta: '+5.1%',
+          positive: true,
+          fraction: '334 / 847 prompts',
+          badge: 'Ascending',
+        },
+        {
+          id: 'top-3-rate',
+          label: 'Top-3 Rate',
+          sublabel: 'Presence within top 3 AI suggestions',
+          value: '79.0%',
+          delta: '+5.8%',
+          positive: true,
+          fraction: '669 / 847 prompts',
+          badge: 'Dominant',
+        },
+        {
+          id: 'prompt-coverage',
+          label: 'Prompt Coverage',
+          sublabel: 'Sector search intent scope tested',
+          value: '81.4%',
+          delta: '+7.2%',
+          positive: true,
+          fraction: '689 / 847 tracked',
+          badge: 'High Scope',
+        },
+        {
+          id: 'engine-coverage',
+          label: 'Engine Coverage',
+          sublabel: 'Presence across frontier LLMs',
+          value: '83.3%',
+          delta: '10 / 12',
+          positive: true,
+          fraction: '10 active nodes',
+          badge: 'Expanding',
+        },
+      ],
+      engineBreakdown: [
+        { name: 'Perplexity Pro', mentionRate: 80.2, recRate: 56.0, top3Rate: 89.5, status: 'Peak' },
+        { name: 'OpenAI GPT-4o', mentionRate: 72.8, recRate: 46.5, top3Rate: 84.1, status: 'High' },
+        { name: 'Claude 3.5 Sonnet', mentionRate: 69.5, recRate: 42.0, top3Rate: 81.0, status: 'High' },
+        { name: 'Google Gemini 2.0', mentionRate: 61.4, recRate: 34.0, top3Rate: 74.8, status: 'Moderate' },
+        { name: 'DeepSeek R1', mentionRate: 56.0, recRate: 30.2, top3Rate: 71.0, status: 'Moderate' },
+        { name: 'Mistral Large', mentionRate: 52.0, recRate: 26.5, top3Rate: 66.0, status: 'Action Needed' },
+      ],
+    },
+    '90d': {
+      label: '90-Day Longitudinal Trajectory',
+      chartTitle: 'VISIBILITY TREND (90-DAY TRAJECTORY)',
+      chartSubtitle: 'Comparative longitudinal sweep: Mention Rate vs Recommendation Rate',
+      mentionRate: '68.4%',
+      recRate: '42.8%',
+      dates: ['JUL 01', 'JUL 15', 'AUG 01', 'AUG 15', 'SEP 01', 'SEP 15', 'SEP 28 (CURRENT)'],
+      mentionSvgPath: 'M0,130 C70,125 140,110 210,95 C280,80 350,90 420,70 C490,50 560,55 630,35 L700,25',
+      mentionAreaPath: 'M0,130 C70,125 140,110 210,95 C280,80 350,90 420,70 C490,50 560,55 630,35 L700,25 L700,190 L0,190 Z',
+      recSvgPath: 'M0,165 C70,160 140,150 210,140 C280,135 350,130 420,115 C490,105 560,100 630,85 L700,75',
+      recAreaPath: 'M0,165 C70,160 140,150 210,140 C280,135 350,130 420,115 C490,105 560,100 630,85 L700,75 L700,190 L0,190 Z',
+      checkpoints: [
+        { cx: 210, cy: 95, label: 'AUG 01: 52.3%' },
+        { cx: 420, cy: 70, label: 'SEP 01: 61.0%' },
+        { cx: 700, cy: 25, label: 'SEP 28: 68.4%' },
+      ],
+      recCheckpoints: [
+        { cx: 420, cy: 115, label: 'SEP 01: 37.5%' },
+        { cx: 700, cy: 75, label: 'SEP 28: 42.8%' },
+      ],
+      insight: 'Longitudinal View: Perplexity and GPT-4o citation adoption drove a +19.2% net visibility surge over the full 90-day sweep.',
+      confidence: '98.4%',
+      metrics: [
+        {
+          id: 'mention-rate',
+          label: 'Mention Rate',
+          sublabel: '% of total prompts citing brand',
+          value: '68.4%',
+          delta: '+5.2%',
+          positive: true,
+          fraction: '579 / 847 prompts',
+          badge: 'Tier 1 Strong',
+        },
+        {
+          id: 'recommendation-rate',
+          label: 'Recommendation Rate',
+          sublabel: '% prompts recommending as #1 solution',
+          value: '42.8%',
+          delta: '+3.1%',
+          positive: true,
+          fraction: '362 / 847 prompts',
+          badge: 'Leader Index',
+        },
+        {
+          id: 'top-3-rate',
+          label: 'Top-3 Rate',
+          sublabel: 'Presence within top 3 AI suggestions',
+          value: '81.2%',
+          delta: '+4.6%',
+          positive: true,
+          fraction: '688 / 847 prompts',
+          badge: 'Dominant',
+        },
+        {
+          id: 'prompt-coverage',
+          label: 'Prompt Coverage',
+          sublabel: 'Sector search intent scope tested',
+          value: '84.7%',
+          delta: '+12.0%',
+          positive: true,
+          fraction: '847 / 1,000 tracked',
+          badge: 'High Fidelity',
+        },
+        {
+          id: 'engine-coverage',
+          label: 'Engine Coverage',
+          sublabel: 'Presence across frontier LLMs',
+          value: '91.7%',
+          delta: '11 / 12',
+          positive: true,
+          fraction: '11 active nodes',
+          badge: 'Multimodal',
+        },
+      ],
+      engineBreakdown: [
+        { name: 'Perplexity Pro', mentionRate: 82.4, recRate: 58.1, top3Rate: 91.2, status: 'Peak' },
+        { name: 'OpenAI GPT-4o', mentionRate: 74.6, recRate: 48.0, top3Rate: 86.5, status: 'High' },
+        { name: 'Claude 3.5 Sonnet', mentionRate: 71.2, recRate: 44.5, top3Rate: 83.0, status: 'High' },
+        { name: 'Google Gemini 2.0', mentionRate: 64.0, recRate: 36.2, top3Rate: 77.4, status: 'Moderate' },
+        { name: 'DeepSeek R1', mentionRate: 59.5, recRate: 33.0, top3Rate: 74.2, status: 'Moderate' },
+        { name: 'Mistral Large', mentionRate: 55.0, recRate: 29.8, top3Rate: 69.5, status: 'Action Needed' },
+      ],
+    }
+  };
+
+  const activeData = timeRangeData[timeRange] || timeRangeData['90d'];
+  const metrics = activeData.metrics;
+  const engineBreakdown = activeData.engineBreakdown;
 
   // Prompt universe sample table
   const samplePrompts = [
@@ -231,27 +432,40 @@ export default function AiVisibilityTab() {
               <div>
                 <div className="text-xs font-tech-mono uppercase tracking-widest text-emerald-400 font-bold flex items-center gap-1.5">
                   <TrendingUp className="w-3.5 h-3.5" />
-                  <span>VISIBILITY TREND (90-DAY TRAJECTORY)</span>
+                  <span>{activeData.chartTitle}</span>
                 </div>
                 <div className="text-[11px] text-slate-400 font-mono mt-0.5">
-                  Comparative longitudinal sweep: Mention Rate vs Recommendation Rate
+                  {activeData.chartSubtitle}
                 </div>
               </div>
 
               <div className="flex items-center gap-4 text-[11px] font-tech-mono">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                  <span className="text-slate-300">Mention Rate (68.4%)</span>
+                  <span className="text-slate-300">Mention Rate ({activeData.mentionRate})</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
-                  <span className="text-slate-300">Recommendation (42.8%)</span>
+                  <span className="text-slate-300">Recommendation ({activeData.recRate})</span>
                 </div>
               </div>
             </div>
 
             {/* Simulated High-Fidelity SVG Chart Canvas */}
             <div className="mt-5 relative h-56 w-full">
+              {hoveredPoint && (
+                <div 
+                  className="absolute pointer-events-none z-20 px-2 py-1 rounded bg-[#0b101b] border border-white/20 text-[10px] font-tech-mono text-white shadow-xl -translate-x-1/2 -translate-y-8 flex items-center gap-1.5"
+                  style={{
+                    left: `${(hoveredPoint.x / 700) * 100}%`,
+                    top: `${(hoveredPoint.y / 200) * 100}%`,
+                  }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: hoveredPoint.color }} />
+                  <span>{hoveredPoint.label}</span>
+                </div>
+              )}
+
               <svg className="w-full h-full overflow-visible" viewBox="0 0 700 200" preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="visEmeraldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -279,56 +493,95 @@ export default function AiVisibilityTab() {
 
                 {/* Mention Rate Area & Line */}
                 <path
-                  d="M0,130 C70,125 140,110 210,95 C280,80 350,90 420,70 C490,50 560,55 630,35 L700,25 L700,190 L0,190 Z"
+                  d={activeData.mentionAreaPath}
                   fill="url(#visEmeraldGrad)"
+                  className="transition-all duration-500 ease-in-out"
                 />
                 <path
-                  d="M0,130 C70,125 140,110 210,95 C280,80 350,90 420,70 C490,50 560,55 630,35 L700,25"
+                  d={activeData.mentionSvgPath}
                   fill="none"
                   stroke="#10b981"
                   strokeWidth="2.5"
+                  className="transition-all duration-500 ease-in-out"
                 />
 
                 {/* Recommendation Rate Area & Line */}
                 <path
-                  d="M0,165 C70,160 140,150 210,140 C280,135 350,130 420,115 C490,105 560,100 630,85 L700,75 L700,190 L0,190 Z"
+                  d={activeData.recAreaPath}
                   fill="url(#visCyanGrad)"
+                  className="transition-all duration-500 ease-in-out"
                 />
                 <path
-                  d="M0,165 C70,160 140,150 210,140 C280,135 350,130 420,115 C490,105 560,100 630,85 L700,75"
+                  d={activeData.recSvgPath}
                   fill="none"
                   stroke="#06b6d4"
                   strokeWidth="2"
                   strokeDasharray="4 2"
+                  className="transition-all duration-500 ease-in-out"
                 />
 
-                {/* Live Checkpoint markers */}
-                <circle cx="210" cy="95" r="4" fill="#10b981" />
-                <circle cx="420" cy="70" r="4" fill="#10b981" />
-                <circle cx="700" cy="25" r="5" fill="#34d399" stroke="#fff" strokeWidth="2" />
-                
-                <circle cx="700" cy="75" r="4" fill="#22d3ee" stroke="#fff" strokeWidth="1.5" />
+                {/* Live Checkpoint markers for Mention Rate */}
+                {activeData.checkpoints.map((pt, idx) => {
+                  const isLast = idx === activeData.checkpoints.length - 1;
+                  return (
+                    <circle
+                      key={`mention-pt-${idx}`}
+                      cx={pt.cx}
+                      cy={pt.cy}
+                      r={isLast ? 5 : 4}
+                      fill={isLast ? '#34d399' : '#10b981'}
+                      stroke={isLast ? '#fff' : 'none'}
+                      strokeWidth={isLast ? 2 : 0}
+                      className="cursor-pointer transition-all hover:scale-125"
+                      onMouseEnter={() => setHoveredPoint({ x: pt.cx, y: pt.cy, label: pt.label, color: '#10b981' })}
+                      onMouseLeave={() => setHoveredPoint(null)}
+                    />
+                  );
+                })}
+
+                {/* Live Checkpoint markers for Recommendation Rate */}
+                {activeData.recCheckpoints.map((pt, idx) => {
+                  const isLast = idx === activeData.recCheckpoints.length - 1;
+                  return (
+                    <circle
+                      key={`rec-pt-${idx}`}
+                      cx={pt.cx}
+                      cy={pt.cy}
+                      r={4}
+                      fill="#22d3ee"
+                      stroke="#fff"
+                      strokeWidth={isLast ? 1.5 : 1}
+                      className="cursor-pointer transition-all hover:scale-125"
+                      onMouseEnter={() => setHoveredPoint({ x: pt.cx, y: pt.cy, label: pt.label, color: '#22d3ee' })}
+                      onMouseLeave={() => setHoveredPoint(null)}
+                    />
+                  );
+                })}
               </svg>
             </div>
 
             {/* Timeline X-Axis markers */}
             <div className="flex justify-between text-[10px] font-tech-mono text-slate-500 pt-2 border-t border-white/[0.04]">
-              <span>JUL 01</span>
-              <span>JUL 15</span>
-              <span>AUG 01</span>
-              <span>AUG 15</span>
-              <span>SEP 01</span>
-              <span>SEP 15</span>
-              <span className="text-emerald-400 font-bold">SEP 28 (CURRENT)</span>
+              {activeData.dates.map((date, idx) => {
+                const isCurrent = idx === activeData.dates.length - 1;
+                return (
+                  <span 
+                    key={date} 
+                    className={isCurrent ? "text-emerald-400 font-bold" : ""}
+                  >
+                    {date}
+                  </span>
+                );
+              })}
             </div>
           </div>
 
-          <div className="mt-4 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs font-mono">
+          <div className="mt-4 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono gap-2">
             <span className="text-slate-400">
-              Insight: Perplexity and GPT-4o citation adoption drove a <strong className="text-emerald-400">+19.2% net visibility surge</strong> over the last 60 days.
+              Insight: <span className="text-slate-200">{activeData.insight}</span>
             </span>
-            <span className="text-emerald-400 font-tech-mono text-[11px] whitespace-nowrap ml-3">
-              Confidence: 98.4%
+            <span className="text-emerald-400 font-tech-mono text-[11px] whitespace-nowrap">
+              Confidence: {activeData.confidence}
             </span>
           </div>
         </div>
