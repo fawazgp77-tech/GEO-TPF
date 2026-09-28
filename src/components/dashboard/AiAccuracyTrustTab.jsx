@@ -128,7 +128,7 @@ export default function AiAccuracyTrustTab() {
       category: 'Critical Errors',
       severity: 'Critical',
       severityColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
-      engine: 'GPT-4o Mini Synthesis',
+      engine: 'OpenAI ChatGPT',
       claim: 'States that Acme lacks SOC2 Type II security compliance certification.',
       truth: 'Acme has maintained SOC2 Type II certification continuously since 2024.',
       impact: 'Instant blocker for enterprise infosec vendor assessments.',
@@ -139,7 +139,7 @@ export default function AiAccuracyTrustTab() {
       category: 'Service Accuracy',
       severity: 'High',
       severityColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
-      engine: 'ChatGPT Search (Web)',
+      engine: 'OpenAI ChatGPT',
       claim: 'States Acme only offers basic keyword tracking without real-time RAG prompt simulation.',
       truth: 'Acme provides full synthetic Monte Carlo sweeps for generative response layers.',
       impact: 'Causes prospects seeking automated GEO monitoring to evaluate competitors.',
@@ -150,7 +150,7 @@ export default function AiAccuracyTrustTab() {
       category: 'Hours Accuracy',
       severity: 'Medium',
       severityColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
-      engine: 'ChatGPT Enterprise Mode',
+      engine: 'OpenAI ChatGPT',
       claim: 'Claims customer support is limited to Monday-Friday 9am-5pm EST.',
       truth: 'Enterprise plan includes 24/7 dedicated Slack SLA support.',
       impact: 'Minor enterprise procurement hesitation.',
@@ -161,7 +161,7 @@ export default function AiAccuracyTrustTab() {
       category: 'Address Accuracy',
       severity: 'Low',
       severityColor: 'bg-slate-700/50 text-slate-300 border-slate-600',
-      engine: 'ChatGPT Search (Web)',
+      engine: 'OpenAI ChatGPT',
       claim: 'Lists former San Francisco incubator address instead of current HQ.',
       truth: 'Corporate HQ moved to 500 Howard Street, Suite 400, San Francisco.',
       impact: 'Low impact on digital sales; impacts postal verification.',
@@ -169,47 +169,47 @@ export default function AiAccuracyTrustTab() {
     },
   ];
 
-  // Cross-Environment Consistency Facts
+  // Ground Truth Fact Verification Data (Tested against OpenAI ChatGPT)
   const consistencyFacts = [
     {
-      fact: 'Headquarters Location (SF, CA)',
-      search: 'Correct',
-      gpt4o: 'Correct',
-      enterprise: 'Correct',
-      mini: 'Correct',
-      consensus: '100% Grounded',
+      fact: 'Headquarters Location',
+      groundTruth: 'San Francisco, CA (500 Howard St)',
+      chatgptOutput: 'San Francisco, California',
+      status: 'Verified',
+      statusType: 'success',
+      grounding: '100% Grounded',
     },
     {
-      fact: 'Active Subscription Tiers ($499/mo)',
-      search: 'Correct ($499)',
-      gpt4o: 'Outdated ($299)',
-      enterprise: 'Correct ($499)',
-      mini: 'Outdated ($299)',
-      consensus: '50% Divergence',
+      fact: 'Active Subscription Tiers',
+      groundTruth: '$499/mo (Enterprise Tier)',
+      chatgptOutput: 'Legacy $299 plan cited in older prompt sessions',
+      status: 'Discrepancy',
+      statusType: 'error',
+      grounding: '50% Divergence',
     },
     {
       fact: 'SOC2 Type II Security Compliance',
-      search: 'Correct',
-      gpt4o: 'Correct',
-      enterprise: 'Correct',
-      mini: 'Ambiguous',
-      consensus: '88% Consistent',
+      groundTruth: 'Certified SOC2 Type II (Annual Audit)',
+      chatgptOutput: 'Ambiguous compliance verification phrasing',
+      status: 'Remediation Needed',
+      statusType: 'warning',
+      grounding: '88% Consistent',
     },
     {
       fact: '24/7 Enterprise Dedicated Support SLA',
-      search: 'Correct',
-      gpt4o: 'Correct',
-      enterprise: 'Correct',
-      mini: 'Correct',
-      consensus: '100% Grounded',
+      groundTruth: '24/7 Dedicated Support with 15-min SLA',
+      chatgptOutput: '24/7 Dedicated Support verified',
+      status: 'Verified',
+      statusType: 'success',
+      grounding: '100% Grounded',
     },
     {
       fact: 'Real-Time Webhook & REST API Telemetry',
-      search: 'Correct',
-      gpt4o: 'Correct',
-      enterprise: 'Correct',
-      mini: 'Correct',
-      consensus: '100% Grounded',
+      groundTruth: 'Public REST API & Real-Time Webhooks',
+      chatgptOutput: 'Full REST API support verified',
+      status: 'Verified',
+      statusType: 'success',
+      grounding: '100% Grounded',
     },
   ];
 
@@ -363,7 +363,7 @@ export default function AiAccuracyTrustTab() {
               { label: 'Hours Accuracy (Support Availability & SLA)', score: 94.0, icon: Clock, note: '94.0% (24/7 SLA accurate)' },
               { label: 'Service Accuracy (Product Modules & APIs)', score: 86.5, icon: Server, note: '86.5% (deprecated features flagged)' },
               { label: 'Pricing Accuracy (Subscription Tiers & Prompts)', score: 71.2, icon: DollarSign, note: '71.2% (legacy $299 plan cited by ChatGPT)' },
-              { label: 'Response Grounding Consistency (ChatGPT Modes Agreement)', score: 88.6, icon: Layers, note: '88.6% consensus across ChatGPT environments' },
+              { label: 'Response Grounding Consistency', score: 88.6, icon: Layers, note: '88.6% alignment with verified ground truth facts' },
             ].map((item) => {
               const Icon = item.icon;
               return (
@@ -401,20 +401,20 @@ export default function AiAccuracyTrustTab() {
 
       </div>
 
-      {/* Cross-Environment Consistency Matrix */}
+      {/* Ground Truth & Fact Verification Matrix */}
       <div className="p-5 sm:p-6 rounded-2xl bg-[#080c14] border border-white/[0.08] space-y-4">
         <div className="pb-3 border-b border-white/[0.06] flex items-center justify-between">
           <div>
             <h3 className="text-base font-bold text-white font-tech-mono flex items-center gap-2">
               <Layers className="w-4 h-4 text-emerald-400" />
-              <span>CHATGPT RESPONSE ENVIRONMENT FACT MATRIX</span>
+              <span>CHATGPT GROUND TRUTH & FACT VERIFICATION MATRIX</span>
             </h3>
             <p className="text-xs text-slate-400 font-mono mt-0.5">
-              Cross-examination of core business facts across ChatGPT Search, GPT-4o Standard, Enterprise, and Mini
+              Continuous audit of core brand facts, pricing, and compliance in OpenAI ChatGPT responses
             </p>
           </div>
           <span className="text-xs font-tech-mono text-emerald-400 font-bold">
-            Consensus Index: 88.6%
+            Grounding Score: 88.6%
           </span>
         </div>
 
@@ -423,10 +423,9 @@ export default function AiAccuracyTrustTab() {
             <thead>
               <tr className="border-b border-white/[0.08] text-[11px] font-tech-mono uppercase text-slate-400 bg-white/[0.01]">
                 <th className="py-2.5 px-3">Tested Fact / Entity Attribute</th>
-                <th className="py-2.5 px-3">ChatGPT Search (Web)</th>
-                <th className="py-2.5 px-3">GPT-4o Standard</th>
-                <th className="py-2.5 px-3">ChatGPT Enterprise</th>
-                <th className="py-2.5 px-3">GPT-4o Mini</th>
+                <th className="py-2.5 px-3">Canonical Ground Truth</th>
+                <th className="py-2.5 px-3">ChatGPT Output</th>
+                <th className="py-2.5 px-3">Audit Status</th>
                 <th className="py-2.5 px-3 text-right">Grounding</th>
               </tr>
             </thead>
@@ -434,36 +433,21 @@ export default function AiAccuracyTrustTab() {
               {consistencyFacts.map((f, idx) => (
                 <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
                   <td className="py-3 px-3 font-medium text-white">{f.fact}</td>
+                  <td className="py-3 px-3 text-slate-300 font-tech-mono">{f.groundTruth}</td>
+                  <td className="py-3 px-3 text-slate-300 font-tech-mono">{f.chatgptOutput}</td>
                   <td className="py-3 px-3">
-                    <span className={`px-2 py-0.5 rounded text-[10px] ${
-                      f.search.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-rose-500/10 text-rose-300 font-bold'
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-tech-mono font-bold border ${
+                      f.statusType === 'success' 
+                        ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30' 
+                        : f.statusType === 'error'
+                        ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
+                        : 'bg-amber-500/10 text-amber-300 border-amber-500/30'
                     }`}>
-                      {f.search}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3">
-                    <span className={`px-2 py-0.5 rounded text-[10px] ${
-                      f.gpt4o.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-rose-500/10 text-rose-300 font-bold'
-                    }`}>
-                      {f.gpt4o}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3">
-                    <span className={`px-2 py-0.5 rounded text-[10px] ${
-                      f.enterprise.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-amber-500/10 text-amber-300 font-bold'
-                    }`}>
-                      {f.enterprise}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3">
-                    <span className={`px-2 py-0.5 rounded text-[10px] ${
-                      f.mini.includes('Correct') ? 'bg-emerald-500/10 text-emerald-300' : 'bg-rose-500/10 text-rose-300 font-bold'
-                    }`}>
-                      {f.mini}
+                      {f.status}
                     </span>
                   </td>
                   <td className="py-3 px-3 text-right font-tech-mono font-bold text-slate-300">
-                    {f.consensus}
+                    {f.grounding}
                   </td>
                 </tr>
               ))}
@@ -615,7 +599,7 @@ export default function AiAccuracyTrustTab() {
                 }, null, 2)}</pre>
               </div>
               <p className="text-[11px] text-slate-400">
-                Deploying this structured payload to <code className="text-slate-200">acme.com/pricing</code> forces immediate web indexing recrawls across OpenAI SearchGPT and GPT-4o citation graphs.
+                Deploying this structured payload to <code className="text-slate-200">acme.com/pricing</code> forces immediate web indexing recrawls across OpenAI ChatGPT knowledge and citation graphs.
               </p>
             </div>
 
