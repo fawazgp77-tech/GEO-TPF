@@ -151,7 +151,7 @@ export default function SourcesAuthorityTab() {
       url: 'acme.com/docs/api/realtime-telemetry',
       channel: 'Official Docs',
       citations: 284,
-      engines: 'ChatGPT Search & GPT-4o RAG',
+      pipeline: 'Live Web Search & RAG',
       freshness: '4 days ago',
       health: '200 OK (Clean)',
     },
@@ -160,7 +160,7 @@ export default function SourcesAuthorityTab() {
       url: 'acme.com/pricing',
       channel: 'Official Domain',
       citations: 210,
-      engines: 'ChatGPT Search (Web Index)',
+      pipeline: 'Web Index Cache (Crawl)',
       freshness: '12 days ago',
       health: '200 OK (Schema Synced)',
     },
@@ -169,7 +169,7 @@ export default function SourcesAuthorityTab() {
       url: 'g2.com/products/geo-engine/reviews',
       channel: 'Review Platform',
       citations: 165,
-      engines: 'ChatGPT Enterprise & Plus',
+      pipeline: 'Knowledge Graph Ingestion',
       freshness: '18 days ago',
       health: 'Active (4.8 / 5)',
     },
@@ -178,7 +178,7 @@ export default function SourcesAuthorityTab() {
       url: 'venturebeat.com/ai/synthetic-vector-benchmarking-georanking',
       channel: 'Press Article',
       citations: 92,
-      engines: 'ChatGPT Search (Web)',
+      pipeline: 'Live Web Search Ingestion',
       freshness: '32 days ago',
       health: '200 OK',
     },
@@ -187,7 +187,7 @@ export default function SourcesAuthorityTab() {
       url: 'acme.com/blog/llm-hallucination-elimination-guide',
       channel: 'Official Blog',
       citations: 78,
-      engines: 'GPT-4o Standard & Canvas',
+      pipeline: 'Citation Graph Ingestion',
       freshness: '45 days ago',
       health: '200 OK',
     },
@@ -195,7 +195,7 @@ export default function SourcesAuthorityTab() {
 
   const filteredCitations = activeCitations.filter((c) => {
     const matchesType = selectedType === 'all' || c.channel.toLowerCase().includes(selectedType.toLowerCase());
-    const matchesSearch = c.url.toLowerCase().includes(searchQuery.toLowerCase()) || c.engines.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = c.url.toLowerCase().includes(searchQuery.toLowerCase()) || c.pipeline.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesType && matchesSearch;
   });
 
@@ -306,7 +306,7 @@ export default function SourcesAuthorityTab() {
           </div>
 
           <div className="pt-2 text-xs font-mono text-slate-400 border-t border-white/[0.04]">
-            Key Takeaway: <strong className="text-white">ChatGPT Search</strong> pulls heavily from G2 and verified directory listings, while <strong className="text-white">GPT-4o Standard</strong> relies primarily on official schema-embedded documentation.
+            Key Takeaway: <strong className="text-white">OpenAI ChatGPT</strong> pulls heavily from G2 and verified directory listings, while prioritizing official schema-embedded documentation for technical accuracy.
           </div>
         </div>
 
@@ -431,7 +431,7 @@ export default function SourcesAuthorityTab() {
               <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search URL or engine..."
+                placeholder="Search URL or channel..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-8 pr-3 py-1.5 bg-[#05070c] border border-white/[0.1] rounded-lg text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/80 w-44 sm:w-56"
@@ -458,7 +458,7 @@ export default function SourcesAuthorityTab() {
                 <th className="py-2.5 px-3">Indexed Source URL</th>
                 <th className="py-2.5 px-3">Channel Type</th>
                 <th className="py-2.5 px-3">Citations Logged</th>
-                <th className="py-2.5 px-3">ChatGPT Retrieval Vector</th>
+                <th className="py-2.5 px-3">Retrieval Pipeline</th>
                 <th className="py-2.5 px-3">Freshness</th>
                 <th className="py-2.5 px-3 text-right">HTTP / Content Health</th>
               </tr>
@@ -476,7 +476,7 @@ export default function SourcesAuthorityTab() {
                   <td className="py-3 px-3 font-tech-mono font-bold text-white">
                     {row.citations}
                   </td>
-                  <td className="py-3 px-3 text-slate-400 text-[11px] font-mono">{row.engines}</td>
+                  <td className="py-3 px-3 text-slate-400 text-[11px] font-mono">{row.pipeline}</td>
                   <td className="py-3 px-3 text-slate-400 text-[11px]">{row.freshness}</td>
                   <td className="py-3 px-3 text-right">
                     <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-tech-mono font-bold">
@@ -518,7 +518,7 @@ export default function SourcesAuthorityTab() {
               <div>
                 <span className="text-[10px] uppercase font-tech-mono text-slate-500 block">Recommended Pitch Angle</span>
                 <p className="text-slate-300 mt-1 leading-relaxed bg-[#06080e] p-3 rounded-lg border border-white/[0.08]">
-                  Highlight that Acme recently released automated Monte Carlo sweeps for OpenAI ChatGPT & SearchGPT, outperforming {gapOutreachModal.competitorCited} in citation attribution speed and API accuracy.
+                  Highlight that Acme recently released automated Monte Carlo sweeps for OpenAI ChatGPT, outperforming {gapOutreachModal.competitorCited} in citation attribution speed and API accuracy.
                 </p>
               </div>
 
