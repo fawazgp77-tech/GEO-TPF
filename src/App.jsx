@@ -120,6 +120,7 @@ function App() {
       <> {sessionError && <p role="alert" className="p-4 text-red-300">{sessionError}</p>}<Dashboard
         currentUser={currentUser || { name: 'Enterprise Analyst', email: 'analyst@enterprise.com', company: 'Acme Enterprise' }}
         onLogout={handleLogout}
+        onUpdateUser={setCurrentUser}
       /></>
     );
   }

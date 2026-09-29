@@ -1,19 +1,68 @@
 import React, { useState } from 'react';
 import { 
+  Eye, 
+  Target, 
+  ShieldCheck, 
   Globe, 
   Download, 
   LogOut, 
+  CheckCircle2,
   Menu,
   X,
+  Settings
 } from 'lucide-react';
 
+import AiVisibilityTab from './AiVisibilityTab';
+import CompetitivePositionTab from './CompetitivePositionTab';
+import AiAccuracyTrustTab from './AiAccuracyTrustTab';
+import SourcesAuthorityTab from './SourcesAuthorityTab';
+import AccountSettingsModal from './AccountSettingsModal';
 import BusinessWorkspace from './BusinessWorkspace';
 
-export default function Dashboard({ currentUser, onLogout }) {
+export default function Dashboard({ currentUser, onLogout, onUpdateUser }) {
+  const [activeTab, setActiveTab] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab');
+      return tab && ['visibility', 'competitive', 'accuracy', 'sources', 'businesses'].includes(tab) ? tab : 'visibility';
+    } catch {
+      return 'visibility';
+    }
+  });
+  const [selectedRun, setSelectedRun] = useState('Sep 26');
+  const [showExportToast, setShowExportToast] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const userData = currentUser;
-  const navItems = [{ id: 'businesses', label: 'YOUR BUSINESSES', icon: Globe }];
+  const [accountModalOpen, setAccountModalOpen] = useState(() => {
+    try {
+      return new URLSearchParams(window.location.search).get('modal') === 'settings';
+    } catch {
+      return false;
+    }
+  });
+  const [localUser, setLocalUser] = useState(null);
+  const userData = localUser || currentUser || { name: 'Sarah Chen', email: 'sarah.chen@acme.com', company: 'acme.com' };
+
+  const navItems = [
+    { id: 'visibility', label: 'AI VISIBILITY', icon: Eye },
+    { id: 'competitive', label: 'COMPETITIVE POSITION', icon: Target },
+    { id: 'accuracy', label: 'AI ACCURACY & TRUST', icon: ShieldCheck },
+    { id: 'sources', label: 'SOURCES & AUTHORITY', icon: Globe },
+  ];
+
+  const recentRuns = [
+    { date: 'Sep 26', label: 'Analysis — Sep 26' },
+    { date: 'Sep 22', label: 'Analysis — Sep 22' },
+    { date: 'Sep 18', label: 'Analysis — Sep 18' },
+    { date: 'Sep 12', label: 'Analysis — Sep 12' },
+  ];
+
+  const handleExport = () => {
+    setShowExportToast(true);
+    setTimeout(() => {
+      setShowExportToast(false);
+    }, 2500);
+  };
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-[#06080d] text-slate-100 flex flex-col lg:flex-row font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
@@ -71,11 +120,12 @@ export default function Dashboard({ currentUser, onLogout }) {
             <nav className="space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
-                const isActive = true;
+                const isActive = activeTab === item.id;
                 return (
                   <button
                     key={item.id}
                     onClick={() => {
+                      setActiveTab(item.id);
                       setMobileSidebarOpen(false);
                     }}
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-all text-left cursor-pointer ${
@@ -98,11 +148,25 @@ export default function Dashboard({ currentUser, onLogout }) {
               RECENT RUNS
             </div>
             <div className="space-y-1">
+              {recentRuns.map((run) => (
+                <button
+                  key={run.date}
+                  onClick={() => setSelectedRun(run.date)}
+                  className={`w-full flex items-center justify-between px-3 py-1.5 rounded text-xs font-tech-mono transition-colors text-left ${
+                    selectedRun === run.date
+                      ? 'text-emerald-400 bg-white/[0.04]'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.02]'
+                  }`}
+                >
+                  <span className="truncate">{run.label}</span>
+                  <span className="text-[10px] text-slate-500">{run.date}</span>
+                </button>
+              ))}
               <button
-                disabled
+                onClick={() => alert('Viewing complete historical ingestion runs.')}
                 className="w-full text-left px-3 pt-2 text-[11px] font-tech-mono text-emerald-400/80 hover:text-emerald-300 transition-colors"
               >
-                No scans yet
+                View all history →
               </button>
             </div>
           </div>
@@ -111,7 +175,6 @@ export default function Dashboard({ currentUser, onLogout }) {
         {/* User Profile Card & Back to Website */}
         <div className="pt-4 border-t border-white/[0.08] space-y-3 relative">
           
-          {/* Profile Popover Menu */}
           {/* Profile Popover Menu */}
           {profileMenuOpen && (
             <>
@@ -128,9 +191,33 @@ export default function Dashboard({ currentUser, onLogout }) {
                     {userData?.email || 'sarah.chen@acme.com'}
                   </div>
                   <div className="mt-1 flex items-center justify-between text-[9px] font-tech-mono">
-                    <span className="text-emerald-400 font-bold uppercase">Foundation</span>
-                    <span className="text-slate-500">No scans yet</span>
+                    <span className="text-emerald-400 font-bold uppercase">Pro Plan Active</span>
+                    <span className="text-slate-500">847/1k prompts</span>
                   </div>
+                </div>
+
+                <div className="space-y-1 font-tech-mono text-[11px]">
+                  <button
+                    onClick={() => {
+                      setProfileMenuOpen(false);
+                      setAccountModalOpen(true);
+                    }}
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded hover:bg-white/5 text-slate-300 hover:text-white text-left transition-colors cursor-pointer"
+                  >
+                    <Settings className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Account Settings</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setProfileMenuOpen(false);
+                      setActiveTab('businesses');
+                    }}
+                    className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded hover:bg-white/5 text-slate-300 hover:text-white text-left transition-colors cursor-pointer"
+                  >
+                    <Globe className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Business Profiles</span>
+                  </button>
                 </div>
 
                 <div className="pt-1.5 border-t border-white/[0.06]">
@@ -154,7 +241,7 @@ export default function Dashboard({ currentUser, onLogout }) {
             <button
               onClick={() => setProfileMenuOpen(!profileMenuOpen)}
               className="flex items-center gap-2.5 text-left cursor-pointer w-full min-w-0"
-              title="Open account menu"
+              title="Click to view Account & Plan Settings"
             >
               <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-cyan-500 text-white font-bold text-xs flex items-center justify-center font-tech-mono shadow-sm group-hover:scale-105 transition-transform flex-shrink-0">
                 {userData?.name ? userData.name.substring(0, 2).toUpperCase() : 'SC'}
@@ -164,7 +251,7 @@ export default function Dashboard({ currentUser, onLogout }) {
                   {userData?.name || 'Sarah Chen'}
                 </div>
                 <div className="text-[10px] font-tech-mono text-emerald-400 flex items-center gap-1">
-                  <span>Workspace</span>
+                  <span>Pro Plan</span>
                   <span className="text-[9px] text-slate-500">▾</span>
                 </div>
               </div>
@@ -187,17 +274,20 @@ export default function Dashboard({ currentUser, onLogout }) {
               </span>
               <span className="text-slate-600">•</span>
               <span className="text-xs font-mono text-slate-400">
-                {currentUser.email}
+                {userData?.company || userData?.website || userData?.name || 'acme.com'} | Analyzed: {selectedRun}, 2026
               </span>
             </div>
 
-            <div className="mt-1 text-[11px] font-tech-mono text-slate-500">Business profiles, tracked prompts and scan evidence</div>
+            <div className="flex items-center gap-3 mt-1 text-[11px] font-tech-mono text-slate-500">
+              <span>PROMPTS: <strong className="text-emerald-400">847</strong></span>
+              <span>AI MODEL: <strong className="text-emerald-400">OPENAI CHATGPT</strong></span>
+            </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
             <button
-              disabled title="Available after your first scan"
+              onClick={handleExport}
               className="px-3.5 py-1.5 rounded-lg border border-white/[0.1] hover:border-white/20 bg-white/[0.03] hover:bg-white/[0.06] text-xs font-tech-mono text-slate-200 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <Download className="w-3.5 h-3.5 text-slate-400" />
@@ -208,10 +298,51 @@ export default function Dashboard({ currentUser, onLogout }) {
 
         {/* Tab Content Canvas */}
         <main className="flex-1 p-5 sm:p-7 max-w-7xl w-full mx-auto">
-          <BusinessWorkspace />
+          {activeTab === 'visibility' && <AiVisibilityTab />}
+          {activeTab === 'competitive' && <CompetitivePositionTab />}
+          {activeTab === 'accuracy' && <AiAccuracyTrustTab />}
+          {activeTab === 'sources' && <SourcesAuthorityTab />}
+          {activeTab === 'businesses' && <BusinessWorkspace />}
         </main>
 
       </div>
+
+      {/* Export Toast Notification */}
+      {showExportToast && (
+        <div className="fixed bottom-6 right-6 z-50 bg-[#0c121e] border border-emerald-500/50 rounded-xl p-4 shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4">
+          <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
+            <CheckCircle2 className="w-4 h-4" />
+          </div>
+          <div>
+            <div className="text-xs font-tech-mono font-bold text-white">
+              Export Initialized
+            </div>
+            <div className="text-[11px] text-slate-400">
+              Generating full 14-page diagnostic executive PDF...
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Account Settings Modal */}
+      {accountModalOpen && (
+        <AccountSettingsModal
+          key={userData?.email || 'default'}
+          isOpen={accountModalOpen}
+          onClose={() => setAccountModalOpen(false)}
+          currentUser={userData}
+          onUpdateUser={(updated) => {
+            setLocalUser(updated);
+            if (onUpdateUser) onUpdateUser(updated);
+            try {
+              localStorage.setItem('geo_user_session', JSON.stringify(updated));
+            } catch (e) {
+              console.error(e);
+            }
+          }}
+          onLogout={onLogout}
+        />
+      )}
 
     </div>
   );
