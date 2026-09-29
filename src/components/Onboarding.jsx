@@ -781,40 +781,6 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                 </div>
               </div>
 
-              {/* Region Quick Select Pills */}
-              <div className="space-y-2 pt-2 border-t border-white/[0.06]">
-                <label className="block text-[10px] font-tech-mono uppercase text-slate-400 tracking-wider">
-                  Quick Select Operating Region:
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    'North America',
-                    'United States',
-                    'Europe / EMEA',
-                    'Asia-Pacific (APAC)',
-                    'Latin America (LATAM)',
-                    'Middle East & Africa',
-                    'Global / Worldwide'
-                  ].map((preset) => {
-                    const isSelected = region === preset;
-                    return (
-                      <button
-                        key={preset}
-                        type="button"
-                        onClick={() => setRegion(preset)}
-                        className={`text-xs font-mono px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
-                          isSelected
-                            ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.2)]'
-                            : 'bg-white/5 border-white/10 text-slate-400 hover:text-slate-200 hover:border-white/20'
-                        }`}
-                      >
-                        {preset}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
               {/* Optional Street Address */}
               <div className="space-y-2 pt-2 border-t border-white/[0.06]">
                 <label className="block text-[11px] font-tech-mono uppercase text-slate-400 tracking-wider">
