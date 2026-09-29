@@ -51,7 +51,7 @@ export async function createApp({ db, origin = 'http://localhost:5173', secure =
         const body = await readBody(req);
         const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
         const password = body.password;
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254 || typeof password !== 'string' || password.length < 12 || password.length > 128) throw new HttpError(400, 'Enter a valid email and a password of 12–128 characters.');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254 || typeof password !== 'string' || password.length < 6 || password.length > 128) throw new HttpError(400, 'Enter a valid email and a password of 6–128 characters.');
         let user;
         if (path.endsWith('signup')) {
           const name = typeof body.name === 'string' ? body.name.trim() : '';

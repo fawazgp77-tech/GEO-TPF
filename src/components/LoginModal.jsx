@@ -68,7 +68,7 @@ export default function LoginModal({ isOpen, onClose, initialMode = 'login', onL
         </label>
         <label className="block text-[11px] font-tech-mono uppercase text-slate-400 tracking-wider">Password
           <div className="relative mt-1.5">
-            <input className={`${inputClass} pr-11`} type={showPassword ? 'text' : 'password'} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} required minLength={mode === 'signup' ? 12 : undefined} maxLength={128} value={password} onChange={event => setPassword(event.target.value)} placeholder={mode === 'signup' ? 'At least 12 characters' : 'Enter your password'} />
+            <input className={`${inputClass} pr-11`} type={showPassword ? 'text' : 'password'} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} required minLength={mode === 'signup' ? 6 : undefined} maxLength={128} value={password} onChange={event => setPassword(event.target.value)} placeholder={mode === 'signup' ? 'At least 6 characters' : 'Enter your password'} />
             <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 p-1" aria-label={showPassword ? 'Hide password' : 'Show password'}>{showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}</button>
           </div>
         </label>
