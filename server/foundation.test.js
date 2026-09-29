@@ -62,10 +62,14 @@ test('auth, ownership, validation, verified truth revisions and persistent stora
     const token = login.cookie.split(';')[0].split('=')[1];
     db.prepare('UPDATE sessions SET expires_at=0 WHERE token_hash=?').run(digest(token));
     assert.equal((await request('/auth/me', 'GET', undefined, login.cookie.split(';')[0])).status, 401);
+    const relogin = await request('/auth/login', 'POST', credentials);
+    assert.equal(relogin.status, 200);
+    assert.equal((await request(`/businesses/${id}`, 'DELETE', undefined, cookieB)).status, 404);
+    assert.equal((await request(`/businesses/${id}`, 'DELETE', undefined, relogin.cookie.split(';')[0])).status, 200);
     await new Promise(resolve => app.close(resolve)); db.close();
     db = openDatabase(path);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM businesses').get().n, 1);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM business_truth').get().n, 2);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM businesses').get().n, 0);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM business_truth').get().n, 0);
   } finally {
     if (app.listening) await new Promise(resolve => app.close(resolve));
     db.close(); rmSync(directory, { recursive: true, force: true });

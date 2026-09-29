@@ -100,24 +100,6 @@ function App() {
           } catch (e) {
             console.error(e);
           }
-          if (answers?.business?.name) {
-            const formattedWebsite = answers.business.website
-              ? (answers.business.website.startsWith('http') ? answers.business.website : `https://${answers.business.website}`)
-              : 'https://example.com';
-            api('/businesses', {
-              method: 'POST',
-              body: {
-                name: answers.business.name,
-                website: formattedWebsite,
-                category: answers.aboutBusiness?.offering || 'Technology & Digital Services',
-                city: answers.address?.city || 'Headquarters',
-                country: answers.address?.region || answers.address?.state || 'US',
-                branch: answers.address?.streetAddress || ''
-              }
-            }).catch(err => {
-              console.warn('Failed to auto-register business from onboarding:', err);
-            });
-          }
           setCurrentView('dashboard');
         }}
         onSkip={() => setCurrentView('dashboard')}

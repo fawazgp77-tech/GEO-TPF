@@ -99,6 +99,12 @@ export function createSupabaseApi(client) {
       check(error);
       return { business: data };
     }
+    const businessDeleteMatch = path.match(/^\/businesses\/([0-9a-f-]+)$/i);
+    if (businessDeleteMatch && method === 'DELETE') {
+      const { error } = await client.from('businesses').delete().eq('id', businessDeleteMatch[1]).eq('user_id', user.id);
+      check(error);
+      return { ok: true };
+    }
     const promptsMatch = path.match(/^\/businesses\/([0-9a-f-]+)\/prompts(?:\/(generate|[0-9a-f-]+))?$/i);
     if (promptsMatch) {
       const businessId = promptsMatch[1];

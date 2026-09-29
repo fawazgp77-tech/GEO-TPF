@@ -109,6 +109,14 @@ export async function createApp({ db, origin = 'http://localhost:5173', secure =
         db.prepare('INSERT INTO businesses (id,user_id,name,website,category,country,city,branch) VALUES (?,?,?,?,?,?,?,?)').run(id, user.id, ...basicFields.map(([key]) => data[key]));
         return send(201, { business: { id, ...data } });
       }
+      const businessMatch = path.match(/^\/api\/businesses\/([^/]+)$/);
+      if (businessMatch && method === 'DELETE') {
+        const business = db.prepare('SELECT id FROM businesses WHERE id=? AND user_id=?').get(businessMatch[1], user.id);
+        if (!business) throw new HttpError(404, 'Business not found.');
+        db.prepare('DELETE FROM business_truth WHERE business_id=?').run(business.id);
+        db.prepare('DELETE FROM businesses WHERE id=?').run(business.id);
+        return send(200, { ok: true });
+      }
       const match = path.match(/^\/api\/businesses\/([^/]+)\/truth$/);
       if (match && ['GET', 'POST'].includes(method)) {
         const business = db.prepare('SELECT id FROM businesses WHERE id=? AND user_id=?').get(match[1], user.id);
