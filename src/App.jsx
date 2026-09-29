@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ForensicExtraction from './components/ForensicExtraction';
@@ -11,7 +11,7 @@ import AuditModal from './components/AuditModal';
 import BriefingModal from './components/BriefingModal';
 import LoginModal from './components/LoginModal';
 import Dashboard from './components/dashboard/Dashboard';
-import Onboarding from './components/Onboarding';
+import { api } from './lib/api';
 
 function App() {
   const [currentView, setCurrentView] = useState(() => {
@@ -44,80 +44,42 @@ function App() {
     }
   });
   const [authMode, setAuthMode] = useState('login');
-  
-  // User session state
-  const [currentUser, setCurrentUser] = useState(() => {
-    try {
-      const saved = localStorage.getItem('geo_user_session');
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
 
+  const [currentUser, setCurrentUser] = useState(null);
+  const [sessionLoading, setSessionLoading] = useState(true);
+  const [sessionError, setSessionError] = useState('');
+  useEffect(() => {
+    api('/auth/me').then(({ user }) => setCurrentUser(user))
+      .catch(() => setCurrentUser(null)).finally(() => setSessionLoading(false));
+  }, []);
+  useEffect(() => {
+    const expire = () => setCurrentUser(null);
+    window.addEventListener('presence:session-expired', expire);
+    return () => window.removeEventListener('presence:session-expired', expire);
+  }, []);
   const handleLoginSuccess = (user) => {
-    setCurrentUser(user);
-    try {
-      localStorage.setItem('geo_user_session', JSON.stringify(user));
-    } catch (e) {
-      console.error(e);
-    }
-    // Lead user directly into the dashboard upon login
-    setCurrentView('dashboard');
+    setCurrentUser(user); setLoginModalOpen(false); setCurrentView('dashboard');
   };
-
-  const handleSignupSuccess = (user) => {
-    setCurrentUser(user);
+  const handleSignupSuccess = handleLoginSuccess;
+  const handleLogout = async () => {
     try {
-      localStorage.setItem('geo_user_session', JSON.stringify(user));
-    } catch (e) {
-      console.error(e);
-    }
-    // When user signs up, display the onboarding questionnaire page!
-    setCurrentView('onboarding');
+      await api('/auth/logout', { method: 'POST', body: {} });
+      setCurrentUser(null); setCurrentView('landing'); setSessionError('');
+    } catch (error) { setSessionError(error.message); }
   };
-
-  const handleLogout = () => {
-    setCurrentUser(null);
-    try {
-      localStorage.removeItem('geo_user_session');
-    } catch (e) {
-      console.error(e);
-    }
-    setCurrentView('landing');
-  };
-
-  // If in onboarding view, render the post-signup questionnaire page
-  if (currentView === 'onboarding') {
-    return (
-      <Onboarding
-        currentUser={currentUser}
-        onComplete={(answers) => {
-          const updatedUser = {
-            ...(currentUser || {}),
-            onboarding: answers
-          };
-          setCurrentUser(updatedUser);
-          try {
-            localStorage.setItem('geo_user_session', JSON.stringify(updatedUser));
-          } catch (e) {
-            console.error(e);
-          }
-          setCurrentView('dashboard');
-        }}
-        onSkip={() => setCurrentView('dashboard')}
-      />
-    );
+  if (sessionLoading) return <div className="p-10 text-slate-300" role="status">Loading your session…</div>;
+  if (['dashboard', 'onboarding'].includes(currentView) && !currentUser) {
+    return <div className="min-h-screen bg-[#07090e]"><LoginModal isOpen initialMode="login" onClose={() => setCurrentView('landing')} onLoginSuccess={handleLoginSuccess} onSignupSuccess={handleSignupSuccess} /></div>;
   }
 
   // If in dashboard view, render the complete GEO ENGINE dashboard
-  if (currentView === 'dashboard') {
+  if (['dashboard', 'onboarding'].includes(currentView)) {
     return (
-      <Dashboard
+      <> {sessionError && <p role="alert" className="p-4 text-red-300">{sessionError}</p>}<Dashboard
         currentUser={currentUser}
-        onUpdateUser={(updated) => setCurrentUser(updated)}
+
         onLogout={handleLogout}
-      />
+      /></>
     );
   }
 
@@ -135,6 +97,7 @@ function App() {
         onGoToDashboard={() => setCurrentView('dashboard')}
       />
 
+      <p className="px-6 py-3 text-center text-xs text-slate-400 border-y border-white/10">Product preview: the examples below use demonstration data.</p>
       {/* Main Sections */}
       <main className="flex-1">
         {/* Hero Section: Your Brand Through AI's Eyes + Live Prompt Vector Synthesizer */}

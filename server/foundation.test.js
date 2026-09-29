@@ -1,0 +1,69 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { openDatabase } from './db.js';
+import { createApp } from './app.js';
+import { digest, sessionCookie } from './auth.js';
+
+test('auth, ownership, validation, verified truth revisions and persistent storage', async () => {
+  const directory = mkdtempSync(join(tmpdir(), 'presence-test-'));
+  const path = join(directory, 'test.sqlite');
+  let db = openDatabase(path);
+  const app = await createApp({ db });
+  await new Promise(resolve => app.listen(0, '127.0.0.1', resolve));
+  const base = `http://127.0.0.1:${app.address().port}/api`;
+  const request = async (url, method = 'GET', body, cookie = '', origin = 'http://localhost:5173') => {
+    const response = await fetch(base + url, { method, headers: { 'Content-Type': 'application/json', Origin: origin, Cookie: cookie }, body: body === undefined ? undefined : JSON.stringify(body) });
+    return { status: response.status, data: await response.json(), cookie: response.headers.get('set-cookie') };
+  };
+  try {
+    assert.equal((await request('/businesses')).status, 401);
+    assert.equal((await request('/auth/signup', 'POST', { email: 'a@example.com', password: 'short', name: 'A' })).status, 400);
+    const credentials = { email: 'A@example.com', password: 'a-long-test-password', name: 'Owner A' };
+    const a = await request('/auth/signup', 'POST', credentials);
+    assert.equal(a.status, 200); assert.match(a.cookie, /HttpOnly/); assert.match(a.cookie, /SameSite=Lax/);
+    assert.match(sessionCookie('token', 60, true), /Secure/);
+    assert.equal(a.data.user.email, 'a@example.com'); assert.equal(a.data.user.password_hash, undefined);
+    const cookieA = a.cookie.split(';')[0];
+    assert.equal((await request('/auth/signup', 'POST', credentials)).status, 409);
+    assert.equal((await request('/auth/login', 'POST', { ...credentials, password: 'wrong-long-password' })).status, 401);
+    assert.equal((await request('/auth/me', 'GET', undefined, cookieA)).data.user.id, a.data.user.id);
+    const stored = db.prepare('SELECT password_hash FROM users WHERE id=?').get(a.data.user.id);
+    assert.notEqual(stored.password_hash, credentials.password);
+    const b = await request('/auth/signup', 'POST', { ...credentials, email: 'b@example.com' });
+    const cookieB = b.cookie.split(';')[0];
+    const business = { name: 'Academy', website: 'https://example.com', category: 'Cricket', country: 'India', city: 'Nagpur', branch: '' };
+    assert.equal((await request('/businesses', 'POST', business, cookieA, 'https://evil.example')).status, 403);
+    assert.equal((await request('/businesses', 'POST', { ...business, website: 'javascript:alert(1)' }, cookieA)).status, 400);
+    const created = await request('/businesses', 'POST', { ...business, user_id: b.data.user.id }, cookieA);
+    assert.equal(created.status, 201);
+    const id = created.data.business.id;
+    assert.equal((await request('/businesses', 'GET', undefined, cookieB)).data.businesses.length, 0);
+    const truthPath = `/businesses/${id}/truth`;
+    assert.equal((await request(truthPath, 'GET', undefined, cookieB)).status, 404);
+    const data = { officialName: 'Academy', description: 'Coaching', address: 'Nagpur', website: business.website, services: 'Cricket lessons', audience: 'Children', areasServed: 'Nagpur' };
+    assert.equal((await request(truthPath, 'POST', { data, verified: true, version: 0 }, cookieB)).status, 404);
+    assert.equal((await request(truthPath, 'POST', { data, version: 0 }, cookieA)).status, 400);
+    assert.equal((await request(truthPath, 'POST', { data, verified: true, version: 0 }, cookieA)).status, 201);
+    assert.equal((await request(truthPath, 'POST', { data, verified: true, version: 0 }, cookieA)).status, 409);
+    assert.equal((await request(truthPath, 'POST', { data: { ...data, phone: '12345' }, verified: true, version: 1 }, cookieA)).status, 201);
+    assert.equal((await request(truthPath, 'GET', undefined, cookieA)).data.truth.version, 2);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM business_truth').get().n, 2);
+    assert.equal((await request('/auth/logout', 'POST', {}, cookieA)).status, 200);
+    assert.equal((await request('/auth/me', 'GET', undefined, cookieA)).status, 401);
+    const login = await request('/auth/login', 'POST', credentials);
+    assert.equal(login.status, 200);
+    const token = login.cookie.split(';')[0].split('=')[1];
+    db.prepare('UPDATE sessions SET expires_at=0 WHERE token_hash=?').run(digest(token));
+    assert.equal((await request('/auth/me', 'GET', undefined, login.cookie.split(';')[0])).status, 401);
+    await new Promise(resolve => app.close(resolve)); db.close();
+    db = openDatabase(path);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM businesses').get().n, 1);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM business_truth').get().n, 2);
+  } finally {
+    if (app.listening) await new Promise(resolve => app.close(resolve));
+    db.close(); rmSync(directory, { recursive: true, force: true });
+  }
+});

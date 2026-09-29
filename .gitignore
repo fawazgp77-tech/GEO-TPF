@@ -24,3 +24,11 @@ dist-ssr
 *.sw?
 screenshots/
 *.pdf
+
+# Private runtime data
+.env
+.env.*
+!.env.example
+data/
+*.sqlite*
+supabase/.temp/

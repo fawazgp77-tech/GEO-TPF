@@ -7,9 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:server": "node --env-file-if-exists=.env server/index.js",
+    "test": "node --test server/*.test.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.117.2",
     "lucide-react": "^1.48.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
@@ -22,5 +25,8 @@
     "oxlint": "^1.81.0",
     "tailwindcss": "^4.3.3",
     "vite": "^8.3.0"
+  },
+  "engines": {
+    "node": ">=24.12.0"
   }
 }
