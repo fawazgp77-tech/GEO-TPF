@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../../lib/api';
 import { basicFields, truthFields } from '../../../shared/business';
+import PromptWorkspace from './PromptWorkspace';
 
 const button = 'rounded-xl bg-emerald-400 text-slate-950 px-5 py-3 text-sm font-semibold disabled:opacity-50';
 const input = 'mt-2 w-full rounded-xl bg-[#06080e] border border-white/10 px-4 py-3 text-sm text-slate-100 focus:outline-emerald-400';
@@ -47,6 +48,7 @@ export default function BusinessWorkspace() {
       }
     } catch (e) { setError(e.message); } finally { setBusy(false); }
   }
+  if (stage === 'prompts' && selected) return <PromptWorkspace business={selected} onBack={() => { setStage('list'); refresh().catch(e => setError(e.message)); }} />;
   return <section className="space-y-6">
     <div className="flex flex-wrap items-center justify-between gap-4">
       <div><h1 className="text-2xl font-bold">{stage === 'create' ? 'Add Business' : stage === 'truth' ? 'Business Truth' : 'Your businesses'}</h1>
@@ -61,8 +63,9 @@ export default function BusinessWorkspace() {
       <div className="grid md:grid-cols-2 gap-5">{businesses.map(business => <article key={business.id} className="rounded-2xl border border-white/10 bg-[#0b0f17] p-6 space-y-4">
         <h2 className="text-lg font-semibold">{business.name}</h2><p className="text-sm text-slate-400">{business.category} · {business.city}, {business.country}{business.branch ? ` · ${business.branch}` : ''}</p>
         <p className="text-sm text-emerald-300">{business.truth_version ? `Brand Truth verified · revision ${business.truth_version}` : 'Onboarding incomplete'}</p>
-        <p className="text-sm text-slate-500">No scans yet. Visibility, issues and changes will appear after your first scan.</p>
-        <button disabled={busy} className={button} onClick={() => openTruth(business)}>{business.truth_version ? 'Review Brand Truth' : 'Complete onboarding'}</button>
+        <p className="text-sm text-slate-500">{business.latest_scan_status ? `Latest scan: ${business.latest_scan_status.replaceAll('_', ' ')}. Analysis metrics are not yet available.` : 'No scans yet. Visibility, issues and changes will appear after analysis is implemented.'}</p>
+        <div className="flex flex-wrap gap-3"><button disabled={busy} className={button} onClick={() => openTruth(business)}>{business.truth_version ? 'Review Brand Truth' : 'Complete onboarding'}</button>
+          {business.truth_version && <button disabled={busy} className="rounded-xl border border-emerald-400/40 text-emerald-300 px-5 py-3 text-sm" onClick={() => { setSelected(business); setStage('prompts'); setError(''); }}>Prompts & scans</button>}</div>
       </article>)}</div>
     </> : <form onSubmit={save} className="rounded-2xl border border-white/10 bg-[#0b0f17] p-6 space-y-6">
       <div className="grid md:grid-cols-2 gap-5">{(stage === 'create' ? basicFields : truthFields).map(([key, label, required]) => <label key={key} className="text-sm text-slate-300">{label}{required ? ' *' : ' (optional)'}

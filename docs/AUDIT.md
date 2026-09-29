@@ -1,5 +1,9 @@
 # PresenceAI repository audit and implementation plan
 
+## Phase 2 progress
+
+Persistent prompt CRUD and 20 context-aware template suggestions now use Supabase RLS. Scans snapshot exact prompt text and truth version; a Node worker queues and processes requests through one OpenAI provider, preserving provider payloads and per-prompt failures. The worker needs server-only Supabase and OpenAI keys before live scans can run. Analysis, metrics, issues, and historical comparisons are subsequent work. Existing metric cards remain disconnected.
+
 ## Supabase integration update
 
 Project `nougnhpinewhbgixjwgc` now provides hosted Auth and PostgreSQL for the Phase 1 website. `src/lib/supabase.js` configures the browser client with a publishable key; `src/lib/supabaseApi.js` maps the existing UI operations to Supabase Auth and owner-scoped tables. The tracked SQL migration creates `public.businesses` and append-only `public.business_truth` with explicit grants and Row Level Security. The initial Node/SQLite implementation remains available only as a legacy local fallback when Supabase environment variables are absent. Its user credentials cannot be carried into Supabase Auth automatically.

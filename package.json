@@ -9,6 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "dev:server": "node --env-file-if-exists=.env server/index.js",
+    "dev:scans": "node --env-file-if-exists=.env.local --env-file-if-exists=.env.scan server/scans/index.js",
     "test": "node --test server/*.test.js"
   },
   "dependencies": {

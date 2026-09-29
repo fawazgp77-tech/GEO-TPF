@@ -191,11 +191,7 @@ export default function Dashboard({ currentUser, onLogout }) {
               </span>
             </div>
 
-            <div className="flex items-center gap-3 mt-1 text-[11px] font-tech-mono text-slate-500">
-              <span>PROMPTS: <strong className="text-emerald-400">Not generated</strong></span>
-              <span>AI MODEL: <strong className="text-emerald-400">Not configured</strong></span>
-              <span className="text-slate-400 hidden sm:inline">• Business onboarding</span>
-            </div>
+            <div className="mt-1 text-[11px] font-tech-mono text-slate-500">Business profiles, tracked prompts and scan evidence</div>
           </div>
 
           {/* Action Buttons */}
