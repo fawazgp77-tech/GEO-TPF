@@ -100,30 +100,42 @@ slides_data = [
         )
     },
     {
-        "id": "08a_onboarding_user",
+        "id": "08a_onboarding_business",
         "tag": "ONBOARDING // STEP 01",
-        "title": "Workspace Onboarding: About The User",
-        "subtitle": "User role, primary AI search objectives, and target prompt intent templates",
+        "title": "Workspace Onboarding: Your Business",
+        "subtitle": "Business brand name and official website URL calibration prior to discovery questions",
         "action": lambda page: (
             page.goto("http://localhost:5173/?view=onboarding"),
             page.wait_for_timeout(1000)
         )
     },
     {
-        "id": "08b_onboarding_business",
+        "id": "08b_onboarding_user",
         "tag": "ONBOARDING // STEP 02",
-        "title": "Workspace Onboarding: About The Business",
-        "subtitle": "Core offering structure, customer problems solved, and primary target customer segments",
+        "title": "Workspace Onboarding: About The User",
+        "subtitle": "User role, primary AI search objectives, and target prompt intent templates",
         "action": lambda page: (
             page.goto("http://localhost:5173/?view=onboarding"),
             page.wait_for_timeout(800),
-            page.get_by_role("button", name="About The Business").click(),
+            page.get_by_role("button", name="About The User").click(),
             page.wait_for_timeout(800)
         )
     },
     {
-        "id": "08c_onboarding_address",
+        "id": "08c_onboarding_business_details",
         "tag": "ONBOARDING // STEP 03",
+        "title": "Workspace Onboarding: Business Details",
+        "subtitle": "Core offering structure, customer problems solved, and primary target customer segments",
+        "action": lambda page: (
+            page.goto("http://localhost:5173/?view=onboarding"),
+            page.wait_for_timeout(800),
+            page.get_by_role("button", name="Business Details").click(),
+            page.wait_for_timeout(800)
+        )
+    },
+    {
+        "id": "08d_onboarding_address",
+        "tag": "ONBOARDING // STEP 04",
         "title": "Workspace Onboarding: Business Address",
         "subtitle": "Geographic presence, State, City, and Region calibration for local AI citation engines",
         "action": lambda page: (
@@ -210,7 +222,10 @@ slides_data = [
 ]
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(executable_path=r"C:\Program Files\Google\Chrome\Application\chrome.exe", headless=True)
+    try:
+        browser = p.chromium.launch(channel="msedge", headless=True)
+    except Exception:
+        browser = p.chromium.launch(headless=True)
     page = browser.new_page(viewport={"width": 1600, "height": 1000}, device_scale_factor=2)
 
     for i, slide in enumerate(slides_data, 1):

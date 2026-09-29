@@ -12,12 +12,16 @@ import {
 } from 'lucide-react';
 
 export default function Onboarding({ currentUser, onComplete, onSkip }) {
-  const [currentStep, setCurrentStep] = useState(1); // 1: About User, 2: About Business, 3: Address (State, City, Region)
+  const [currentStep, setCurrentStep] = useState(1); // 1: Business Profile, 2: About User, 3: About Business, 4: Address
   const [isFinishing, setIsFinishing] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [currentStep]);
+
+  // Form State: Business Profile (Before questions)
+  const [businessName, setBusinessName] = useState('');
+  const [businessWebsite, setBusinessWebsite] = useState('');
 
   // Form State: About User
   const [role, setRole] = useState('');
@@ -56,6 +60,12 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
   const handleFinish = () => {
     setIsFinishing(true);
     const answers = {
+      business: {
+        name: businessName.trim(),
+        website: businessWebsite.trim().startsWith('http')
+          ? businessWebsite.trim()
+          : `https://${businessWebsite.trim()}`
+      },
       aboutUser: {
         role: role === 'Other' ? (roleOther || 'Other') : role,
         goals,
@@ -146,9 +156,10 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
     'Other'
   ];
 
-  const isStep1Answered = role && goals.length > 0 && queryTypes.length > 0;
-  const isStep2Answered = offering && problemsSolved.length > 0 && customers.length > 0;
-  const isStep3Answered = Boolean(stateName.trim() && city.trim() && region.trim());
+  const isStep1Answered = Boolean(businessName.trim() && businessWebsite.trim());
+  const isStep2Answered = role && goals.length > 0 && queryTypes.length > 0;
+  const isStep3Answered = offering && problemsSolved.length > 0 && customers.length > 0;
+  const isStep4Answered = Boolean(stateName.trim() && city.trim() && region.trim());
 
   if (isFinishing) {
     return (
@@ -167,7 +178,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
               Calibrating GEO Telemetry...
             </h2>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Applying your role, business model, and regional address telemetry ({[city, stateName, region].filter(Boolean).join(', ') || 'State, City, Region'}) to the frontier AI radar.
+              Applying {businessName ? `${businessName}, ` : ''}your role, business model, and regional address telemetry ({[city, stateName, region].filter(Boolean).join(', ') || 'State, City, Region'}) to the frontier AI radar.
             </p>
           </div>
           <div className="w-full bg-[#111622] h-1.5 rounded-full overflow-hidden">
@@ -215,11 +226,11 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
 
         {/* Stepper Navigation Bar */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-3 pt-1">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            {/* Step 1 Button */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+            {/* Step 1 Button: Your Business */}
             <button
               onClick={() => setCurrentStep(1)}
-              className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+              className={`flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                 currentStep === 1
                   ? 'bg-emerald-950/40 border-emerald-500/50 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]'
                   : isStep1Answered
@@ -227,29 +238,29 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                   : 'bg-[#0b0f17]/60 border-white/[0.08] hover:border-white/20'
               }`}
             >
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
+              <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
                 isStep1Answered
                   ? 'bg-emerald-400 text-emerald-950'
                   : currentStep === 1
                   ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
                   : 'bg-white/5 text-slate-400 border border-white/10'
               }`}>
-                {isStep1Answered ? <Check className="w-4.5 h-4.5 stroke-[2.5]" /> : '01'}
+                {isStep1Answered ? <Check className="w-4 h-4 stroke-[2.5]" /> : '01'}
               </div>
               <div className="min-w-0">
                 <div className="text-[10px] font-tech-mono uppercase tracking-wider text-slate-400">Step 1</div>
-                <div className={`text-sm sm:text-base font-semibold truncate ${
+                <div className={`text-xs sm:text-sm font-semibold truncate ${
                   currentStep === 1 ? 'text-white' : 'text-slate-300'
                 }`}>
-                  About The User
+                  Your Business
                 </div>
               </div>
             </button>
 
-            {/* Step 2 Button */}
+            {/* Step 2 Button: About The User */}
             <button
               onClick={() => setCurrentStep(2)}
-              className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+              className={`flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                 currentStep === 2
                   ? 'bg-emerald-950/40 border-emerald-500/50 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]'
                   : isStep2Answered
@@ -257,29 +268,29 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                   : 'bg-[#0b0f17]/60 border-white/[0.08] hover:border-white/20'
               }`}
             >
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
+              <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
                 isStep2Answered
                   ? 'bg-emerald-400 text-emerald-950'
                   : currentStep === 2
                   ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
                   : 'bg-white/5 text-slate-400 border border-white/10'
               }`}>
-                {isStep2Answered ? <Check className="w-4.5 h-4.5 stroke-[2.5]" /> : '02'}
+                {isStep2Answered ? <Check className="w-4 h-4 stroke-[2.5]" /> : '02'}
               </div>
               <div className="min-w-0">
                 <div className="text-[10px] font-tech-mono uppercase tracking-wider text-slate-400">Step 2</div>
-                <div className={`text-sm sm:text-base font-semibold truncate ${
+                <div className={`text-xs sm:text-sm font-semibold truncate ${
                   currentStep === 2 ? 'text-white' : 'text-slate-300'
                 }`}>
-                  About The Business
+                  About The User
                 </div>
               </div>
             </button>
 
-            {/* Step 3 Button */}
+            {/* Step 3 Button: About The Business */}
             <button
               onClick={() => setCurrentStep(3)}
-              className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+              className={`flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                 currentStep === 3
                   ? 'bg-emerald-950/40 border-emerald-500/50 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]'
                   : isStep3Answered
@@ -287,19 +298,49 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                   : 'bg-[#0b0f17]/60 border-white/[0.08] hover:border-white/20'
               }`}
             >
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
+              <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
                 isStep3Answered
                   ? 'bg-emerald-400 text-emerald-950'
                   : currentStep === 3
                   ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
                   : 'bg-white/5 text-slate-400 border border-white/10'
               }`}>
-                {isStep3Answered ? <Check className="w-4.5 h-4.5 stroke-[2.5]" /> : '03'}
+                {isStep3Answered ? <Check className="w-4 h-4 stroke-[2.5]" /> : '03'}
               </div>
               <div className="min-w-0">
                 <div className="text-[10px] font-tech-mono uppercase tracking-wider text-slate-400">Step 3</div>
-                <div className={`text-sm sm:text-base font-semibold truncate ${
+                <div className={`text-xs sm:text-sm font-semibold truncate ${
                   currentStep === 3 ? 'text-white' : 'text-slate-300'
+                }`}>
+                  Business Details
+                </div>
+              </div>
+            </button>
+
+            {/* Step 4 Button: Business Address */}
+            <button
+              onClick={() => setCurrentStep(4)}
+              className={`flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
+                currentStep === 4
+                  ? 'bg-emerald-950/40 border-emerald-500/50 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]'
+                  : isStep4Answered
+                  ? 'bg-[#0b0f17]/90 border-emerald-500/30 hover:border-white/20'
+                  : 'bg-[#0b0f17]/60 border-white/[0.08] hover:border-white/20'
+              }`}
+            >
+              <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
+                isStep4Answered
+                  ? 'bg-emerald-400 text-emerald-950'
+                  : currentStep === 4
+                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
+                  : 'bg-white/5 text-slate-400 border border-white/10'
+              }`}>
+                {isStep4Answered ? <Check className="w-4 h-4 stroke-[2.5]" /> : '04'}
+              </div>
+              <div className="min-w-0">
+                <div className="text-[10px] font-tech-mono uppercase tracking-wider text-slate-400">Step 4</div>
+                <div className={`text-xs sm:text-sm font-semibold truncate ${
+                  currentStep === 4 ? 'text-white' : 'text-slate-300'
                 }`}>
                   Business Address
                 </div>
@@ -311,7 +352,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
           <div className="w-full bg-[#111622] h-1.5 rounded-full mt-3.5 overflow-hidden">
             <div 
               className="bg-emerald-400 h-full transition-all duration-300"
-              style={{ width: currentStep === 1 ? '33.3%' : currentStep === 2 ? '66.6%' : '100%' }}
+              style={{ width: currentStep === 1 ? '25%' : currentStep === 2 ? '50%' : currentStep === 3 ? '75%' : '100%' }}
             />
           </div>
         </div>
@@ -320,14 +361,118 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
       {/* Main Content Area */}
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12">
         
-        {/* ================= STEP 1: ABOUT THE USER ================= */}
+        {/* ================= STEP 1: YOUR BUSINESS (NAME & WEBSITE) ================= */}
         {currentStep === 1 && (
+          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            {/* Header Banner */}
+            <div className="border-b border-white/[0.08] pb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-tech-mono text-emerald-300 uppercase tracking-wider mb-2">
+                <Building2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span>STEP 01 // YOUR BUSINESS</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                What is your business name & website?
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
+                Before answering discovery questions, tell us your brand name and official website URL so our AI engine can identify your digital footprint.
+              </p>
+            </div>
+
+            {/* Business Form Card */}
+            <div className="bg-[#0b0f17] border border-white/[0.09] rounded-2xl p-6 sm:p-8 space-y-6">
+              <div>
+                <span className="font-tech-mono text-xs text-emerald-400 font-semibold uppercase tracking-wider block mb-1">
+                  PRIMARY IDENTITY // BRAND PROFILE
+                </span>
+                <h3 className="text-base sm:text-lg font-semibold text-white">
+                  Enter your business identity
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  We will calibrate LLM answer queries and search prompts directly around this brand and domain.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {/* Business Name Input */}
+                <div className="space-y-2">
+                  <label className="block text-[11px] font-tech-mono uppercase text-slate-300 tracking-wider">
+                    Business Name <span className="text-emerald-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Acme Corp, Vercel, Stripe"
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
+                    className="w-full bg-[#06080e] border border-white/[0.12] hover:border-white/20 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-3.5 text-sm sm:text-base text-slate-100 placeholder:text-slate-500 outline-none transition-all font-mono"
+                  />
+                  <span className="text-[11px] text-slate-500 font-mono block">The commercial brand name people search for.</span>
+                </div>
+
+                {/* Business Website Input */}
+                <div className="space-y-2">
+                  <label className="block text-[11px] font-tech-mono uppercase text-slate-300 tracking-wider">
+                    Business Website <span className="text-emerald-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. https://acme.com or acme.com"
+                    value={businessWebsite}
+                    onChange={(e) => setBusinessWebsite(e.target.value)}
+                    className="w-full bg-[#06080e] border border-white/[0.12] hover:border-white/20 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-3.5 text-sm sm:text-base text-slate-100 placeholder:text-slate-500 outline-none transition-all font-mono"
+                  />
+                  <span className="text-[11px] text-slate-500 font-mono block">Your primary domain where customers find you online.</span>
+                </div>
+              </div>
+
+              {/* Preview Card */}
+              {(businessName || businessWebsite) && (
+                <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-start gap-3 text-xs text-slate-300 animate-in fade-in duration-200">
+                  <Globe2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-tech-mono text-emerald-400 font-semibold block mb-0.5">
+                      IDENTIFIED TARGET PROFILE
+                    </span>
+                    <span className="font-mono text-slate-200">
+                      {businessName || 'Business Name'}
+                      {businessWebsite ? ` • ${businessWebsite.startsWith('http') ? businessWebsite : `https://${businessWebsite}`}` : ''}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Step 1 Actions */}
+            <div className="flex items-center justify-between pt-6 border-t border-white/[0.08]">
+              <span className="text-xs font-tech-mono text-slate-500">
+                {isStep1Answered ? '✓ Business Identity Provided' : 'Enter business name and website to continue'}
+              </span>
+              <button
+                type="button"
+                onClick={() => setCurrentStep(2)}
+                disabled={!isStep1Answered}
+                className={`px-6 py-3 rounded-xl font-tech-mono font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer ${
+                  isStep1Answered
+                    ? 'bg-emerald-400 hover:bg-emerald-300 text-emerald-950 shadow-[0_0_25px_-5px_rgba(16,185,129,0.5)] active:scale-[0.99]'
+                    : 'bg-white/10 text-slate-500 cursor-not-allowed border border-white/5'
+                }`}
+              >
+                <span>Continue to Questions</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ================= STEP 2: ABOUT THE USER ================= */}
+        {currentStep === 2 && (
           <div className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-300">
             {/* Header Banner */}
             <div className="border-b border-white/[0.08] pb-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-tech-mono text-emerald-300 uppercase tracking-wider mb-2">
                 <User className="w-3.5 h-3.5 text-emerald-400" />
-                <span>ABOUT THE USER</span>
+                <span>STEP 02 // ABOUT THE USER</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
                 Tell us about your role & search priorities
@@ -483,31 +628,47 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
               )}
             </div>
 
-            {/* Step 1 Actions */}
-            <div className="flex items-center justify-between pt-6 border-t border-white/[0.08]">
-              <span className="text-xs font-tech-mono text-slate-500">
-                {isStep1Answered ? '✓ Step 1 Complete' : 'Answer all 3 questions to proceed'}
-              </span>
+            {/* Step 2 Actions */}
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
               <button
                 type="button"
-                onClick={() => setCurrentStep(2)}
-                className="px-6 py-3 rounded-xl font-tech-mono font-semibold text-xs sm:text-sm bg-emerald-400 hover:bg-emerald-300 text-emerald-950 transition-all flex items-center gap-2 shadow-[0_0_25px_-5px_rgba(16,185,129,0.5)] cursor-pointer"
+                onClick={() => setCurrentStep(1)}
+                className="px-5 py-2.5 rounded-xl font-tech-mono text-xs text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex items-center gap-2 cursor-pointer"
               >
-                <span>Continue to Business Details</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back to Business Info</span>
               </button>
+
+              <div className="flex items-center gap-4">
+                <span className="text-xs font-tech-mono text-slate-500 hidden sm:inline-block">
+                  {isStep2Answered ? '✓ Step 2 Complete' : 'Answer all 3 questions to proceed'}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(3)}
+                  disabled={!isStep2Answered}
+                  className={`px-6 py-3 rounded-xl font-tech-mono font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer ${
+                    isStep2Answered
+                      ? 'bg-emerald-400 hover:bg-emerald-300 text-emerald-950 shadow-[0_0_25px_-5px_rgba(16,185,129,0.5)] active:scale-[0.99]'
+                      : 'bg-white/10 text-slate-500 cursor-not-allowed border border-white/5'
+                  }`}
+                >
+                  <span>Continue to Business Details</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         )}
 
-        {/* ================= STEP 2: ABOUT THE BUSINESS ================= */}
-        {currentStep === 2 && (
+        {/* ================= STEP 3: BUSINESS DETAILS ================= */}
+        {currentStep === 3 && (
           <div className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-300">
             {/* Header Banner */}
             <div className="border-b border-white/[0.08] pb-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-tech-mono text-emerald-300 uppercase tracking-wider mb-2">
                 <Building2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>ABOUT THE BUSINESS</span>
+                <span>STEP 03 // BUSINESS DETAILS</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
                 Profile your business model & target market
@@ -679,37 +840,47 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
               )}
             </div>
 
-            {/* Step 2 Actions */}
+            {/* Step 3 Actions */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
               <button
                 type="button"
-                onClick={() => setCurrentStep(1)}
+                onClick={() => setCurrentStep(2)}
                 className="px-5 py-2.5 rounded-xl font-tech-mono text-xs text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex items-center gap-2 cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Back to Personal Profile</span>
+                <span>Back to Role & Goals</span>
               </button>
 
-              <button
-                type="button"
-                onClick={() => setCurrentStep(3)}
-                className="px-6 py-3 rounded-xl font-tech-mono font-semibold text-xs sm:text-sm bg-emerald-400 hover:bg-emerald-300 text-emerald-950 transition-all flex items-center gap-2 shadow-[0_0_25px_-5px_rgba(16,185,129,0.5)] active:scale-[0.99] cursor-pointer"
-              >
-                <span>Continue to Business Address</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-4">
+                <span className="text-xs font-tech-mono text-slate-500 hidden sm:inline-block">
+                  {isStep3Answered ? '✓ Step 3 Complete' : 'Answer all 3 questions to proceed'}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setCurrentStep(4)}
+                  disabled={!isStep3Answered}
+                  className={`px-6 py-3 rounded-xl font-tech-mono font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer ${
+                    isStep3Answered
+                      ? 'bg-emerald-400 hover:bg-emerald-300 text-emerald-950 shadow-[0_0_25px_-5px_rgba(16,185,129,0.5)] active:scale-[0.99]'
+                      : 'bg-white/10 text-slate-500 cursor-not-allowed border border-white/5'
+                  }`}
+                >
+                  <span>Continue to Business Address</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         )}
 
-        {/* ================= STEP 3: BUSINESS ADDRESS (STATE, CITY, REGION) ================= */}
-        {currentStep === 3 && (
+        {/* ================= STEP 4: BUSINESS ADDRESS (STATE, CITY, REGION) ================= */}
+        {currentStep === 4 && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
             {/* Header Banner */}
             <div className="border-b border-white/[0.08] pb-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-tech-mono text-emerald-300 uppercase tracking-wider mb-2">
                 <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-                <span>BUSINESS LOCATION // GEOGRAPHIC CALIBRATION</span>
+                <span>STEP 04 // BUSINESS ADDRESS</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
                 Where is your business located?
@@ -812,23 +983,28 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
               )}
             </div>
 
-            {/* Step 3 Actions */}
+            {/* Step 4 Actions */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
               <button
                 type="button"
-                onClick={() => setCurrentStep(2)}
+                onClick={() => setCurrentStep(3)}
                 className="px-5 py-2.5 rounded-xl font-tech-mono text-xs text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex items-center gap-2 cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Back to Business Profile</span>
+                <span>Back to Business Details</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleFinish}
-                className="px-6 py-3 rounded-xl font-tech-mono font-semibold text-xs sm:text-sm bg-[#2ee59d] hover:bg-[#25c485] text-[#031d14] transition-all flex items-center gap-2 shadow-[0_0_25px_-5px_rgba(46,229,157,0.5)] active:scale-[0.99] cursor-pointer"
+                disabled={!isStep4Answered}
+                className={`px-6 py-3 rounded-xl font-tech-mono font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer ${
+                  isStep4Answered
+                    ? 'bg-[#2ee59d] hover:bg-[#25c485] text-[#031d14] shadow-[0_0_25px_-5px_rgba(46,229,157,0.5)] active:scale-[0.99]'
+                    : 'bg-white/10 text-slate-500 cursor-not-allowed border border-white/5'
+                }`}
               >
-                <Sparkles className="w-4 h-4 text-[#031d14]" />
+                <Sparkles className="w-4 h-4" />
                 <span>Complete Setup & Launch Dashboard</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
