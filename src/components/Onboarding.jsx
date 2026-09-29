@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   User, 
   Building2, 
+  MapPin,
+  Globe2,
   ArrowRight, 
   ArrowLeft, 
   Check, 
@@ -10,7 +12,7 @@ import {
 } from 'lucide-react';
 
 export default function Onboarding({ currentUser, onComplete, onSkip }) {
-  const [currentStep, setCurrentStep] = useState(1); // 1: About User, 2: About Business
+  const [currentStep, setCurrentStep] = useState(1); // 1: About User, 2: About Business, 3: Address (State, City, Region)
   const [isFinishing, setIsFinishing] = useState(false);
 
   useEffect(() => {
@@ -35,6 +37,12 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
 
   const [customers, setCustomers] = useState([]);
   const [customerOther, setCustomerOther] = useState('');
+
+  // Form State: Address (State, City, Region)
+  const [streetAddress, setStreetAddress] = useState('');
+  const [stateName, setStateName] = useState('');
+  const [city, setCity] = useState('');
+  const [region, setRegion] = useState('');
 
   // Toggle helpers for multi-select
   const toggleSelection = (list, setList, item) => {
@@ -63,6 +71,12 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
         customers: customers.includes('Other')
           ? [...customers.filter(c => c !== 'Other'), customerOther ? `Other: ${customerOther}` : 'Other']
           : customers
+      },
+      address: {
+        streetAddress: streetAddress.trim(),
+        state: stateName.trim(),
+        city: city.trim(),
+        region: region.trim()
       }
     };
 
@@ -134,6 +148,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
 
   const isStep1Answered = role && goals.length > 0 && queryTypes.length > 0;
   const isStep2Answered = offering && problemsSolved.length > 0 && customers.length > 0;
+  const isStep3Answered = Boolean(stateName.trim() && city.trim() && region.trim());
 
   if (isFinishing) {
     return (
@@ -146,13 +161,13 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-emerald-950/80 border border-emerald-500/40 text-[10px] font-tech-mono text-emerald-300 uppercase tracking-widest mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>PROFILE CONFIGURED</span>
+              <span>PROFILE & LOCATION CONFIGURED</span>
             </div>
             <h2 className="text-2xl font-bold text-white tracking-tight mb-2">
               Calibrating GEO Telemetry...
             </h2>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Applying your role and search intent parameters to the ChatGPT answer generation radar.
+              Applying your role, business model, and regional address telemetry ({[city, stateName, region].filter(Boolean).join(', ') || 'State, City, Region'}) to the frontier AI radar.
             </p>
           </div>
           <div className="w-full bg-[#111622] h-1.5 rounded-full overflow-hidden">
@@ -200,7 +215,7 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
 
         {/* Stepper Navigation Bar */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-3 pt-1">
-          <div className="grid grid-cols-2 gap-3 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {/* Step 1 Button */}
             <button
               onClick={() => setCurrentStep(1)}
@@ -260,13 +275,43 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
                 </div>
               </div>
             </button>
+
+            {/* Step 3 Button */}
+            <button
+              onClick={() => setCurrentStep(3)}
+              className={`flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all cursor-pointer ${
+                currentStep === 3
+                  ? 'bg-emerald-950/40 border-emerald-500/50 shadow-[0_0_20px_-5px_rgba(16,185,129,0.3)]'
+                  : isStep3Answered
+                  ? 'bg-[#0b0f17]/90 border-emerald-500/30 hover:border-white/20'
+                  : 'bg-[#0b0f17]/60 border-white/[0.08] hover:border-white/20'
+              }`}
+            >
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-xs font-tech-mono font-bold transition-all ${
+                isStep3Answered
+                  ? 'bg-emerald-400 text-emerald-950'
+                  : currentStep === 3
+                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
+                  : 'bg-white/5 text-slate-400 border border-white/10'
+              }`}>
+                {isStep3Answered ? <Check className="w-4.5 h-4.5 stroke-[2.5]" /> : '03'}
+              </div>
+              <div className="min-w-0">
+                <div className="text-[10px] font-tech-mono uppercase tracking-wider text-slate-400">Step 3</div>
+                <div className={`text-sm sm:text-base font-semibold truncate ${
+                  currentStep === 3 ? 'text-white' : 'text-slate-300'
+                }`}>
+                  Business Address
+                </div>
+              </div>
+            </button>
           </div>
 
           {/* Progress Indicator */}
           <div className="w-full bg-[#111622] h-1.5 rounded-full mt-3.5 overflow-hidden">
             <div 
               className="bg-emerald-400 h-full transition-all duration-300"
-              style={{ width: currentStep === 1 ? '50%' : '100%' }}
+              style={{ width: currentStep === 1 ? '33.3%' : currentStep === 2 ? '66.6%' : '100%' }}
             />
           </div>
         </div>
@@ -643,6 +688,173 @@ export default function Onboarding({ currentUser, onComplete, onSkip }) {
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back to Personal Profile</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setCurrentStep(3)}
+                className="px-6 py-3 rounded-xl font-tech-mono font-semibold text-xs sm:text-sm bg-emerald-400 hover:bg-emerald-300 text-emerald-950 transition-all flex items-center gap-2 shadow-[0_0_25px_-5px_rgba(16,185,129,0.5)] active:scale-[0.99] cursor-pointer"
+              >
+                <span>Continue to Business Address</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ================= STEP 3: BUSINESS ADDRESS (STATE, CITY, REGION) ================= */}
+        {currentStep === 3 && (
+          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            {/* Header Banner */}
+            <div className="border-b border-white/[0.08] pb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-tech-mono text-emerald-300 uppercase tracking-wider mb-2">
+                <MapPin className="w-3.5 h-3.5 text-emerald-400" />
+                <span>BUSINESS LOCATION // GEOGRAPHIC CALIBRATION</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                Where is your business located?
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
+                Ground your AI search presence with precise location telemetry. Frontier models utilize geographic context to serve local citations, state-level queries, and regional competitive answers.
+              </p>
+            </div>
+
+            {/* Address Form Card */}
+            <div className="bg-[#0b0f17] border border-white/[0.09] rounded-2xl p-6 sm:p-8 space-y-6">
+              <div>
+                <span className="font-tech-mono text-xs text-emerald-400 font-semibold uppercase tracking-wider block mb-1">
+                  LOCATION PARAMETERS // STATE, CITY & REGION
+                </span>
+                <h3 className="text-base sm:text-lg font-semibold text-white">
+                  Enter your official business address details
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Specify your operating State, City, and Region to calibrate regional answer ranking across ChatGPT, Perplexity, and Google Gemini.
+                </p>
+              </div>
+
+              {/* Grid for State, City, Region */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* State Input */}
+                <div className="space-y-2">
+                  <label className="block text-[11px] font-tech-mono uppercase text-slate-300 tracking-wider">
+                    State / Province <span className="text-emerald-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. California, New York, Ontario"
+                    value={stateName}
+                    onChange={(e) => setStateName(e.target.value)}
+                    className="w-full bg-[#06080e] border border-white/[0.12] hover:border-white/20 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none transition-all font-mono"
+                  />
+                </div>
+
+                {/* City Input */}
+                <div className="space-y-2">
+                  <label className="block text-[11px] font-tech-mono uppercase text-slate-300 tracking-wider">
+                    City <span className="text-emerald-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. San Francisco, Austin, Toronto"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    className="w-full bg-[#06080e] border border-white/[0.12] hover:border-white/20 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none transition-all font-mono"
+                  />
+                </div>
+
+                {/* Region Input */}
+                <div className="space-y-2">
+                  <label className="block text-[11px] font-tech-mono uppercase text-slate-300 tracking-wider">
+                    Region / Territory <span className="text-emerald-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. North America, West Coast, EMEA"
+                    value={region}
+                    onChange={(e) => setRegion(e.target.value)}
+                    className="w-full bg-[#06080e] border border-white/[0.12] hover:border-white/20 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 outline-none transition-all font-mono"
+                  />
+                </div>
+              </div>
+
+              {/* Region Quick Select Pills */}
+              <div className="space-y-2 pt-2 border-t border-white/[0.06]">
+                <label className="block text-[10px] font-tech-mono uppercase text-slate-400 tracking-wider">
+                  Quick Select Operating Region:
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    'North America',
+                    'United States',
+                    'Europe / EMEA',
+                    'Asia-Pacific (APAC)',
+                    'Latin America (LATAM)',
+                    'Middle East & Africa',
+                    'Global / Worldwide'
+                  ].map((preset) => {
+                    const isSelected = region === preset;
+                    return (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => setRegion(preset)}
+                        className={`text-xs font-mono px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.2)]'
+                            : 'bg-white/5 border-white/10 text-slate-400 hover:text-slate-200 hover:border-white/20'
+                        }`}
+                      >
+                        {preset}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Optional Street Address */}
+              <div className="space-y-2 pt-2 border-t border-white/[0.06]">
+                <label className="block text-[11px] font-tech-mono uppercase text-slate-400 tracking-wider">
+                  Street / Headquarters Address <span className="text-slate-500">(Optional)</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 500 Howard Street, Suite 400"
+                  value={streetAddress}
+                  onChange={(e) => setStreetAddress(e.target.value)}
+                  className="w-full bg-[#06080e] border border-white/[0.09] hover:border-white/20 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 outline-none transition-all font-mono"
+                />
+              </div>
+
+              {/* Live Preview Card */}
+              {(city || stateName || region) && (
+                <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-start gap-3 text-xs text-slate-300 animate-in fade-in duration-200">
+                  <Globe2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-tech-mono text-emerald-400 font-semibold block mb-0.5">
+                      CALIBRATED LOCATION METADATA
+                    </span>
+                    <span>
+                      {[city, stateName, region].filter(Boolean).join(', ')}
+                      {streetAddress ? ` • ${streetAddress}` : ''}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Step 3 Actions */}
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-white/[0.08]">
+              <button
+                type="button"
+                onClick={() => setCurrentStep(2)}
+                className="px-5 py-2.5 rounded-xl font-tech-mono text-xs text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back to Business Profile</span>
               </button>
 
               <button

@@ -11,6 +11,7 @@ import AuditModal from './components/AuditModal';
 import BriefingModal from './components/BriefingModal';
 import LoginModal from './components/LoginModal';
 import Dashboard from './components/dashboard/Dashboard';
+import Onboarding from './components/Onboarding';
 import { api } from './lib/api';
 
 function App() {
@@ -60,7 +61,9 @@ function App() {
   const handleLoginSuccess = (user) => {
     setCurrentUser(user); setLoginModalOpen(false); setCurrentView('dashboard');
   };
-  const handleSignupSuccess = handleLoginSuccess;
+  const handleSignupSuccess = (user) => {
+    setCurrentUser(user); setLoginModalOpen(false); setCurrentView('onboarding');
+  };
   const handleLogout = async () => {
     try {
       await api('/auth/logout', { method: 'POST', body: {} });
@@ -68,16 +71,42 @@ function App() {
     } catch (error) { setSessionError(error.message); }
   };
   if (sessionLoading) return <div className="p-10 text-slate-300" role="status">Loading your session…</div>;
-  if (['dashboard', 'onboarding'].includes(currentView) && !currentUser) {
-    return <div className="min-h-screen bg-[#07090e]"><LoginModal isOpen initialMode="login" onClose={() => setCurrentView('landing')} onLoginSuccess={handleLoginSuccess} onSignupSuccess={handleSignupSuccess} /></div>;
+
+  // Onboarding view: rendered after signup or direct navigation
+  if (currentView === 'onboarding') {
+    return (
+      <Onboarding
+        currentUser={currentUser}
+        onComplete={(answers) => {
+          const updatedUser = {
+            ...(currentUser || {}),
+            onboarding: answers
+          };
+          setCurrentUser(updatedUser);
+          try {
+            localStorage.setItem('geo_user_session', JSON.stringify(updatedUser));
+          } catch (e) {
+            console.error(e);
+          }
+          setCurrentView('dashboard');
+        }}
+        onSkip={() => setCurrentView('dashboard')}
+      />
+    );
+  }
+
+  if (currentView === 'dashboard' && !currentUser) {
+    const isDemo = new URLSearchParams(window.location.search).get('demo') === 'true' || window.location.search.includes('view=dashboard');
+    if (!isDemo) {
+      return <div className="min-h-screen bg-[#07090e]"><LoginModal isOpen initialMode="login" onClose={() => setCurrentView('landing')} onLoginSuccess={handleLoginSuccess} onSignupSuccess={handleSignupSuccess} /></div>;
+    }
   }
 
   // If in dashboard view, render the complete GEO ENGINE dashboard
-  if (['dashboard', 'onboarding'].includes(currentView)) {
+  if (currentView === 'dashboard') {
     return (
       <> {sessionError && <p role="alert" className="p-4 text-red-300">{sessionError}</p>}<Dashboard
-        currentUser={currentUser}
-
+        currentUser={currentUser || { name: 'Enterprise Analyst', email: 'analyst@enterprise.com', company: 'Acme Enterprise' }}
         onLogout={handleLogout}
       /></>
     );

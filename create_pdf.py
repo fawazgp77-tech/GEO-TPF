@@ -122,6 +122,18 @@ slides_data = [
         )
     },
     {
+        "id": "08c_onboarding_address",
+        "tag": "ONBOARDING // STEP 03",
+        "title": "Workspace Onboarding: Business Address",
+        "subtitle": "Geographic presence, State, City, and Region calibration for local AI citation engines",
+        "action": lambda page: (
+            page.goto("http://localhost:5173/?view=onboarding"),
+            page.wait_for_timeout(800),
+            page.get_by_role("button", name="Business Address").click(),
+            page.wait_for_timeout(800)
+        )
+    },
+    {
         "id": "09_dash_visibility",
         "tag": "DASHBOARD // TAB 01",
         "title": "AI Visibility & 90-Day Trend Velocity",
@@ -323,16 +335,17 @@ col2 = [
     "08. Telemetry Authentication Portal",
     "09. Workspace Onboarding: User",
     "10. Workspace Onboarding: Business",
-    "11. Dashboard 01: AI Visibility & Trends",
-    "12. Prompt Universe Output Trace Modal"
+    "11. Workspace Onboarding: Address",
+    "12. Dashboard 01: AI Visibility & Trends"
 ]
 
 col3 = [
-    "13. Dashboard 02: Competitive Position",
-    "14. Dashboard 03: AI Accuracy & Trust",
-    "15. Dashboard 04: Sources & Authority",
-    "16. Synthesized Gap Outreach Modal",
-    "17. Account & Organization Settings"
+    "13. Prompt Universe Output Trace Modal",
+    "14. Dashboard 02: Competitive Position",
+    "15. Dashboard 03: AI Accuracy & Trust",
+    "16. Dashboard 04: Sources & Authority",
+    "17. Synthesized Gap Outreach Modal",
+    "18. Account & Organization Settings"
 ]
 
 y_start = 185
