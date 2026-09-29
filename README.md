@@ -24,7 +24,7 @@ The worker processes queued scans outside the browser, retries a failed prompt o
 
 ## Scope and local data
 
-Implemented: signup/login/logout (with 6-character minimum password requirement), multi-step workspace onboarding (User, Business, and Address: State, City, Region), protected dashboard, owned business creation, versioned and explicitly verified Brand Truth, persistent prompt CRUD and scan evidence storage. Existing mock metric components remain disconnected until analysis and metrics are implemented.
+Implemented: signup with 6-digit OTP verification page, login/logout (with 6-character minimum password requirement), multi-step workspace onboarding (User, Business, and Address: State, City, Region), protected dashboard, owned business creation, versioned and explicitly verified Brand Truth, persistent prompt CRUD and scan evidence storage. Existing mock metric components remain disconnected until analysis and metrics are implemented.
 
 The earlier Node/SQLite Phase 1 prototype is still available when the Supabase variables are absent. Its ignored database at `data/presence.sqlite` is preserved. SQLite accounts and passwords are **not** Supabase accounts. To use the connected site, create a Supabase account and verify its email; old local business records are not automatically transferred between identities. The legacy API can be started with `npm run dev:server` only when using the SQLite fallback.
 

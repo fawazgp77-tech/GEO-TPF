@@ -37,6 +37,32 @@ export function createSupabaseApi(client) {
       check(error);
       return { user: toAppUser(data.user), requiresEmailConfirmation: !data.session };
     }
+    if (path === '/auth/verify-otp' && method === 'POST') {
+      let result = await client.auth.verifyOtp({
+        email: body.email,
+        token: body.token,
+        type: 'signup',
+      });
+      if (result.error && (result.error.message?.includes('type') || result.error.status === 400)) {
+        const retry = await client.auth.verifyOtp({
+          email: body.email,
+          token: body.token,
+          type: 'email',
+        });
+        if (!retry.error) result = retry;
+      }
+      check(result.error);
+      const user = result.data?.user || (await client.auth.getUser()).data?.user;
+      return { user: toAppUser(user) };
+    }
+    if (path === '/auth/resend-otp' && method === 'POST') {
+      const { error } = await client.auth.resend({
+        type: 'signup',
+        email: body.email,
+      });
+      check(error);
+      return { ok: true };
+    }
     if (path === '/auth/login' && method === 'POST') {
       const { data, error } = await client.auth.signInWithPassword({ email: body.email, password: body.password });
       check(error);

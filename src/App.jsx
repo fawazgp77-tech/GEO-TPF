@@ -39,12 +39,24 @@ function App() {
   });
   const [loginModalOpen, setLoginModalOpen] = useState(() => {
     try {
-      return new URLSearchParams(window.location.search).get('modal') === 'login';
+      const params = new URLSearchParams(window.location.search);
+      const modal = params.get('modal');
+      const view = params.get('view');
+      return modal === 'login' || modal === 'signup' || view === 'signup' || view === 'create-account';
     } catch {
       return false;
     }
   });
-  const [authMode, setAuthMode] = useState('login');
+  const [authMode, setAuthMode] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const modal = params.get('modal');
+      const view = params.get('view');
+      return modal === 'signup' || view === 'signup' || view === 'create-account' ? 'signup' : 'login';
+    } catch {
+      return 'login';
+    }
+  });
 
   const [currentUser, setCurrentUser] = useState(null);
   const [sessionLoading, setSessionLoading] = useState(true);
@@ -132,7 +144,7 @@ function App() {
         {/* Hero Section: Your Brand Through AI's Eyes + Live Prompt Vector Synthesizer */}
         <Hero
           onOpenLogin={() => {
-            setAuthMode('login');
+            setAuthMode('signup');
             setLoginModalOpen(true);
           }}
         />

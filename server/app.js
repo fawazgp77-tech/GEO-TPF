@@ -71,6 +71,26 @@ export async function createApp({ db, origin = 'http://localhost:5173', secure =
         res.setHeader('Set-Cookie', sessionCookie(session.token, session.seconds, secure));
         return send(200, { user });
       }
+      if (path === '/api/auth/verify-otp' && method === 'POST') {
+        throttle(req);
+        const body = await readBody(req);
+        const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+        const token = typeof body.token === 'string' ? body.token.trim() : '';
+        if (!email || !token || !/^\d{6}$/.test(token)) throw new HttpError(400, 'Enter a valid 6-digit verification code.');
+        const user = db.prepare('SELECT id, email, name FROM users WHERE email = ?').get(email);
+        if (!user) throw new HttpError(404, 'No account found with this email.');
+        db.prepare('DELETE FROM sessions WHERE token_hash = ?').run(digest(tokenFrom(req)));
+        const session = createSession(db, user.id, true);
+        res.setHeader('Set-Cookie', sessionCookie(session.token, session.seconds, secure));
+        return send(200, { user });
+      }
+      if (path === '/api/auth/resend-otp' && method === 'POST') {
+        throttle(req);
+        const body = await readBody(req);
+        const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+        if (!email) throw new HttpError(400, 'Email is required.');
+        return send(200, { ok: true, message: 'Verification code resent.' });
+      }
       if (path === '/api/auth/logout' && method === 'POST') {
         db.prepare('DELETE FROM sessions WHERE token_hash = ?').run(digest(tokenFrom(req)));
         res.setHeader('Set-Cookie', sessionCookie('', 0, secure));
