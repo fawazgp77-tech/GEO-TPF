@@ -3,7 +3,14 @@ function value(result) {
   return result.data;
 }
 
-export function createScanService(db, provider) {
+export function createScanService(db, provider, { requestIntervalMs = 0 } = {}) {
+  let lastProviderCallAt = 0;
+  async function callProvider(operation) {
+    const wait = lastProviderCallAt + requestIntervalMs - Date.now();
+    if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait));
+    lastProviderCallAt = Date.now();
+    return operation();
+  }
   async function createScan(userId, businessId) {
     const business = value(await db.from('businesses').select('id').eq('id', businessId).eq('user_id', userId).maybeSingle());
     if (!business) throw new Error('Business not found.');
@@ -67,7 +74,7 @@ export function createScanService(db, provider) {
         for (let attempt = run.attempt + 1; attempt <= 2; attempt += 1) {
           value(await db.from('prompt_runs').update({ status: 'RUNNING', attempt, started_at: new Date().toISOString() }).eq('id', run.id));
           try {
-            const answer = await provider.runPrompt(run.exact_prompt);
+            const answer = await callProvider(() => provider.runPrompt(run.exact_prompt));
             value(await db.from('raw_responses').insert({ prompt_run_id: run.id, provider: answer.provider,
               model: answer.model, response_text: answer.responseText, citations: answer.citations,
               metadata: answer.metadata, provider_payload: answer.providerPayload, received_at: answer.timestamp }));
@@ -76,6 +83,7 @@ export function createScanService(db, provider) {
             break;
           } catch (error) {
             lastError = String(error.message || error).slice(0, 2000);
+            if (error.status === 429 && attempt < 2) await new Promise(resolve => setTimeout(resolve, 30000));
             // A failed insert may follow a successful earlier insert on a recovered job.
             const recovered = value(await db.from('raw_responses').select('id').eq('prompt_run_id', run.id).maybeSingle());
             if (recovered) {
@@ -91,6 +99,29 @@ export function createScanService(db, provider) {
       const finalRuns = value(await db.from('prompt_runs').select('status').eq('scan_id', scanId));
       const successes = finalRuns.filter(run => run.status === 'SUCCEEDED').length;
       const status = finalRuns.length && successes === finalRuns.length ? 'COMPLETED' : successes ? 'PARTIALLY_FAILED' : 'FAILED';
+      const existingAnalysis = value(await db.from('scan_analyses').select('id').eq('scan_id', scanId).maybeSingle());
+      if (successes && !existingAnalysis) {
+        const evidence = value(await db.from('prompt_runs')
+          .select('exact_prompt,status,raw_responses(response_text)').eq('scan_id', scanId).order('id'))
+          .map((run, index) => ({ number: index + 1, prompt: run.exact_prompt, status: run.status,
+            answer: Array.isArray(run.raw_responses)
+            ? run.raw_responses[0]?.response_text : run.raw_responses?.response_text }))
+          .filter(item => item.status === 'SUCCEEDED' && item.answer);
+        let analysis;
+        let analysisError;
+        try { analysis = await callProvider(() => provider.analyzeResponses(evidence)); }
+        catch (error) {
+          analysisError = error;
+          if (error.status === 429) {
+            await new Promise(resolve => setTimeout(resolve, 30000));
+            try { analysis = await callProvider(() => provider.analyzeResponses(evidence)); analysisError = null; }
+            catch (retryError) { analysisError = retryError; }
+          }
+        }
+        value(await db.from('scan_analyses').insert(analysis
+          ? { scan_id: scanId, status: 'SUCCEEDED', report: analysis.report, provider_payload: analysis.providerPayload }
+          : { scan_id: scanId, status: 'FAILED', error_text: String(analysisError.message || analysisError).slice(0, 2000) }));
+      }
       value(await db.from('scans').update({ status, completed_at: new Date().toISOString(), worker_lease_until: null }).eq('id', scanId));
     } finally { clearInterval(heartbeat); }
   }

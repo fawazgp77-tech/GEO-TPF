@@ -2,7 +2,7 @@
 
 ## Phase 2 progress
 
-Persistent prompt CRUD and 20 context-aware template suggestions now use Supabase RLS. Scans snapshot exact prompt text and truth version; a Node worker queues and processes requests through one OpenAI provider, preserving provider payloads and per-prompt failures. The worker needs server-only Supabase and OpenAI keys before live scans can run. Analysis, metrics, issues, and historical comparisons are subsequent work. Existing metric cards remain disconnected.
+Persistent prompt CRUD and 20 context-aware template suggestions now use Supabase RLS, with inline editing and fill-to-20 on the dashboard. Scans snapshot exact prompt text and truth version; a Node worker queues and processes requests through one Gemini provider, preserving provider payloads and per-prompt failures. On 2026-10-05 a 20-prompt scan of the fictional `Testname` business completed with 20 saved raw answers, zero failures, and a saved Gemini synthesis. The per-business overview showed 20/20 answer coverage, eight exact-name text matches, zero cited answers, category coverage, and the combined report; SQL matched those counts. The worker uses server-only Supabase and Gemini keys. A real business has not been assessed. Claim verification, recommendation/accuracy scoring, issues, and historical comparisons are subsequent work. Existing mock metric cards outside the business overview remain disconnected.
 
 ## Supabase integration update
 

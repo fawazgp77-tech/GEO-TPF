@@ -1,18 +1,19 @@
 import { createServer } from 'node:http';
 import { createClient } from '@supabase/supabase-js';
-import { createOpenAIProvider } from '../providers/openai.js';
+import { createGeminiProvider } from '../providers/gemini.js';
 import { createScanService } from './service.js';
 
 const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
 const publishableKey = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const secretKey = process.env.SUPABASE_SECRET_KEY;
-const providerKey = process.env.OPENAI_API_KEY;
-const model = process.env.OPENAI_MODEL;
-const ready = Boolean(url && publishableKey && secretKey && providerKey && model);
+const providerKey = process.env.GEMINI_API_KEY;
+const model = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
+const ready = Boolean(url && publishableKey && secretKey && providerKey);
 
 const publicClient = ready ? createClient(url, publishableKey, { auth: { persistSession: false } }) : null;
 const db = ready ? createClient(url, secretKey, { auth: { persistSession: false } }) : null;
-const service = ready ? createScanService(db, createOpenAIProvider({ apiKey: providerKey, model })) : null;
+const service = ready ? createScanService(db, createGeminiProvider({ apiKey: providerKey, model }),
+  { requestIntervalMs: Number(process.env.GEMINI_REQUEST_INTERVAL_MS || 6000) }) : null;
 
 function send(response, status, data) {
   response.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
@@ -31,7 +32,7 @@ async function readBody(request) {
 const server = createServer(async (request, response) => {
   if (request.method === 'GET' && request.url === '/health') return send(response, 200, { ready });
   if (request.method !== 'POST' || request.url !== '/scans') return send(response, 404, { error: 'Not found.' });
-  if (!ready) return send(response, 503, { error: 'Scan worker needs SUPABASE_SECRET_KEY, OPENAI_API_KEY and OPENAI_MODEL in its server-only environment.' });
+  if (!ready) return send(response, 503, { error: 'Scan worker needs SUPABASE_SECRET_KEY and GEMINI_API_KEY in its server-only environment.' });
   const token = /^Bearer (.+)$/i.exec(request.headers.authorization || '')?.[1];
   if (!token) return send(response, 401, { error: 'Sign in to start a scan.' });
   try {

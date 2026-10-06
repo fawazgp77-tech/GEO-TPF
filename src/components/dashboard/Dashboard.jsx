@@ -102,7 +102,7 @@ export default function Dashboard({ currentUser, onLogout }) {
                 disabled
                 className="w-full text-left px-3 pt-2 text-[11px] font-tech-mono text-emerald-400/80 hover:text-emerald-300 transition-colors"
               >
-                No scans yet
+                Open a business to view scans
               </button>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function Dashboard({ currentUser, onLogout }) {
                   </div>
                   <div className="mt-1 flex items-center justify-between text-[9px] font-tech-mono">
                     <span className="text-emerald-400 font-bold uppercase">Foundation</span>
-                    <span className="text-slate-500">No scans yet</span>
+                    <span className="text-slate-500">Prompts & scans in business</span>
                   </div>
                 </div>
 
@@ -197,7 +197,7 @@ export default function Dashboard({ currentUser, onLogout }) {
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
             <button
-              disabled title="Available after your first scan"
+              disabled title="Report export is not available yet"
               className="px-3.5 py-1.5 rounded-lg border border-white/[0.1] hover:border-white/20 bg-white/[0.03] hover:bg-white/[0.06] text-xs font-tech-mono text-slate-200 transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <Download className="w-3.5 h-3.5 text-slate-400" />

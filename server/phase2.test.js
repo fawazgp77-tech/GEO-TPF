@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { generatePrompts, validatePrompt } from '../shared/prompts.js';
-import { createOpenAIProvider } from './providers/openai.js';
+import { createGeminiProvider } from './providers/gemini.js';
 import { createScanService } from './scans/service.js';
 
 test('business-specific prompts cover the intended categories without duplicates', () => {
@@ -18,19 +18,50 @@ test('business-specific prompts cover the intended categories without duplicates
 });
 
 test('provider normalizes full answer and citations without supplying Brand Truth', async () => {
-  let request;
-  const provider = createOpenAIProvider({ apiKey: 'test-only', model: 'test-model', fetchImpl: async (_url, options) => {
+  let url, request, headers;
+  const provider = createGeminiProvider({ apiKey: 'test-only', fetchImpl: async (requestUrl, options) => {
+    url = requestUrl;
+    headers = options.headers;
     request = JSON.parse(options.body);
-    return { ok: true, json: async () => ({ id: 'r1', status: 'completed', model: 'test-model',
-      output: [{ content: [{ type: 'output_text', text: 'A complete answer', annotations: [{ url: 'https://example.com', title: 'Source' }] }] }],
-      usage: { total_tokens: 10 } }) };
+    return { ok: true, json: async () => ({ responseId: 'r1', modelVersion: 'gemini-3.5-flash-lite',
+      candidates: [{ finishReason: 'STOP', content: { parts: [{ text: 'A complete ' }, { text: 'answer' }] },
+        groundingMetadata: { groundingChunks: [{ web: { uri: 'https://example.com', title: 'Source' } }] } }],
+      usageMetadata: { totalTokenCount: 10 } }) };
   } });
   const result = await provider.runPrompt('Where should I go?');
-  assert.equal(request.input, 'Where should I go?');
-  assert.equal(request.store, false);
+  assert.match(url, /models\/gemini-3\.5-flash-lite:generateContent$/);
+  assert.ok(!url.includes('test-only'));
+  assert.equal(headers['x-goog-api-key'], 'test-only');
+  assert.deepEqual(request.contents, [{ role: 'user', parts: [{ text: 'Where should I go?' }] }]);
   assert.equal(result.responseText, 'A complete answer');
   assert.equal(result.citations[0].url, 'https://example.com');
-  assert.equal(result.providerPayload.id, 'r1');
+  assert.equal(result.providerPayload.responseId, 'r1');
+  assert.equal(result.provider, 'gemini');
+});
+
+test('Gemini provider rejects blocked or empty responses', async () => {
+  const provider = createGeminiProvider({ apiKey: 'test-only', fetchImpl: async () => ({
+    ok: true, json: async () => ({ candidates: [{ finishReason: 'SAFETY' }] }),
+  }) });
+  await assert.rejects(provider.runPrompt('Blocked question'), /Gemini response stopped: SAFETY/);
+  const emptyProvider = createGeminiProvider({ apiKey: 'test-only', fetchImpl: async () => ({
+    ok: true, json: async () => ({ candidates: [{ finishReason: 'STOP', content: { parts: [] } }] }),
+  }) });
+  await assert.rejects(emptyProvider.runPrompt('Empty answer'), /Gemini returned no answer text/);
+});
+
+test('Gemini combined analysis keeps evidence references and raw payload', async () => {
+  const provider = createGeminiProvider({ apiKey: 'test-only', fetchImpl: async (_url, options) => {
+    const request = JSON.parse(options.body);
+    assert.equal(request.generationConfig.responseMimeType, 'application/json');
+    assert.equal(JSON.parse(request.contents[0].parts[0].text)[0].number, 1);
+    return { ok: true, json: async () => ({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text:
+      JSON.stringify({ summary: 'The model mentioned the business.', themes: [{ title: 'Mention', finding: 'Named in answer 1.', promptNumbers: [1, 99] }], limitations: 'Claims are unverified.' }) }] } }] }) };
+  } });
+  const analysis = await provider.analyzeResponses([{ prompt: 'Question?', answer: 'Answer.' }]);
+  assert.deepEqual(analysis.report.themes[0].promptNumbers, [1]);
+  assert.equal(analysis.report.limitations, 'Claims are unverified.');
+  assert.ok(analysis.providerPayload.candidates);
 });
 
 test('scan worker stores successful raw evidence and continues after a failed prompt', async () => {
@@ -41,26 +72,33 @@ test('scan worker stores successful raw evidence and continues after a failed pr
       { id: 'run-2', scan_id: 'scan-1', exact_prompt: 'second question', status: 'PENDING', attempt: 0 },
     ],
     raw_responses: [],
+    scan_analyses: [],
   };
   const db = { from(table) {
     const filters = [];
     let update;
+    let selection = '';
     const query = {
-      select() { return this; }, order() { return this; },
+      select(columns = '') { selection = columns; return this; }, order() { return this; },
       eq(key, value) { filters.push(row => row[key] === value); return this; },
       update(changes) { update = changes; return this; },
       insert(row) { tables[table].push(row); return Promise.resolve({ data: null, error: null }); },
       maybeSingle() { return Promise.resolve({ data: tables[table].filter(row => filters.every(match => match(row)))[0] || null, error: null }); },
       then(resolve, reject) {
-        const rows = tables[table].filter(row => filters.every(match => match(row)));
+        let rows = tables[table].filter(row => filters.every(match => match(row)));
         if (update) rows.forEach(row => Object.assign(row, update));
+        if (table === 'prompt_runs' && selection.includes('raw_responses(')) rows = rows.map(row => ({ ...row,
+          raw_responses: tables.raw_responses.filter(raw => raw.prompt_run_id === row.id) }));
         return Promise.resolve({ data: rows, error: null }).then(resolve, reject);
       },
     };
     return query;
   } };
   const calls = [];
-  const provider = { name: 'test', model: 'test-model', async runPrompt(prompt) {
+  const provider = { name: 'test', model: 'test-model', async analyzeResponses(items) {
+    assert.deepEqual(items, [{ number: 1, prompt: 'first question', status: 'SUCCEEDED', answer: 'exact answer' }]);
+    return { report: { summary: 'One answer saved', themes: [], limitations: 'Limited sample.' }, providerPayload: { output: 'analysis' } };
+  }, async runPrompt(prompt) {
     calls.push(prompt);
     if (prompt === 'second question') throw new Error('Provider unavailable');
     return { provider: 'test', model: 'test-model', responseText: 'exact answer', citations: [],
@@ -73,4 +111,5 @@ test('scan worker stores successful raw evidence and continues after a failed pr
   assert.equal(tables.prompt_runs[0].status, 'SUCCEEDED');
   assert.equal(tables.prompt_runs[1].status, 'FAILED');
   assert.equal(tables.scans[0].status, 'PARTIALLY_FAILED');
+  assert.equal(tables.scan_analyses[0].report.summary, 'One answer saved');
 });

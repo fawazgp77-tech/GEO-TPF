@@ -85,16 +85,19 @@ export function createSupabaseApi(client) {
         return { prompts: data };
       }
       if (item === 'generate' && method === 'POST') {
-        const { count, error: countError } = await client.from('prompts').select('id', { count: 'exact', head: true }).eq('business_id', businessId);
-        check(countError);
-        if (count) throw new Error('Prompts already exist. Edit them or add more manually.');
+        const { data: existing, error: existingError } = await client.from('prompts').select('text').eq('business_id', businessId);
+        check(existingError);
+        if (existing.length >= 20) throw new Error('You already have 20 prompts. Edit or remove individual prompts.');
         const [{ data: business, error: businessError }, { data: truth, error: truthError }] = await Promise.all([
           client.from('businesses').select('name,category,city').eq('id', businessId).single(),
           client.from('business_truth').select('data').eq('business_id', businessId).order('version', { ascending: false }).limit(1).maybeSingle(),
         ]);
         check(businessError); check(truthError);
         if (!truth) throw new Error('Verify Brand Truth before generating prompts.');
-        const prompts = generatePrompts(business, truth.data).map(prompt => ({ ...prompt, business_id: businessId }));
+        const used = new Set(existing.map(prompt => prompt.text.trim().toLowerCase()));
+        const prompts = generatePrompts(business, truth.data).filter(prompt => !used.has(prompt.text.toLowerCase()))
+          .slice(0, 20 - existing.length).map(prompt => ({ ...prompt, business_id: businessId }));
+        if (!prompts.length) throw new Error('All suggested questions are already in your prompt list.');
         const { data, error } = await client.from('prompts').insert(prompts).select('id,business_id,category,text,active,created_at,updated_at');
         check(error);
         return { prompts: data };
@@ -138,12 +141,13 @@ export function createSupabaseApi(client) {
     }
     const scanDetail = path.match(/^\/scans\/([0-9a-f-]+)$/i);
     if (scanDetail && method === 'GET') {
-      const { data: scan, error } = await client.from('scans').select('id,business_id,status,provider,model,created_at,started_at,completed_at').eq('id', scanDetail[1]).maybeSingle();
+      const { data: scan, error } = await client.from('scans').select('id,business_id,status,provider,model,created_at,started_at,completed_at,scan_analyses(status,report,error_text,created_at)')
+        .eq('id', scanDetail[1]).maybeSingle();
       check(error);
       if (!scan) throw new Error('Scan not found.');
       const { data: runs, error: runError } = await client.from('prompt_runs')
         .select('id,exact_prompt,category,status,attempt,error_text,raw_responses(response_text,citations,received_at)')
-        .eq('scan_id', scan.id).order('started_at');
+        .eq('scan_id', scan.id).order('id');
       check(runError);
       return { scan, runs };
     }
