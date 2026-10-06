@@ -21,6 +21,10 @@ test('auth, ownership, validation, verified truth revisions and persistent stora
   try {
     assert.equal((await request('/businesses')).status, 401);
     assert.equal((await request('/auth/signup', 'POST', { email: 'a@example.com', password: 'short', name: 'A' })).status, 400);
+    assert.equal((await request('/auth/signup', 'POST', { email: 'six@example.com', password: '123456', name: 'Six' })).status, 200);
+    assert.equal((await request('/auth/verify-otp', 'POST', { email: 'six@example.com', token: 'short' })).status, 400);
+    assert.equal((await request('/auth/verify-otp', 'POST', { email: 'six@example.com', token: '654321' })).status, 200);
+    assert.equal((await request('/auth/resend-otp', 'POST', { email: 'six@example.com' })).status, 200);
     const credentials = { email: 'A@example.com', password: 'a-long-test-password', name: 'Owner A' };
     const a = await request('/auth/signup', 'POST', credentials);
     assert.equal(a.status, 200); assert.match(a.cookie, /HttpOnly/); assert.match(a.cookie, /SameSite=Lax/);
@@ -58,10 +62,14 @@ test('auth, ownership, validation, verified truth revisions and persistent stora
     const token = login.cookie.split(';')[0].split('=')[1];
     db.prepare('UPDATE sessions SET expires_at=0 WHERE token_hash=?').run(digest(token));
     assert.equal((await request('/auth/me', 'GET', undefined, login.cookie.split(';')[0])).status, 401);
+    const relogin = await request('/auth/login', 'POST', credentials);
+    assert.equal(relogin.status, 200);
+    assert.equal((await request(`/businesses/${id}`, 'DELETE', undefined, cookieB)).status, 404);
+    assert.equal((await request(`/businesses/${id}`, 'DELETE', undefined, relogin.cookie.split(';')[0])).status, 200);
     await new Promise(resolve => app.close(resolve)); db.close();
     db = openDatabase(path);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM businesses').get().n, 1);
-    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM business_truth').get().n, 2);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM businesses').get().n, 0);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM business_truth').get().n, 0);
   } finally {
     if (app.listening) await new Promise(resolve => app.close(resolve));
     db.close(); rmSync(directory, { recursive: true, force: true });

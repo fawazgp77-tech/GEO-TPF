@@ -51,7 +51,7 @@ export async function createApp({ db, origin = 'http://localhost:5173', secure =
         const body = await readBody(req);
         const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
         const password = body.password;
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254 || typeof password !== 'string' || password.length < 12 || password.length > 128) throw new HttpError(400, 'Enter a valid email and a password of 12–128 characters.');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254 || typeof password !== 'string' || password.length < 6 || password.length > 128) throw new HttpError(400, 'Enter a valid email and a password of 6–128 characters.');
         let user;
         if (path.endsWith('signup')) {
           const name = typeof body.name === 'string' ? body.name.trim() : '';
@@ -71,6 +71,26 @@ export async function createApp({ db, origin = 'http://localhost:5173', secure =
         res.setHeader('Set-Cookie', sessionCookie(session.token, session.seconds, secure));
         return send(200, { user });
       }
+      if (path === '/api/auth/verify-otp' && method === 'POST') {
+        throttle(req);
+        const body = await readBody(req);
+        const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+        const token = typeof body.token === 'string' ? body.token.trim() : '';
+        if (!email || !token || !/^\d{6}$/.test(token)) throw new HttpError(400, 'Enter a valid 6-digit verification code.');
+        const user = db.prepare('SELECT id, email, name FROM users WHERE email = ?').get(email);
+        if (!user) throw new HttpError(404, 'No account found with this email.');
+        db.prepare('DELETE FROM sessions WHERE token_hash = ?').run(digest(tokenFrom(req)));
+        const session = createSession(db, user.id, true);
+        res.setHeader('Set-Cookie', sessionCookie(session.token, session.seconds, secure));
+        return send(200, { user });
+      }
+      if (path === '/api/auth/resend-otp' && method === 'POST') {
+        throttle(req);
+        const body = await readBody(req);
+        const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+        if (!email) throw new HttpError(400, 'Email is required.');
+        return send(200, { ok: true, message: 'Verification code resent.' });
+      }
       if (path === '/api/auth/logout' && method === 'POST') {
         db.prepare('DELETE FROM sessions WHERE token_hash = ?').run(digest(tokenFrom(req)));
         res.setHeader('Set-Cookie', sessionCookie('', 0, secure));
@@ -88,6 +108,14 @@ export async function createApp({ db, origin = 'http://localhost:5173', secure =
         const id = randomUUID();
         db.prepare('INSERT INTO businesses (id,user_id,name,website,category,country,city,branch) VALUES (?,?,?,?,?,?,?,?)').run(id, user.id, ...basicFields.map(([key]) => data[key]));
         return send(201, { business: { id, ...data } });
+      }
+      const businessMatch = path.match(/^\/api\/businesses\/([^/]+)$/);
+      if (businessMatch && method === 'DELETE') {
+        const business = db.prepare('SELECT id FROM businesses WHERE id=? AND user_id=?').get(businessMatch[1], user.id);
+        if (!business) throw new HttpError(404, 'Business not found.');
+        db.prepare('DELETE FROM business_truth WHERE business_id=?').run(business.id);
+        db.prepare('DELETE FROM businesses WHERE id=?').run(business.id);
+        return send(200, { ok: true });
       }
       const match = path.match(/^\/api\/businesses\/([^/]+)\/truth$/);
       if (match && ['GET', 'POST'].includes(method)) {

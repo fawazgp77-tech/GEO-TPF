@@ -49,6 +49,15 @@ export default function BusinessWorkspace() {
       }
     } catch (e) { setError(e.message); } finally { setBusy(false); }
   }
+  const deleteBusiness = async (business) => {
+    if (!window.confirm(`Are you sure you want to remove "${business.name}"?`)) return;
+    setBusy(true); setError('');
+    try {
+      await api(`/businesses/${business.id}`, { method: 'DELETE' });
+      await refresh();
+      setNotice(`Removed business "${business.name}".`);
+    } catch (e) { setError(e.message); } finally { setBusy(false); }
+  };
   if (stage === 'prompts' && selected) return <PromptWorkspace business={selected} onBack={() => setStage('overview')} />;
   if (stage === 'overview' && selected) return <BusinessDashboard business={selected} onBack={() => { setStage('list'); refresh().catch(e => setError(e.message)); }}
     onOpenPrompts={() => setStage('prompts')} onOpenTruth={() => openTruth(selected)} />;
@@ -67,9 +76,11 @@ export default function BusinessWorkspace() {
         <h2 className="text-lg font-semibold">{business.name}</h2><p className="text-sm text-slate-400">{business.category} · {business.city}, {business.country}{business.branch ? ` · ${business.branch}` : ''}</p>
         <p className="text-sm text-emerald-300">{business.truth_version ? `Brand Truth verified · revision ${business.truth_version}` : 'Onboarding incomplete'}</p>
         <p className="text-sm text-slate-500">{business.latest_scan_status ? `Latest scan: ${business.latest_scan_status.replaceAll('_', ' ')}. Open the dashboard for measured counts and analysis.` : 'No scans yet. Generate prompts and run Gemini to see the answers together.'}</p>
-        <div className="flex flex-wrap gap-3">{business.truth_version ? <><button disabled={busy} className={button} onClick={() => { setSelected(business); setStage('overview'); setError(''); }}>Open dashboard</button>
-          <button disabled={busy} className="rounded-xl border border-emerald-400/40 text-emerald-300 px-5 py-3 text-sm" onClick={() => openTruth(business)}>Review Brand Truth</button></>
-          : <button disabled={busy} className={button} onClick={() => openTruth(business)}>Complete onboarding</button>}</div>
+        <div className="flex flex-wrap items-center gap-3">
+          {business.truth_version && <button disabled={busy} className={button} onClick={() => { setSelected(business); setStage('overview'); setError(''); }}>Open dashboard</button>}
+          <button disabled={busy} className={business.truth_version ? 'rounded-xl border border-emerald-400/40 text-emerald-300 px-5 py-3 text-sm cursor-pointer' : button} onClick={() => openTruth(business)}>{business.truth_version ? 'Review Brand Truth' : 'Complete onboarding'}</button>
+          <button type="button" disabled={busy} className="rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 px-4 py-3 text-sm transition-colors cursor-pointer" onClick={() => deleteBusiness(business)}>Remove</button>
+        </div>
       </article>)}</div>
     </> : <form onSubmit={save} className="rounded-2xl border border-white/10 bg-[#0b0f17] p-6 space-y-6">
       <div className="grid md:grid-cols-2 gap-5">{(stage === 'create' ? basicFields : truthFields).map(([key, label, required]) => <label key={key} className="text-sm text-slate-300">{label}{required ? ' *' : ' (optional)'}

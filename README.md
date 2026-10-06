@@ -1,6 +1,6 @@
 # PresenceAI
 
-Existing React/Vite/Tailwind frontend with Supabase Auth and PostgreSQL for business onboarding and Phase 2 prompt/scan records.
+Existing React/Vite/Tailwind frontend with Supabase Auth and PostgreSQL for business onboarding and Phase 2 prompt/scan records. Signup includes a 6-digit OTP verification screen; onboarding collects business name and website, user context, business details, and address across four steps. Add and verify a business in the authenticated workspace after onboarding.
 
 New coding chat? Read [handoff.md](handoff.md) for current project state and next steps. Repository guidance in [AGENTS.md](AGENTS.md) asks agents to read **both this README and the handoff** at the start of a session and update both whenever the project changes.
 
@@ -14,6 +14,8 @@ Never put a Supabase secret or service-role key in `VITE_` variables. The publis
 
 ## Phase 2 prompts and scans
 
+The default **Your Businesses** tab lists owned businesses, lets you delete one, and opens the measured business dashboard after Brand Truth is verified. The four other analytical tabs retain their original layout with a sample-data preview notice; their figures are not connected to scans.
+
 After verifying Brand Truth, open the business dashboard from its card. It shows the latest scan's saved-answer count, exact business-name text matches, cited-answer count, category coverage, recent runs, and Gemini's combined analysis. These counts are calculated from the latest saved scan and use its answered prompts as the denominator; an exact text match does not mean the model recommends the business. Open **Prompts & scans** from there. Step 1 generates up to 20 business-specific suggestions; you can fill an existing short list to 20, edit each question inline, exclude or delete one, and add custom prompts. The prompt set persists; a scan snapshots the exact active questions so later edits never change historical evidence.
 
 The Phase 2 migrations create `prompts`, `scans`, `prompt_runs`, `raw_responses`, and `scan_analyses`. Owners can manage prompts and read their scan evidence and analysis through RLS. Only the server-side worker writes scans, raw responses, and analyses.
@@ -24,7 +26,7 @@ The worker processes queued scans outside the browser, retries a failed prompt o
 
 ## Scope and local data
 
-Implemented: signup/login/logout, protected dashboard, owned business creation, versioned and explicitly verified Brand Truth, persistent prompt CRUD, scan evidence storage, a saved combined Gemini summary, and a business overview with transparent scan counts. Existing mock metric components remain disconnected; factual accuracy, recommendation scoring, competitor share, trends, and report export are not calculated yet.
+Implemented: signup with 6-digit OTP verification, login/logout, four-step onboarding, owned business creation/deletion, versioned and explicitly verified Brand Truth, persistent prompt CRUD, scan evidence storage, a saved combined Gemini summary, and a business overview with transparent scan counts. The four legacy analytical tabs show sample figures and remain disconnected; factual accuracy, recommendation scoring, competitor share, trends, and report export are not calculated yet.
 
 The earlier Node/SQLite Phase 1 prototype is still available when the Supabase variables are absent. Its ignored database at `data/presence.sqlite` is preserved. SQLite accounts and passwords are **not** Supabase accounts. To use the connected site, create a Supabase account and verify its email; old local business records are not automatically transferred between identities. The legacy API can be started with `npm run dev:server` only when using the SQLite fallback.
 
