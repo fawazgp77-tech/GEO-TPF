@@ -5,6 +5,32 @@ export function createGeminiProvider({ apiKey, model = 'gemini-3.5-flash-lite', 
 
   return {
     name: 'gemini', model,
+    async extractEvidence(runs, snapshot) {
+      const identities = [{ id: 'target', name: snapshot.identity.name, aliases: snapshot.identity.aliases },
+        ...snapshot.competitors.map((item, index) => ({ id: `competitor-${index + 1}`, ...item }))];
+      const input = { identities, ownerVerifiedTruth: snapshot.truth.data,
+        answers: runs.map(run => ({ id: run.id, question: run.prompt, answer: run.answer.slice(0, 8000) })) };
+      const response = await fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+        method: 'POST', headers: { 'x-goog-api-key': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: `Extract evidence from each SAVED answer, not from general knowledge. Return JSON {"items":[{"id":"run id","brands":[{"id":"identity id","mentionQuote":"exact substring of answer or empty","recommendation":"recommended|not_recommended|neutral|unknown","recommendationQuote":"exact substring of answer or empty"}],"claims":[{"quote":"exact substring of answer","truthKey":"key in ownerVerifiedTruth","verdict":"supported|contradicted|unknown"}]}]}. Include all supplied answer IDs and every identity in each answer. A mention is not automatically a recommendation. Negated or discouraged suggestions are not_recommended. If ambiguous, return unknown and an empty quotation. Claims must concern the target business and be compared only to the supplied owner-verified truth; if it cannot decide, use unknown. Do not generate scores. Never invent quotations.` }] },
+          contents: [{ role: 'user', parts: [{ text: JSON.stringify(input) }] }],
+          generationConfig: { responseMimeType: 'application/json' },
+        }), signal: AbortSignal.timeout(90000),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const error = new Error(`Gemini evidence extraction failed (${response.status}): ${payload.error?.message || 'Unknown error'}`);
+        error.status = response.status; throw error;
+      }
+      const candidate = payload.candidates?.[0];
+      if (candidate?.finishReason && candidate.finishReason !== 'STOP') throw new Error(`Gemini evidence extraction stopped: ${candidate.finishReason}`);
+      const content = (candidate?.content?.parts || []).map(part => part.text || '').join('');
+      let parsed;
+      try { parsed = JSON.parse(content); } catch { throw new Error('Gemini evidence extraction was not valid JSON.'); }
+      if (!Array.isArray(parsed.items)) throw new Error('Gemini evidence extraction omitted items.');
+      return { items: parsed.items, providerPayload: payload };
+    },
     async analyzeResponses(items) {
       const evidence = items.map((item, index) => ({ number: item.number || index + 1, question: item.prompt,
         answer: item.answer.slice(0, 5000) }));

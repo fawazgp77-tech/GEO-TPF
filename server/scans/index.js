@@ -31,20 +31,22 @@ async function readBody(request) {
 
 const server = createServer(async (request, response) => {
   if (request.method === 'GET' && request.url === '/health') return send(response, 200, { ready });
-  if (request.method !== 'POST' || request.url !== '/scans') return send(response, 404, { error: 'Not found.' });
+  const retryMatch = /^\/scans\/([0-9a-f-]{36})\/measurement\/retry$/i.exec(request.url || '');
+  if (request.method !== 'POST' || (request.url !== '/scans' && !retryMatch)) return send(response, 404, { error: 'Not found.' });
   if (!ready) return send(response, 503, { error: 'Scan worker needs SUPABASE_SECRET_KEY and GEMINI_API_KEY in its server-only environment.' });
   const token = /^Bearer (.+)$/i.exec(request.headers.authorization || '')?.[1];
   if (!token) return send(response, 401, { error: 'Sign in to start a scan.' });
   try {
     const { data, error } = await publicClient.auth.getUser(token);
     if (error || !data.user) return send(response, 401, { error: 'Session expired. Sign in again.' });
+    if (retryMatch) return send(response, 202, { measurement: await service.retryMeasurement(data.user.id, retryMatch[1]) });
     const body = await readBody(request);
     if (!/^[0-9a-f-]{36}$/i.test(body.businessId || '')) return send(response, 400, { error: 'Invalid business.' });
     const scan = await service.createScan(data.user.id, body.businessId);
     return send(response, 202, { scan });
   } catch (error) {
     const message = error.message || 'Could not start scan.';
-    return send(response, /not found|already running|Verify|active prompt|limit/i.test(message) ? 400 : 500, { error: message });
+    return send(response, /not found|already running|Verify|active prompt|limit|Wait for|No failed/i.test(message) ? 400 : 500, { error: message });
   }
 });
 
@@ -57,6 +59,8 @@ if (ready) {
     try {
       const scan = await service.claimScan();
       if (scan) await service.processScan(scan.id);
+      const measurement = await service.claimMeasurement();
+      if (measurement) await service.processMeasurement(measurement.scan_id);
     } catch (error) { process.stderr.write(`Scan worker error: ${error.message}\n`); }
     setTimeout(poll, 5000);
   }

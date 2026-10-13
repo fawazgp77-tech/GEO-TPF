@@ -13,16 +13,13 @@ import LoginModal from './components/LoginModal';
 import Dashboard from './components/dashboard/Dashboard';
 import Onboarding from './components/Onboarding';
 import { api } from './lib/api';
+import { navigate, useNavigation } from './lib/navigation';
+import { clearWizardDrafts } from '../shared/onboarding';
 
 function App() {
-  const [currentView, setCurrentView] = useState(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('view') || 'landing';
-    } catch {
-      return 'landing';
-    }
-  });
+  const route = useNavigation();
+  const { view: currentView, modal: currentModal } = route;
+  const setCurrentView = view => navigate({ view, modal: '', ...(view === 'landing' ? { business: '', section: '', scan: '', mode: '' } : {}) });
   const [auditModalOpen, setAuditModalOpen] = useState(() => {
     try {
       return new URLSearchParams(window.location.search).get('modal') === 'audit';
@@ -37,26 +34,6 @@ function App() {
       return false;
     }
   });
-  const [loginModalOpen, setLoginModalOpen] = useState(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const modal = params.get('modal');
-      const view = params.get('view');
-      return modal === 'login' || modal === 'signup' || view === 'signup' || view === 'create-account';
-    } catch {
-      return false;
-    }
-  });
-  const [authMode, setAuthMode] = useState(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const modal = params.get('modal');
-      const view = params.get('view');
-      return modal === 'signup' || view === 'signup' || view === 'create-account' ? 'signup' : 'login';
-    } catch {
-      return 'login';
-    }
-  });
 
   const [currentUser, setCurrentUser] = useState(null);
   const [sessionLoading, setSessionLoading] = useState(true);
@@ -66,59 +43,51 @@ function App() {
       .catch(() => setCurrentUser(null)).finally(() => setSessionLoading(false));
   }, []);
   useEffect(() => {
-    const expire = () => setCurrentUser(null);
+    const expire = () => { clearWizardDrafts(); setCurrentUser(null); };
     window.addEventListener('presence:session-expired', expire);
     return () => window.removeEventListener('presence:session-expired', expire);
   }, []);
   const handleLoginSuccess = (user) => {
-    setCurrentUser(user); setLoginModalOpen(false); setCurrentView('dashboard');
+    setCurrentUser(user); setCurrentView('dashboard');
   };
   const handleSignupSuccess = (user) => {
-    setCurrentUser(user); setLoginModalOpen(false); setCurrentView('onboarding');
+    setCurrentUser(user); navigate({ view: 'onboarding', business: '', draft: '', section: '', mode: '', scan: '', modal: '' });
   };
   const handleLogout = async () => {
     try {
       await api('/auth/logout', { method: 'POST', body: {} });
+      clearWizardDrafts();
       setCurrentUser(null); setCurrentView('landing'); setSessionError('');
     } catch (error) { setSessionError(error.message); }
   };
   if (sessionLoading) return <div className="p-10 text-slate-300" role="status">Loading your session…</div>;
 
-  // Onboarding view: rendered after signup or direct navigation
-  if (currentView === 'onboarding') {
-    return (
-      <Onboarding
-        currentUser={currentUser}
-        onComplete={(answers) => {
-          const updatedUser = {
-            ...(currentUser || {}),
-            onboarding: answers
-          };
-          setCurrentUser(updatedUser);
-          try {
-            localStorage.setItem('geo_user_session', JSON.stringify(updatedUser));
-          } catch (e) {
-            console.error(e);
-          }
-          setCurrentView('dashboard');
-        }}
-        onSkip={() => setCurrentView('dashboard')}
-      />
-    );
+  const authPage = ['login', 'signup', 'create-account'].includes(currentView);
+  const authRequested = authPage || ['login', 'signup'].includes(currentModal);
+  if (authRequested || (['dashboard', 'onboarding'].includes(currentView) && !currentUser)) {
+    const mode = currentModal === 'signup' || ['signup', 'create-account'].includes(currentView) ? 'signup' : 'login';
+    return <LoginModal isOpen initialMode={mode}
+      onModeChange={next => authPage ? navigate({ view: next === 'signup' ? 'signup' : 'login', modal: '' }) : navigate({ modal: next === 'signup' ? 'signup' : 'login' })}
+      onLoginSuccess={handleLoginSuccess} onSignupSuccess={handleSignupSuccess} />;
   }
 
-  if (currentView === 'dashboard' && !currentUser) {
-    const isDemo = new URLSearchParams(window.location.search).get('demo') === 'true' || window.location.search.includes('view=dashboard');
-    if (!isDemo) {
-      return <div className="min-h-screen bg-[#07090e]"><LoginModal isOpen initialMode="login" onClose={() => setCurrentView('landing')} onLoginSuccess={handleLoginSuccess} onSignupSuccess={handleSignupSuccess} /></div>;
-    }
+  if (currentView === 'onboarding' || (currentView === 'dashboard' && route.mode === 'create')) {
+    return (
+      <Onboarding
+        key={`${currentUser.id}:${route.business || 'new'}`}
+        currentUser={currentUser} businessId={route.business} creationId={route.draft} invalidSelection={route.invalidSelection}
+        onDraftId={id => navigate({ draft: id }, { replace: true })}
+        onComplete={id => navigate({ view: 'dashboard', business: id, section: 'profile', mode: '', scan: '', draft: '' })}
+        onSkip={id => navigate({ view: 'dashboard', business: id || '', section: 'profile', mode: '', scan: '', draft: '' })}
+      />
+    );
   }
 
   // If in dashboard view, render the complete GEO ENGINE dashboard
   if (currentView === 'dashboard') {
     return (
       <> {sessionError && <p role="alert" className="p-4 text-red-300">{sessionError}</p>}<Dashboard
-        currentUser={currentUser || { name: 'Enterprise Analyst', email: 'analyst@enterprise.com', company: 'Acme Enterprise' }}
+        currentUser={currentUser}
         onLogout={handleLogout}
         onUpdateUser={setCurrentUser}
       /></>
@@ -131,8 +100,7 @@ function App() {
       {/* 00. Top Navigation Bar */}
       <Navbar
         onOpenLogin={() => {
-          setAuthMode('login');
-          setLoginModalOpen(true);
+          navigate({ modal: 'login' });
         }}
         currentUser={currentUser}
         onLogout={handleLogout}
@@ -145,8 +113,7 @@ function App() {
         {/* Hero Section: Your Brand Through AI's Eyes + Live Prompt Vector Synthesizer */}
         <Hero
           onOpenLogin={() => {
-            setAuthMode('signup');
-            setLoginModalOpen(true);
+            navigate({ modal: 'signup' });
           }}
         />
 
@@ -177,14 +144,6 @@ function App() {
         onClose={() => setBriefingModalOpen(false)}
       />
 
-      <LoginModal
-        key={loginModalOpen ? `open_${authMode}` : 'closed'}
-        isOpen={loginModalOpen}
-        initialMode={authMode}
-        onClose={() => setLoginModalOpen(false)}
-        onLoginSuccess={handleLoginSuccess}
-        onSignupSuccess={handleSignupSuccess}
-      />
     </div>
   );
 }

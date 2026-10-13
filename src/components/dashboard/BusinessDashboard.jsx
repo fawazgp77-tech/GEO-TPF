@@ -5,6 +5,7 @@ import { summarizeScan } from '../../../shared/scanMetrics';
 
 const panel = 'rounded-2xl border border-white/10 bg-[#0b0f17]';
 const button = 'rounded-xl bg-emerald-400 text-slate-950 px-4 py-2.5 text-sm font-semibold';
+const summaryScan = scans => scans.find(scan => ['COMPLETED', 'PARTIALLY_FAILED'].includes(scan.status)) || scans[0];
 
 export default function BusinessDashboard({ business, onBack, onOpenPrompts, onOpenTruth }) {
   const [prompts, setPrompts] = useState([]);
@@ -19,14 +20,16 @@ export default function BusinessDashboard({ business, onBack, onOpenPrompts, onO
     ]);
     setPrompts(promptResult.prompts);
     setScans(scanResult.scans);
-    setDetail(scanResult.scans[0] ? await api(`/scans/${scanResult.scans[0].id}`) : null);
+    const latest = summaryScan(scanResult.scans);
+    setDetail(latest ? await api(`/scans/${latest.id}`) : null);
   }, [business.id]);
 
   useEffect(() => {
     let active = true;
     Promise.all([api(`/businesses/${business.id}/prompts`), api(`/businesses/${business.id}/scans`)])
       .then(async ([promptResult, scanResult]) => {
-        const scanDetail = scanResult.scans[0] ? await api(`/scans/${scanResult.scans[0].id}`) : null;
+        const latest = summaryScan(scanResult.scans);
+        const scanDetail = latest ? await api(`/scans/${latest.id}`) : null;
         if (active) { setPrompts(promptResult.prompts); setScans(scanResult.scans); setDetail(scanDetail); }
       })
       .catch(e => { if (active) setError(e.message); })
@@ -40,14 +43,14 @@ export default function BusinessDashboard({ business, onBack, onOpenPrompts, onO
     return () => clearInterval(timer);
   }, [scans, refresh]);
 
-  const current = scans[0];
-  const metrics = summarizeScan(detail?.runs, business.name);
+  const current = detail?.scan || summaryScan(scans);
+  const metrics = summarizeScan(detail?.runs, business);
   const report = Array.isArray(detail?.scan.scan_analyses) ? detail.scan.scan_analyses[0] : detail?.scan.scan_analyses;
   const activePrompts = prompts.filter(prompt => prompt.active).length;
   const cards = [
     { label: 'Tracked prompts', value: activePrompts, hint: 'Active for next scan', icon: FileText },
     { label: 'Answers saved', value: `${metrics.answered}/${metrics.total}`, hint: 'Latest scan', icon: CheckCircle2 },
-    { label: 'Exact-name mentions', value: metrics.exactNameMentions, hint: `Of ${metrics.answered} saved answers`, icon: ScanSearch },
+    { label: 'Unprompted name mentions', value: metrics.unpromptedNameMentions, hint: `Of ${metrics.unbrandedAnswered} unbranded answers`, icon: ScanSearch },
     { label: 'Answers with citations', value: metrics.citedAnswers, hint: `Of ${metrics.answered} saved answers`, icon: FileText },
   ];
 
@@ -70,7 +73,7 @@ export default function BusinessDashboard({ business, onBack, onOpenPrompts, onO
         <card.icon size={18} className="text-emerald-300" /><p className="text-xs text-slate-400 mt-4">{card.label}</p>
         <p className="text-3xl font-semibold mt-1">{card.value}</p><p className="text-xs text-slate-500 mt-2">{card.hint}</p>
       </div>)}</div>
-      <p className="text-xs text-slate-500">Counts come from saved scan answers. An exact-name mention is a text match, not a recommendation or verified fact. Citations reflect links returned by Gemini.</p>
+      <p className="text-xs text-slate-500">Counts come from saved scan answers. Unprompted mentions exclude questions that name this business and can match its full name or a location-free form ({metrics.matchedNames.join(' / ')}). A name match is not a recommendation or verified fact. Citations reflect links returned by Gemini.</p>
       <div className="grid xl:grid-cols-[1.4fr_1fr] gap-5">
         <div className={`${panel} p-6 space-y-5`}>
           <div className="flex items-start justify-between gap-3"><div><p className="text-xs font-mono text-emerald-300">LATEST SCAN</p>

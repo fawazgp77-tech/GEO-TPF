@@ -10,7 +10,7 @@ export async function api(path, options = {}) {
     response = await fetch(`/api${path}`, {
       credentials: 'same-origin',
       ...options,
-      headers: { 'Content-Type': 'application/json', ...options.headers },
+      headers: { 'Content-Type': 'application/json', ...(options.expectedUserId ? { 'X-Presence-Owner': options.expectedUserId } : {}), ...options.headers },
       body: options.body === undefined ? undefined : JSON.stringify(options.body),
     });
   } catch {

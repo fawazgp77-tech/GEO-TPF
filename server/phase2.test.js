@@ -4,16 +4,29 @@ import { generatePrompts, validatePrompt } from '../shared/prompts.js';
 import { createGeminiProvider } from './providers/gemini.js';
 import { createScanService } from './scans/service.js';
 
-test('business-specific prompts cover the intended categories without duplicates', () => {
+test('discovery prompts cover customer intents without priming the model with business identity or Brand Truth', () => {
   const prompts = generatePrompts({ name: 'North Academy', city: 'Nagpur', category: 'Cricket academy' }, {
-    officialName: 'North Academy', services: 'Junior cricket coaching', audience: 'Children',
-    areasServed: 'Nagpur', competitors: 'Elite Academy',
+    officialName: 'North Academy', services: 'Junior cricket coaching', competitors: 'Elite Academy',
   });
   assert.equal(prompts.length, 20);
   assert.equal(new Set(prompts.map(prompt => prompt.text.toLowerCase())).size, 20);
   assert.equal(new Set(prompts.map(prompt => prompt.category)).size, 6);
-  assert.ok(prompts.some(prompt => prompt.text.toLowerCase().includes('junior cricket coaching')));
-  assert.ok(prompts.some(prompt => prompt.text.includes('Elite Academy')));
+  assert.ok(prompts.every(prompt => !/North Academy|Junior cricket coaching|Elite Academy/i.test(prompt.text)));
+  assert.ok(prompts.some(prompt => prompt.text === 'What are the best cricket academies near me in Nagpur?'));
+  assert.ok(prompts.some(prompt => prompt.text.includes('in Nagpur')));
+  const furniture = generatePrompts({ name: 'IKEA Hyderabad', city: 'Hyderabad', category: 'Furniture store' });
+  assert.equal(furniture[0].text, 'What are the best furniture stores near me in Hyderabad?');
+  assert.equal(furniture[1].text, 'Where can I find affordable, good-quality furniture in Hyderabad?');
+  assert.ok(furniture.every(prompt => !prompt.text.includes('IKEA')));
+  const brandedCategory = generatePrompts({ name: 'IKEA Hyderabad', city: 'Hyderabad', category: 'IKEA furniture store' });
+  assert.ok(brandedCategory.every(prompt => !prompt.text.includes('IKEA')));
+  const brandedSuffix = generatePrompts({ name: 'IKEA Hyderabad', city: 'Hyderabad', category: 'Furniture store by IKEA' });
+  assert.ok(brandedSuffix.every(prompt => !prompt.text.includes('IKEA')));
+  const sports = generatePrompts({ name: 'Decathlon India', city: 'Bengaluru', category: 'Sports store' });
+  assert.equal(sports[1].text, 'Where can I find affordable, good-quality sports gear in Bengaluru?');
+  const software = generatePrompts({ name: 'Canva', category: 'Design software', country: 'Australia' });
+  assert.ok(software.every(prompt => !prompt.text.includes('Canva')));
+  assert.ok(software.every(prompt => !prompt.text.includes('near me')));
   assert.throws(() => validatePrompt({ category: 'DISCOVERY', text: '  ' }), /5–500/);
 });
 

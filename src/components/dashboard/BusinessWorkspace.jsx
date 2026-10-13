@@ -1,95 +1,64 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Building2, ArrowRight, Plus, ScanLine } from 'lucide-react';
 import { api } from '../../lib/api';
-import { basicFields, truthFields } from '../../../shared/business';
+import { navigate } from '../../lib/navigation';
+import { Badge, Button, EmptyState, ErrorNotice } from '../ui';
+import GlassPanel from '../ui/GlassPanel';
 import PromptWorkspace from './PromptWorkspace';
-import BusinessDashboard from './BusinessDashboard';
+import ScanHistory from './ScanHistory';
+import AnalyticsBoard from './AnalyticsBoard';
+import BusinessProfile from './BusinessProfile';
+import TruthEditor from './TruthEditor';
 
-const button = 'rounded-xl bg-emerald-400 text-slate-950 px-5 py-3 text-sm font-semibold disabled:opacity-50';
-const input = 'mt-2 w-full rounded-xl bg-[#06080e] border border-white/10 px-4 py-3 text-sm text-slate-100 focus:outline-emerald-400';
-
-export default function BusinessWorkspace() {
-  const [businesses, setBusinesses] = useState([]);
-  const [selected, setSelected] = useState(null);
-  const [stage, setStage] = useState('list');
-  const [form, setForm] = useState({});
-  const [version, setVersion] = useState(0);
-  const [verified, setVerified] = useState(false);
-  const [busy, setBusy] = useState(true);
+export default function BusinessWorkspace({ businesses, selected, currentUser, route, refreshBusinesses, scanRevision = 0, onScanStarted }) {
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
-
-  async function refresh() {
-    const data = await api('/businesses');
-    setBusinesses(data.businesses);
-  }
-  useEffect(() => {
-    let active = true;
-    api('/businesses').then(data => { if (active) setBusinesses(data.businesses); })
-      .catch(e => { if (active) setError(e.message); }).finally(() => { if (active) setBusy(false); });
-    return () => { active = false; };
-  }, []);
-  async function openTruth(business) {
-    setBusy(true); setError(''); setNotice('');
-    try {
-      const { truth } = await api(`/businesses/${business.id}/truth`);
-      setSelected(business);
-      setForm(truth?.data || { officialName: business.name, website: business.website, areasServed: business.city });
-      setVersion(truth?.version || 0); setVerified(false); setStage('truth');
-    } catch (e) { setError(e.message); } finally { setBusy(false); }
-  }
-  async function save(event) {
-    event.preventDefault(); setBusy(true); setError('');
-    try {
-      if (stage === 'create') {
-        const { business } = await api('/businesses', { method: 'POST', body: form });
-        await refresh(); await openTruth(business);
-      } else {
-        await api(`/businesses/${selected.id}/truth`, { method: 'POST', body: { data: form, verified, version } });
-        await refresh(); setStage('list'); setNotice('Verified Brand Truth saved. Your business profile is ready.');
-      }
-    } catch (e) { setError(e.message); } finally { setBusy(false); }
-  }
-  const deleteBusiness = async (business) => {
-    if (!window.confirm(`Are you sure you want to remove "${business.name}"?`)) return;
+  const mounted = useRef(false);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  const go = changes => navigate({ view: 'dashboard', ...changes });
+  const changeHistory = changes => {
+    const status = changes.status === undefined ? route.history.status : changes.status;
+    const from = changes.from === undefined ? route.history.from : changes.from;
+    const to = changes.to === undefined ? route.history.to : changes.to;
+    const sort = changes.sort === undefined ? route.history.sort : changes.sort;
+    const page = changes.page === undefined ? route.history.page : changes.page;
+    go({ historyStatus: status === 'all' ? '' : status, historyFrom: from, historyTo: to,
+      historySort: sort === 'newest' ? '' : sort, historyPage: page === 1 ? '' : String(page) });
+  };
+  const setup = () => go({ view: 'onboarding', mode: '', draft: '', scan: '' });
+  async function remove(business) {
+    if (busy || !window.confirm(`Remove "${business.name}" and its saved business data? This cannot be undone.`)) return;
     setBusy(true); setError('');
     try {
-      await api(`/businesses/${business.id}`, { method: 'DELETE' });
-      await refresh();
-      setNotice(`Removed business "${business.name}".`);
-    } catch (e) { setError(e.message); } finally { setBusy(false); }
-  };
-  if (stage === 'prompts' && selected) return <PromptWorkspace business={selected} onBack={() => setStage('overview')} />;
-  if (stage === 'overview' && selected) return <BusinessDashboard business={selected} onBack={() => { setStage('list'); refresh().catch(e => setError(e.message)); }}
-    onOpenPrompts={() => setStage('prompts')} onOpenTruth={() => openTruth(selected)} />;
-  return <section className="space-y-6">
-    <div className="flex flex-wrap items-center justify-between gap-4">
-      <div><h1 className="text-2xl font-bold">{stage === 'create' ? 'Add Business' : stage === 'truth' ? 'Business Truth' : 'Your businesses'}</h1>
-        <p className="text-sm text-slate-400 mt-2">{stage === 'truth' ? `Verified facts for ${selected.name}. Leave unknown optional facts blank.` : 'Build your verified business profile before measuring AI visibility.'}</p></div>
-      {stage === 'list' && <button className={button} disabled={busy} onClick={() => { setForm({}); setError(''); setNotice(''); setStage('create'); }}>Add Business</button>}
-    </div>
-    {error && <p role="alert" className="text-red-300 border border-red-400/30 rounded-xl p-4">{error}</p>}
-    {notice && <p role="status" className="text-emerald-300">{notice}</p>}
-    {stage === 'list' ? <>
-      {busy && <p role="status">Loading businesses…</p>}
-      {!busy && !businesses.length && <div className="rounded-2xl border border-white/10 bg-[#0b0f17] p-8 text-slate-400">No businesses yet. Add your first business to begin onboarding.</div>}
-      <div className="grid md:grid-cols-2 gap-5">{businesses.map(business => <article key={business.id} className="rounded-2xl border border-white/10 bg-[#0b0f17] p-6 space-y-4">
-        <h2 className="text-lg font-semibold">{business.name}</h2><p className="text-sm text-slate-400">{business.category} · {business.city}, {business.country}{business.branch ? ` · ${business.branch}` : ''}</p>
-        <p className="text-sm text-emerald-300">{business.truth_version ? `Brand Truth verified · revision ${business.truth_version}` : 'Onboarding incomplete'}</p>
-        <p className="text-sm text-slate-500">{business.latest_scan_status ? `Latest scan: ${business.latest_scan_status.replaceAll('_', ' ')}. Open the dashboard for measured counts and analysis.` : 'No scans yet. Generate prompts and run Gemini to see the answers together.'}</p>
-        <div className="flex flex-wrap items-center gap-3">
-          {business.truth_version && <button disabled={busy} className={button} onClick={() => { setSelected(business); setStage('overview'); setError(''); }}>Open dashboard</button>}
-          <button disabled={busy} className={business.truth_version ? 'rounded-xl border border-emerald-400/40 text-emerald-300 px-5 py-3 text-sm cursor-pointer' : button} onClick={() => openTruth(business)}>{business.truth_version ? 'Review Brand Truth' : 'Complete onboarding'}</button>
-          <button type="button" disabled={busy} className="rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 px-4 py-3 text-sm transition-colors cursor-pointer" onClick={() => deleteBusiness(business)}>Remove</button>
-        </div>
-      </article>)}</div>
-    </> : <form onSubmit={save} className="rounded-2xl border border-white/10 bg-[#0b0f17] p-6 space-y-6">
-      <div className="grid md:grid-cols-2 gap-5">{(stage === 'create' ? basicFields : truthFields).map(([key, label, required]) => <label key={key} className="text-sm text-slate-300">{label}{required ? ' *' : ' (optional)'}
-        {stage === 'truth' && !['officialName', 'phone', 'website'].includes(key)
-          ? <textarea className={input} rows={3} required={required} maxLength={4000} value={form[key] || ''} onChange={e => setForm({ ...form, [key]: e.target.value })} />
-          : <input className={input} type={key === 'website' ? 'url' : 'text'} required={required} maxLength={4000} value={form[key] || ''} onChange={e => setForm({ ...form, [key]: e.target.value })} />}
-      </label>)}</div>
-      {stage === 'truth' && <label className="flex gap-3 text-sm text-slate-300"><input type="checkbox" required checked={verified} onChange={e => setVerified(e.target.checked)} />I confirm these facts are verified by the business owner. AI-generated answers are not business truth.</label>}
-      <div className="flex gap-4"><button className={button} disabled={busy}>{busy ? 'Saving…' : stage === 'create' ? 'Create and continue' : 'Save verified Brand Truth'}</button><button type="button" disabled={busy} onClick={() => { setStage('list'); setError(''); }} className="text-sm text-slate-400">Back to businesses</button></div>
-    </form>}
-  </section>;
+      await api(`/businesses/${business.id}`, { method: 'DELETE', expectedUserId: currentUser.id });
+      await refreshBusinesses();
+      if (!mounted.current) return;
+      if (selected?.id === business.id) go({ business: '', mode: '', scan: '', section: 'profile' });
+      else setNotice(`Removed ${business.name}.`);
+    } catch (e) { if (mounted.current) setError(e.message); } finally { if (mounted.current) setBusy(false); }
+  }
+  if (route.mode === 'truth') return selected ? <TruthEditor business={selected} currentUser={currentUser} onCancel={() => go({ mode: '', section: 'profile', scan: '' })} onSaved={() => {
+    go({ mode: '', section: 'profile', scan: '' });
+    refreshBusinesses().catch(() => {});
+  }} /> : <EmptyState icon={Building2} title="Choose a business" description="Select a business before reviewing its verified facts." />;
+  if (!selected) return <>
+    {error && <ErrorNotice>{error}</ErrorNotice>}{notice && <p role="status" className="workspace-notice">{notice}</p>}
+    {!businesses.length ? <EmptyState icon={Building2} title="Meet your business through AI’s eyes" description="Add your business, verify its facts, and start exploring how Gemini answers your customers’ questions."><Button onClick={() => go({ view: 'onboarding', mode: '', business: '', draft: '', section: '' })}><Plus size={16} />Add your first business</Button></EmptyState>
+      : <><div className="workspace-selection-row mb-5"><p style={{ color: 'var(--ws-muted)' }}>Select a business to explore {route.section === 'profile' ? 'its profile' : route.section === 'history' ? 'its scan history' : route.section}.</p><Badge>{businesses.length} business{businesses.length === 1 ? '' : 'es'}</Badge></div>
+        <div className="workspace-grid">{businesses.map(business => <GlassPanel key={business.id} className="profile-panel workspace-business-card"><div className="flex items-center justify-between gap-3"><span className="workspace-business-icon"><Building2 size={22} /></span><Badge tone={business.truth_version ? 'success' : 'warning'}>{business.truth_version ? 'Verified' : 'Setup needed'}</Badge></div>
+          <div><h2>{business.name}</h2><p>{business.category} · {business.city}, {business.country}</p></div><p>{business.latest_scan_status ? `Latest scan: ${business.latest_scan_status.replaceAll('_', ' ').toLowerCase()}` : business.truth_version ? 'Ready for your first discovery scan' : 'Verify your business facts to get started'}</p>
+          <div className="workspace-business-actions"><Button disabled={busy} onClick={() => go({ business: business.id, mode: '', scan: '' })}>Open business<ArrowRight size={16} /></Button><Button variant="ghost" disabled={busy} onClick={() => remove(business)}>Remove</Button></div>
+        </GlassPanel>)}</div></>}
+  </>;
+  if (!selected.truth_version && route.section !== 'profile') return <EmptyState icon={ScanLine} title="Verify your business first" description="Review and confirm Brand Truth before generating prompts or running scans."><Button onClick={setup}>Complete business setup</Button></EmptyState>;
+  if (route.section === 'analytics') return <AnalyticsBoard key={`${selected.id}:${route.scan || 'latest'}`} currentUser={currentUser} business={selected} scanId={route.scan} scanRevision={scanRevision} onScanStarted={onScanStarted}
+    onOpenPrompts={() => go({ section: 'prompts', scan: '' })} onOpenScan={id => go({ section: 'analytics', scan: id })}
+    onBackHistory={() => go({ section: 'history', scan: '' })} />;
+  if (route.section === 'prompts') return <PromptWorkspace key={selected.id} currentUser={currentUser} business={selected} scanRevision={scanRevision} onScanStarted={onScanStarted} onOpenScan={id => go({ section: 'analytics', scan: id })} />;
+  if (route.section === 'history') return <ScanHistory key={`${route.history.status}:${route.history.from}:${route.history.to}:${route.history.sort}:${route.history.page}`} business={selected} currentUser={currentUser} filters={route.history} scanRevision={scanRevision}
+    onFilter={changeHistory} onOpenScan={id => go({ section: 'analytics', scan: id })} />;
+  return <>{error && <ErrorNotice>{error}</ErrorNotice>}<BusinessProfile key={selected.id} currentUser={currentUser} business={selected} scanRevision={scanRevision} onScanStarted={onScanStarted} onSetup={setup}
+    onOpenTruth={() => go({ mode: 'truth', scan: '' })} onOpenPrompts={() => go({ section: 'prompts', scan: '' })} onOpenAnalytics={() => go({ section: 'analytics', scan: '' })}
+    onOpenScan={id => go({ section: 'analytics', scan: id })} onRemove={() => remove(selected)} removing={busy} /></>;
 }

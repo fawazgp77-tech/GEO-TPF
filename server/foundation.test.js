@@ -14,8 +14,8 @@ test('auth, ownership, validation, verified truth revisions and persistent stora
   const app = await createApp({ db });
   await new Promise(resolve => app.listen(0, '127.0.0.1', resolve));
   const base = `http://127.0.0.1:${app.address().port}/api`;
-  const request = async (url, method = 'GET', body, cookie = '', origin = 'http://localhost:5173') => {
-    const response = await fetch(base + url, { method, headers: { 'Content-Type': 'application/json', Origin: origin, Cookie: cookie }, body: body === undefined ? undefined : JSON.stringify(body) });
+  const request = async (url, method = 'GET', body, cookie = '', origin = 'http://localhost:5173', expectedOwner = '') => {
+    const response = await fetch(base + url, { method, headers: { 'Content-Type': 'application/json', Origin: origin, Cookie: cookie, ...(expectedOwner ? { 'X-Presence-Owner': expectedOwner } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
     return { status: response.status, data: await response.json(), cookie: response.headers.get('set-cookie') };
   };
   try {
@@ -39,11 +39,20 @@ test('auth, ownership, validation, verified truth revisions and persistent stora
     const b = await request('/auth/signup', 'POST', { ...credentials, email: 'b@example.com' });
     const cookieB = b.cookie.split(';')[0];
     const business = { name: 'Academy', website: 'https://example.com', category: 'Cricket', country: 'India', city: 'Nagpur', branch: '' };
+    assert.equal((await request('/businesses', 'POST', business, cookieB, 'http://localhost:5173', a.data.user.id)).status, 401);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM businesses').get().n, 0);
     assert.equal((await request('/businesses', 'POST', business, cookieA, 'https://evil.example')).status, 403);
     assert.equal((await request('/businesses', 'POST', { ...business, website: 'javascript:alert(1)' }, cookieA)).status, 400);
-    const created = await request('/businesses', 'POST', { ...business, user_id: b.data.user.id }, cookieA);
+    const creationId = 'd64b39ce-c8bc-4f6d-8ad3-8a68f208fb08';
+    const created = await request('/businesses', 'POST', { ...business, creationId, user_id: b.data.user.id }, cookieA);
     assert.equal(created.status, 201);
     const id = created.data.business.id;
+    assert.equal(id, creationId);
+    assert.equal((await request('/businesses', 'POST', { ...business, creationId }, cookieA)).data.business.id, id);
+    assert.equal(db.prepare('SELECT COUNT(*) AS n FROM businesses').get().n, 1);
+    assert.equal((await request('/businesses', 'POST', { ...business, creationId }, cookieB)).status, 409);
+    assert.equal((await request('/businesses', 'POST', { ...business, name: 'Changed', creationId }, cookieA)).status, 409);
+    assert.equal((await request('/businesses', 'POST', { ...business, creationId: 'invalid' }, cookieA)).status, 400);
     assert.equal((await request('/businesses', 'GET', undefined, cookieB)).data.businesses.length, 0);
     const truthPath = `/businesses/${id}/truth`;
     assert.equal((await request(truthPath, 'GET', undefined, cookieB)).status, 404);

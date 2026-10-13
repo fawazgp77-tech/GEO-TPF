@@ -2,6 +2,7 @@ import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { hashPassword, checkPassword, digest, tokenFrom, sessionCookie, createSession } from './auth.js';
 import { basicFields, truthFields, validateFields } from '../shared/business.js';
+import { confirmCreationMatch, validateCreationId } from '../shared/businessCreation.js';
 
 class HttpError extends Error {
   constructor(status, message) { super(message); this.status = status; }
@@ -98,14 +99,22 @@ export async function createApp({ db, origin = 'http://localhost:5173', secure =
       }
       const user = db.prepare('SELECT u.id,u.email,u.name FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=? AND s.expires_at>?').get(digest(tokenFrom(req)), Date.now());
       if (!user) throw new HttpError(401, 'Please sign in.');
+      if (req.headers['x-presence-owner'] && req.headers['x-presence-owner'] !== user.id) throw new HttpError(401, 'Your signed-in account changed. Reload before saving.');
       if (path === '/api/auth/me' && method === 'GET') return send(200, { user });
       if (path === '/api/businesses' && method === 'GET') {
         const businesses = db.prepare(`SELECT b.*, (SELECT MAX(version) FROM business_truth WHERE business_id=b.id) AS truth_version FROM businesses b WHERE user_id=? ORDER BY created_at DESC, id`).all(user.id);
         return send(200, { businesses });
       }
       if (path === '/api/businesses' && method === 'POST') {
-        const data = validated(await readBody(req), basicFields);
-        const id = randomUUID();
+        const body = await readBody(req);
+        const data = validated(body, basicFields);
+        let id;
+        try { id = validateCreationId(body.creationId) || randomUUID(); } catch (error) { throw new HttpError(400, error.message); }
+        const existing = db.prepare('SELECT * FROM businesses WHERE id=?').get(id);
+        if (existing) {
+          if (existing.user_id !== user.id) throw new HttpError(409, 'Unable to recover this business creation request.');
+          try { return send(200, { business: confirmCreationMatch(existing, data) }); } catch (error) { throw new HttpError(409, error.message); }
+        }
         db.prepare('INSERT INTO businesses (id,user_id,name,website,category,country,city,branch) VALUES (?,?,?,?,?,?,?,?)').run(id, user.id, ...basicFields.map(([key]) => data[key]));
         return send(201, { business: { id, ...data } });
       }
